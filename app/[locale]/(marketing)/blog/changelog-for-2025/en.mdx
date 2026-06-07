@@ -1,0 +1,53 @@
+import { BlogLayout } from "@/components/blog-layout";
+import Thumbnail from "./thumbnail.jpeg";
+
+export const blog = {
+  author: { name: "SceneSelf Team", src: "/avatar.jpeg" },
+  date: "2026-06-06",
+  title: "SceneSelf June 2026 — Launch Notes",
+  description:
+    "What shipped on day one: eight storyline types, the 6-photo coherent set, identity-aware quality control, and a 24-hour selfie auto-delete.",
+  image: Thumbnail,
+};
+
+export const metadata = {
+  title: blog.title,
+  description: blog.description,
+  openGraph: {
+    images: [blog.image.src ?? "/og-default.jpg"],
+  },
+};
+export default (props) => <BlogLayout blog={blog} {...props} />;
+
+## What shipped on launch day
+
+We spent the last few months building the product we wanted to exist — one where AI photo sets felt like a real shoot, not a parade of swaps. Here's what's in the box.
+
+### Core features
+
+- **Eight storyline types.** Journey, Ownership Flex, Fantasy Role, Milestone Event, Profession, Lifestyle, Seasonal, Transformation. Pick a cluster or write your own one-liner.
+- **Six-photo coherent set.** Every set has six photos with the same outfit, hair, accessories, and lighting feel. No "set of strangers".
+- **Identity-aware quality control.** Every generated frame passes through a quality check that asks: same person? anatomically correct? not over-smoothed? Failures get rescued with another pass, up to twice.
+- **Domain realism.** Surgeons keep the mask on in the OR. Divers keep the gear on underwater. Costumes with helmets, hoods, or visors stay worn — because that's what makes the scene believable.
+
+### Privacy
+
+- **24-hour selfie auto-delete.** Your reference photo is removed 24 hours after upload.
+- **Never used to train AI.** No selfie ever enters anyone's training dataset.
+- **Encrypted end-to-end.** Private object storage, TLS-only transmission, zero third-party sharing.
+
+### Credits and plans
+
+- **300 credits on signup.** Free for everyone — enough for one full preview set.
+- **Weekly / Monthly / Yearly plans.** Pick the cadence that fits how you actually use it.
+- **One-off credit packs.** When you just need a top-up.
+- **Refund banner for partial deliveries.** If a frame doesn't make it through quality control, you get 2× credits back, automatically. The "we owe you the perfect set" promise is built into the credit ledger.
+
+### What's next
+
+- More storyline types (multi-character climaxes, time-of-day arcs)
+- Style references — upload a mood board to bias the look
+- Album curation tools — drag, reorder, export to social formats
+- Partner API for creators and small studios
+
+Drop us a note at [support@sceneself.com](mailto:support@sceneself.com) — every email gets read.

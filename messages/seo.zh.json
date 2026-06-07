@@ -1,0 +1,52 @@
+{
+  "home": {
+    "title": "SceneSelf — AI 场景影集生成器，让每一张自拍都成片",
+    "description": "SceneSelf 只需一张自拍，就能在数分钟内生成杂志级别、调性统一的场景影集——不用棚拍、不用预约、不用等待。",
+    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+  },
+  "pricing": {
+    "title": "定价 - SceneSelf",
+    "description": "周付、月付、年付任选一档，按你想生成场景集的频率挑节奏。每张生成场景均不带水印。",
+    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+  },
+  "blog": {
+    "title": "博客 - SceneSelf",
+    "description": "来自我们团队的最新见解与更新。了解 AI SaaS 开发、vibe coding 以及构建生产级应用的最佳实践。",
+    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+  },
+  "contact": {
+    "title": "联系我们 - SceneSelf",
+    "description": "与 SceneSelf 团队取得联系。我们很乐意倾听您的声音,并会尽快回复。",
+    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+  },
+  "login": {
+    "title": "登录 - SceneSelf",
+    "description": "登录您的 SceneSelf 账户,访问为您业务提供的强大 AI 工具和服务。",
+    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+  },
+  "signup": {
+    "title": "注册 - SceneSelf",
+    "description": "创建您的 SceneSelf 账户,立即使用我们强大的工具开始构建您的 AI SaaS 产品。",
+    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+  },
+  "terms": {
+    "title": "服务条款 - SceneSelf",
+    "description": "阅读我们的服务条款,了解使用 SceneSelf 平台的规则和指南。",
+    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+  },
+  "privacy": {
+    "title": "隐私政策 - SceneSelf",
+    "description": "了解 SceneSelf 如何收集、使用和保护您的个人信息和数据。",
+    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+  },
+  "cookies": {
+    "title": "Cookie 政策 - SceneSelf",
+    "description": "了解 SceneSelf 如何在我们的平台上使用 cookies 和类似的跟踪技术。",
+    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+  },
+  "refund": {
+    "title": "退款政策 - SceneSelf",
+    "description": "查看我们的退款政策,了解申请退款的条件和流程。",
+    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+  }
+}

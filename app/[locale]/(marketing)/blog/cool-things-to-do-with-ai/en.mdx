@@ -1,0 +1,62 @@
+import { BlogLayout } from "@/components/blog-layout";
+import Thumbnail from "./thumbnail.jpeg";
+
+export const blog = {
+  author: { name: "SceneSelf Team", src: "/avatar.jpeg" },
+  date: "2026-06-06",
+  title: "8 Ways to Step Into a Life You've Never Lived",
+  description:
+    "A quick tour of SceneSelf's eight storyline types — from travel sets to fantasy roles to milestone moments. Pick the angle that fits the version of yourself you want to remember.",
+  image: Thumbnail,
+};
+
+export const metadata = {
+  title: blog.title,
+  description: blog.description,
+  openGraph: {
+    images: [blog.image.src ?? "/og-default.jpg"],
+  },
+};
+export default (props) => <BlogLayout blog={blog} {...props} />;
+
+## Not just one photo. Eight ways to see yourself.
+
+A single AI-generated portrait is a one-liner. A coherent set of six photos is a story. SceneSelf was built around eight storyline types — each one tells a different kind of story about you. Here's the quick map.
+
+### 1. Journey — a day somewhere else
+
+"A day in Dubai." "Tokyo night walk." "Christmas market in Vienna." One trip, six different moments along the way — arrival, mid-day, golden-hour, the small details. The set reads like a phone dump from a trip you actually took.
+
+### 2. Ownership Flex — the weekend you keep posting about
+
+"My weekend with a Lamborghini." "Private yacht in Monaco." Aspirational, fun, and clearly playful. The set tells a small, contained story of one object/experience, shot from a few candid angles by an imaginary friend.
+
+### 3. Fantasy Role — the character you've always wanted to be
+
+"Travel back as an ancient general." "Become Batman for one night." "Step into a Studio Ghibli world." Six beats of you living the role — costume locked, scenes varied, identity intact.
+
+### 4. Milestone Event — the big moment you're working toward
+
+"Opening my first cafe." "Defending my thesis." "Running my first marathon." Use the set as a vision board. Make it real on the screen first, then in life.
+
+### 5. Profession — a day in the role
+
+"A chef earning praise from a Michelin master." "A surgeon after a long operation." "An architect presenting to the board." The set captures the rhythm of a workday — the focused moments, the quiet ones, the win at the end.
+
+### 6. Lifestyle — the version of you that lives well
+
+"Soft life morning." "Slow Sunday with books." "Trail running before sunrise." The story is about texture, not events. Six frames of one mood.
+
+### 7. Seasonal — the time of year that means something
+
+"Christmas market evening." "Autumn forest walk." "Sakura season in Kyoto." Time-of-year scenes deliver instantly recognizable color and warmth.
+
+### 8. Transformation — before and after, side by side
+
+"From hobbyist to chef." "Bookworm to public speaker." The set is split into two halves: who you were and who you're becoming. Six beats that arc from one to the other.
+
+## How to pick
+
+Browse the eight clusters on the landing page. Tap "Try this" on the prompt that catches your eye. Or skip the menu and write your own one-liner — SceneSelf classifies it into the right cluster automatically.
+
+The goal isn't to fake a life. It's to test-drive one. Most people walk away with a photo set that makes the next real version of themselves feel a little closer.

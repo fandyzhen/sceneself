@@ -1,0 +1,59 @@
+import { BlogLayout } from "@/components/blog-layout";
+import Thumbnail from "./thumbnail.jpeg";
+
+export const blog = {
+  author: { name: "SceneSelf Team", src: "/avatar.jpeg" },
+  date: "2026-06-03",
+  title: "Credits, Plans, and Getting the Most Out of SceneSelf",
+  description:
+    "How the credit system works, which plan fits which kind of user, and how we automatically refund credits for frames that don't make it.",
+  image: Thumbnail,
+};
+
+export const metadata = {
+  title: blog.title,
+  description: blog.description,
+  openGraph: {
+    images: [blog.image.src ?? "/og-default.jpg"],
+  },
+};
+export default (props) => <BlogLayout blog={blog} {...props} />;
+
+## How credits work
+
+One full SceneSelf set is six photos. Each photo costs 50 credits, so one full set = **300 credits**. When you sign up, we give you exactly that — enough to try the product end-to-end with no card.
+
+Credits don't expire. Spend them at your own pace.
+
+### How you get more
+
+- **Weekly plan** — 1,500 credits / week. Roughly 5 full sets. Best for: trying things out, occasional creative sprints.
+- **Monthly plan** — 8,000 credits / month. Roughly 27 full sets. Best for: regular creators, small social-media efforts, watermark-free output.
+- **Yearly plan** — 100,000 credits / year. Roughly 333 full sets. Best for: heavy users, studios, partner workflows.
+- **One-off pack** — 200 credits for $5. Best for: a small top-up when you're between plans.
+
+Yearly credits are released monthly so the supply paces your usage — no need to "use it or lose it" within January.
+
+### The refund promise
+
+If a generation finishes with fewer than six photos (say, two frames didn't pass quality control), we automatically refund **2× the cost of the missing frames** back to your credit balance. The math: 50 credits per photo × 2 = 100 credits refunded per missing frame.
+
+You see this as a banner on the result page: "Used X credits · Y shot(s) didn't make it. We refunded you 2× = Z credits as compensation."
+
+We do this because we'd rather under-deliver on a single set than over-promise on every one. The refund is automatic — you don't have to ask.
+
+### Which plan should you pick?
+
+- **You're trying it out.** Free preview is enough. Then upgrade to weekly if you like it.
+- **You're shooting one set a week for a side project.** Weekly plan.
+- **You're shooting daily for IG / TikTok / Xiaohongshu.** Monthly. The watermark-free output matters here.
+- **You're running a small studio or partner workflow.** Yearly. The per-set cost drops significantly, and you get early access to new storylines.
+
+### Tips to get the most from each generation
+
+1. **Be specific in your prompt.** "A day in Dubai" works. "A day in Dubai, evening at the souk, candid phone photos" works better.
+2. **Use a clean, front-facing selfie.** No filters, no extreme angles. Bright, neutral light is best.
+3. **Pick the right shot perspective for the story.** Selfie vibe vs. friend-candid vibe come out differently. Both work, just pick the one that fits.
+4. **Don't fight realism.** If you're "a surgeon in the OR", the mask stays on — that's what makes the scene feel real. The set with the mask on will read more genuine than the one where you secretly took it off.
+
+Questions about pricing or your account? [support@sceneself.com](mailto:support@sceneself.com).

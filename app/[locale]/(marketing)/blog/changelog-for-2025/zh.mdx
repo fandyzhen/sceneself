@@ -1,0 +1,53 @@
+import { BlogLayout } from "@/components/blog-layout";
+import Thumbnail from "./thumbnail.jpeg";
+
+export const blog = {
+  author: { name: "SceneSelf 团队", src: "/avatar.jpeg" },
+  date: "2026-06-06",
+  title: "SceneSelf 2026 年 6 月 — 上线手记",
+  description:
+    "首日上线了什么：八种故事线、6 张连贯成片、身份感知质检，以及 24 小时自动删除自拍。",
+  image: Thumbnail,
+};
+
+export const metadata = {
+  title: blog.title,
+  description: blog.description,
+  openGraph: {
+    images: [blog.image.src ?? "/og-default.jpg"],
+  },
+};
+export default (props) => <BlogLayout blog={blog} {...props} />;
+
+## 上线首日，我们带来的
+
+我们花了几个月做这个想让它存在的产品 —— AI 写真组照能像一次真实拍摄，而不是一连串换图。下面是首发清单。
+
+### 核心功能
+
+- **八种故事线。** 旅程体验、拥有炫耀、幻想角色、高光事件、职业身份、生活美学、节日季节、蜕变成长。选 cluster 或者写你自己的一句话。
+- **6 张连贯组照。** 每组 6 张同款服装、同款发型、同款配饰、同款光感。绝不"6 个陌生人"。
+- **身份感知质检。** 每一帧都经过质检：是不是同一个人？解剖结构对吗？没塑料皮吧？失败会自动救援，最多两次。
+- **领域真实感。** 外科医生进手术室必戴口罩。潜水员水下必戴面罩。带头盔、连帽、面具的角色保持装备 —— 因为那才是让场景可信的关键。
+
+### 隐私
+
+- **24 小时自动删除自拍。** 你的参考照在上传 24 小时后被移除。
+- **绝不用于训练 AI。** 你的自拍永远不会进入任何人的训练数据集。
+- **端到端加密。** 私有对象存储、仅 TLS 传输、零第三方共享。
+
+### 积分与套餐
+
+- **注册即送 300 积分。** 人人免费 — 足够一组完整预览。
+- **周/月/年付套餐。** 按你的真实使用频率选。
+- **一次性积分包。** 临时充值即可。
+- **未交付补偿 banner。** 如果某帧没过质检，自动按 2× 退还积分。"我们欠你一组完美成片"的承诺写进了积分账本。
+
+### 后续计划
+
+- 更多故事线类型（多角色高潮、时间弧）
+- 风格参考 — 上传 mood board 引导成片观感
+- 组照管理工具 — 拖拽、重排、导出社交媒体格式
+- 给创作者和小工作室的 Partner API
+
+写信给我们 [support@sceneself.com](mailto:support@sceneself.com) — 每一封都会被读到。

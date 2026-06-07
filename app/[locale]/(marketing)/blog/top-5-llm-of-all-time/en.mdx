@@ -1,0 +1,58 @@
+import { BlogLayout } from "@/components/blog-layout";
+import Thumbnail from "./thumbnail.jpeg";
+
+export const blog = {
+  author: { name: "SceneSelf Team", src: "/avatar.jpeg" },
+  date: "2026-06-04",
+  title: "Privacy First — How We Handle Your Selfie",
+  description:
+    "Your face is the most personal data you have. Here's exactly what happens to a selfie you upload to SceneSelf — and what does not.",
+  image: Thumbnail,
+};
+
+export const metadata = {
+  title: blog.title,
+  description: blog.description,
+  openGraph: {
+    images: [blog.image.src ?? "/og-default.jpg"],
+  },
+};
+export default (props) => <BlogLayout blog={blog} {...props} />;
+
+## What we promise, in plain language
+
+Your face is the most personal data point you have. The whole product depends on you trusting us with it for a few minutes. We take that seriously. Here is what actually happens, end to end.
+
+### What we do with your selfie
+
+1. **Upload over HTTPS** to private object storage. No public URL. No third-party CDN sees your file.
+2. **Read once** during generation to give the AI a reference for what you look like.
+3. **Pass through identity verification** on every generated frame — making sure the person in each photo is still you.
+4. **Delete after 24 hours**, automatically, by a scheduled job. The original is gone.
+
+### What we never do
+
+- **We never train AI on your selfie.** It is not in our training data. It is not shared with any model vendor for training. The reference is used only for your generation, only at request time.
+- **We never sell your data.** No advertiser, no broker, no analytics company gets the file.
+- **We never use it for face recognition outside your account.** No "find this face on the internet" features. Not now, not later.
+- **We never keep deleted data in backups.** The 24-hour deletion includes our object-storage tier. Backups roll over within the same window.
+
+### What you control
+
+- **Request immediate deletion** by emailing [privacy@sceneself.com](mailto:privacy@sceneself.com) — we'll confirm within 24–48 hours.
+- **Export your account** including past generated photo sets, on request.
+- **Close your account** with full data wipe, on request.
+
+### Why the 24-hour window
+
+We can't generate without a reference photo, so we hold it just long enough to finish your set and run quality checks. 24 hours is the maximum buffer we need; most generations finish within minutes and the selfie sits idle for the rest. The job that deletes runs hourly.
+
+If you'd rather have your selfie gone the moment generation finishes, email us — we can do it manually. The default is 24 hours because it's the only way to handle edge cases (failed generations, queue retries) without making you re-upload.
+
+### Beyond the selfie
+
+The generated photos belong to you. We do not claim copyright. Download them, post them, sell prints if you want — it's your face, it's your set.
+
+The metadata around your account (email, plan, credit balance, generation timestamps) follows our [Privacy Policy](/privacy). We use it only to run the service, never to profile you.
+
+Questions? [privacy@sceneself.com](mailto:privacy@sceneself.com). We read every email.

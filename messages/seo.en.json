@@ -1,0 +1,52 @@
+{
+  "home": {
+    "title": "SceneSelf — AI Scene Album Generator for Creators",
+    "description": "SceneSelf turns a single selfie into a cinematic, magazine-grade scene album in minutes — no studio, no shoot, no waiting.",
+    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+  },
+  "pricing": {
+    "title": "Pricing - SceneSelf",
+    "description": "Weekly, monthly, or yearly — pick a SceneSelf subscription that matches how often you want a new scene set. Watermark removed on every generated frame.",
+    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+  },
+  "blog": {
+    "title": "Blog - SceneSelf",
+    "description": "Latest insights and updates from our team. Learn about AI SaaS development, vibe coding, and best practices for building production-ready applications.",
+    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+  },
+  "contact": {
+    "title": "Contact Us - SceneSelf",
+    "description": "Get in touch with the SceneSelf team. We'd love to hear from you and respond as quickly as possible.",
+    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+  },
+  "login": {
+    "title": "Login - SceneSelf",
+    "description": "Sign in to your SceneSelf account to access powerful AI tools and services for your business.",
+    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+  },
+  "signup": {
+    "title": "Sign Up - SceneSelf",
+    "description": "Create your SceneSelf account and start building your AI SaaS product today with our powerful tools.",
+    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+  },
+  "terms": {
+    "title": "Terms of Service - SceneSelf",
+    "description": "Read our terms of service to understand the rules and guidelines for using SceneSelf platform.",
+    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+  },
+  "privacy": {
+    "title": "Privacy Policy - SceneSelf",
+    "description": "Learn how SceneSelf collects, uses, and protects your personal information and data.",
+    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+  },
+  "cookies": {
+    "title": "Cookie Policy - SceneSelf",
+    "description": "Understand how SceneSelf uses cookies and similar tracking technologies on our platform.",
+    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+  },
+  "refund": {
+    "title": "Refund Policy - SceneSelf",
+    "description": "Review our refund policy to understand the conditions and process for requesting refunds.",
+    "ogImage": "https://ai-saas-template-aceternity.vercel.app/banner.png"
+  }
+}

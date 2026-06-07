@@ -1,0 +1,1301 @@
+{
+  "scene": {
+    "brand": "SceneSelf",
+    "tagline": "One selfie. A full scene set.",
+    "landing": {
+      "nav": {
+        "examples": "Examples",
+        "how": "How it works",
+        "cta": "Create free preview"
+      },
+      "hero": {
+        "h1a": "One selfie.",
+        "h1b": "A full scene set.",
+        "sub": "Type a dream scene — \"a day in Dubai,\" \"Tokyo night walk,\" \"opening my first cafe.\" Get a cohesive photo set of you in it, ready for Instagram and TikTok.",
+        "cta": "Create my free preview",
+        "diff": "Step into any life you can imagine — and bring back a set of photos to prove you lived it.",
+        "trust": "Free 4-photo preview. No sign-up to start."
+      },
+      "beforeAfter": {
+        "kicker": "One shoot, not a swap",
+        "before": "Your selfie",
+        "after": "Your scene set"
+      },
+      "clusters": {
+        "title": "Imagine yourself anywhere",
+        "sub": "A few of the scenes people love. Type your own — anything goes.",
+        "travel": "Travel",
+        "travelEx": "A day in Dubai",
+        "milestones": "Milestones",
+        "milestonesEx": "Opening my first cafe",
+        "lifestyle": "Lifestyle",
+        "lifestyleEx": "Soft life morning",
+        "fantasy": "Fantasy",
+        "fantasyEx": "Retro 90s street shoot",
+        "seasonal": "Seasonal",
+        "seasonalEx": "Christmas market evening"
+      },
+      "how": {
+        "kicker": "How it works",
+        "title": "Three taps to your set",
+        "s1": "Add one selfie",
+        "s1d": "A clear front-facing photo. We delete it 24h after.",
+        "s2": "Describe a scene",
+        "s2d": "One line — we plan a whole cohesive shoot.",
+        "s3": "Get a full set",
+        "s3d": "A set of different moments of one story, ready to post."
+      },
+      "finalCta": {
+        "title": "See yourself in your dream scene",
+        "titleA": "Your turn.",
+        "titleB": "One story away.",
+        "sub": "Free preview. No card. A whole set that feels like one shoot.",
+        "button": "Create my free preview",
+        "trust": "Selfies auto-delete in 24h · No training · Cancel anytime"
+      },
+      "cinema": {
+        "kicker": "Real sets, real users",
+        "h1a": "One selfie.",
+        "h1b": "A whole story.",
+        "sub": "Type a dream scene — we generate a whole set of different moments of you living it. A cohesive set, not a single swap.",
+        "cta": "Try it free",
+        "trust": "Free preview. No card.",
+        "hint": "Hover any photo to highlight its full set",
+        "scrollHint": "Scroll"
+      },
+      "scenes": {
+        "kicker": "8 kinds of worlds",
+        "title": "Not just one photo.",
+        "titleAccent": "Eight ways to see yourself.",
+        "sub": "Pick a direction below — or write your own one-liner. Every set is one cohesive story.",
+        "tryThis": "Try this",
+        "sixShots": "1 set",
+        "tryYourOwn": "Or write your own scene",
+        "types": {
+          "journey": {
+            "label": "Journey",
+            "prompt": "A day in Dubai"
+          },
+          "fantasy_role": {
+            "label": "Fantasy",
+            "prompt": "Travel back as an ancient general"
+          },
+          "profession": {
+            "label": "Profession",
+            "prompt": "Becoming a chef, praised by a master"
+          },
+          "ownership_flex": {
+            "label": "Ownership",
+            "prompt": "My weekend with a Lamborghini"
+          },
+          "milestone_event": {
+            "label": "Milestone",
+            "prompt": "Opening my first cafe"
+          },
+          "seasonal": {
+            "label": "Seasonal",
+            "prompt": "Christmas market evening"
+          },
+          "transformation": {
+            "label": "Transformation",
+            "prompt": "From hobbyist to chef"
+          },
+          "lifestyle": {
+            "label": "Lifestyle",
+            "prompt": "Morning run, soft routine"
+          }
+        }
+      },
+      "trust": {
+        "delete": {
+          "title": "Selfies auto-delete in 24h",
+          "sub": "We use your photo only to keep the set looking like you — then it's gone."
+        },
+        "noTrain": {
+          "title": "Never used to train AI",
+          "sub": "Your face never enters anyone's training data. Period."
+        },
+        "encrypted": {
+          "title": "Encrypted end-to-end",
+          "sub": "Stored on private object storage, transmitted over TLS. Nothing shared with third parties."
+        }
+      },
+      "pricing": {
+        "kicker": "Pricing",
+        "title": "Start free. Scale when you love it.",
+        "popular": "Most popular",
+        "perWeek": "/ week",
+        "perMonth": "/ month",
+        "perYear": "/ year",
+        "choose": "Get started",
+        "detailsLink": "Need more details?",
+        "detailsCta": "See full pricing",
+        "tiers": {
+          "weekly": {
+            "label": "Weekly",
+            "credits": "1,500 credits / week",
+            "f1": "≈ 5 full sets",
+            "f2": "Cancel anytime",
+            "f3": "All 8 storyline types"
+          },
+          "monthly": {
+            "label": "Monthly",
+            "credits": "8,000 credits / month",
+            "f1": "≈ 27 full sets",
+            "f2": "Watermark-free",
+            "f3": "Priority generation queue"
+          },
+          "yearly": {
+            "label": "Yearly",
+            "credits": "100,000 credits / year",
+            "f1": "≈ 333 full sets",
+            "f2": "2 months free vs monthly",
+            "f3": "Early access to new storylines"
+          }
+        }
+      }
+    },
+    "steps": {
+      "upload": "Selfie",
+      "describe": "Scene",
+      "tone": "Tone",
+      "focus": "Focus",
+      "clarify": "Details",
+      "review": "Preview"
+    },
+    "back": "Back",
+    "upload": {
+      "title": "Start with one selfie",
+      "subtitle": "A clear, front-facing photo works best. We use it only to keep the set looking like you — then delete it.",
+      "cta": "Add your selfie",
+      "hint": "JPG or PNG · at least 300×300",
+      "replace": "Replace",
+      "remove": "Remove",
+      "analyzing": "Checking your photo…",
+      "ready": "Looks great",
+      "continue": "Continue",
+      "faceNoFace": "We couldn't find a clear face — try another selfie.",
+      "faceMultiple": "Looks like more than one person — a solo selfie works best.",
+      "confirmOwn": "I confirm this is my own photo and I have the right to use it."
+    },
+    "describe": {
+      "title": "Describe your dream scene",
+      "subtitle": "One line is all it takes — we handle the rest.",
+      "placeholder": "a day in Dubai…",
+      "examplesLabel": "Need a spark?",
+      "chips": {
+        "tokyo": "Tokyo night walk",
+        "fantasyHero": "Become Superman for a day",
+        "vogue": "Vogue editor's busy Tuesday",
+        "lambo": "My weekend with a Lamborghini",
+        "cafe": "Opening my first cafe",
+        "slowSunday": "Slow Sunday, coffee and books",
+        "xmas": "Christmas market evening",
+        "glowUp": "My glow-up year in Bali"
+      },
+      "submit": "Imagine it",
+      "thinking": "Reading your scene…"
+    },
+    "clarify": {
+      "tone": {
+        "title": "What feeling do you want?",
+        "subtitle": "Pick a tone — one is marked as a suggestion.",
+        "aiHint": "⭐ Suggested for you",
+        "aiBadge": "Pick",
+        "next": "Next"
+      },
+      "focus": {
+        "title": "What should the set lean into?",
+        "subtitle": "Tailored to your scene — pick one focus."
+      },
+      "other": "Other",
+      "otherPlaceholder": "Write your own…",
+      "rewriteNotice": "Created as an imagined editorial scene.",
+      "translatedNotice": "We translated your description to English for best results.",
+      "rejectedTitle": "Let's tweak this a little ✨",
+      "rejectedBody": "We can't create this one as-is. Try one of these similar ideas 👇",
+      "start": "Generate my story"
+    },
+    "tones": {
+      "narrative_doc": {
+        "label": "Documentary",
+        "hint": "Real, candid, vlog-like"
+      },
+      "surprise_highlight": {
+        "label": "Surprise Highlight",
+        "hint": "Unexpected, delightful, memorable"
+      },
+      "healing_chill": {
+        "label": "Calm & Cozy",
+        "hint": "Slow, warm, soothing"
+      },
+      "cinematic_drama": {
+        "label": "Cinematic",
+        "hint": "Filmic, dramatic, tense"
+      },
+      "versailles_flex": {
+        "label": "Quiet Flex",
+        "hint": "Understated, upscale, enviable"
+      },
+      "funny_meme": {
+        "label": "Playful Meme",
+        "hint": "Light, funny, playful"
+      },
+      "romantic": {
+        "label": "Romantic",
+        "hint": "Soft, dreamy, romantic"
+      },
+      "epic_blood": {
+        "label": "Epic Energy",
+        "hint": "Bold, heroic, electric"
+      }
+    },
+    "focus": {
+      "ownership_flex": {
+        "luxury": "Pure luxury",
+        "lifestyle": "Upper-class lifestyle",
+        "social": "Social scene",
+        "detail": "Tactile detail"
+      },
+      "fantasy_role": {
+        "world": "World immersion",
+        "charisma": "Character charisma",
+        "epic": "Epic spectacle",
+        "aesthetic": "Aesthetic mood"
+      },
+      "milestone_event": {
+        "peak": "Peak moment",
+        "prep": "Backstage prep",
+        "celebrate": "Celebration",
+        "emotion": "Emotion"
+      },
+      "profession": {
+        "authority": "Authority",
+        "warm": "Warmth",
+        "backstage": "Backstage truth",
+        "peak": "Peak moment"
+      },
+      "transformation": {
+        "before_after": "Before / after",
+        "process": "The process",
+        "result": "The result"
+      },
+      "seasonal": {
+        "festive": "Festive mood",
+        "cozy": "Cozy warmth",
+        "scenery": "Seasonal scenery",
+        "party": "Gathering"
+      },
+      "lifestyle": {
+        "calm": "Everyday calm",
+        "active": "Active energy",
+        "home": "Cozy home",
+        "taste": "Refined taste"
+      },
+      "journey": {
+        "scenery": "Scenery & culture",
+        "food": "Food",
+        "shopping": "Shopping",
+        "leisure": "Leisure"
+      }
+    },
+    "review": {
+      "title": "Your shoot, mapped out",
+      "subtitle": "A cohesive set of {count} shots — like one real photo dump.",
+      "start": "Create my free preview",
+      "free": "Free {count}-photo preview",
+      "shot": "Shot {index}"
+    },
+    "generating": {
+      "title": "Developing your set",
+      "subtitle": "Each shot fades in as it's ready.",
+      "patience": "We trade speed for quality — every frame is rendered until it looks right, not until the clock runs out. Switch to another tab, grab a coffee, take a walk. The work keeps running in the background; come back anytime to find your set waiting.",
+      "developing": "Developing…",
+      "pending": "Lining up the shot",
+      "cover": "Cover",
+      "moods": {
+        "0": "Setting the scene…",
+        "1": "Finding the light…",
+        "2": "Catching candid moments…",
+        "3": "Chasing golden hour…"
+      },
+      "stages": {
+        "0": "Reading your light…",
+        "1": "Composing 6 scenes…",
+        "2": "Building the details…",
+        "3": "Catching candid moments…",
+        "4": "Polishing texture & skin…"
+      },
+      "steps": {
+        "analyzing": "Analyzing your selfie",
+        "building": "Building your storyline",
+        "setting": "Setting the scenes",
+        "generating": "Generating your photos",
+        "polishing": "Polishing the final set"
+      },
+      "progress": "Developed {ready}/{total}",
+      "errorTitle": "Hmm, we couldn't get this going",
+      "backToEdit": "Back to edit"
+    },
+    "result": {
+      "title": "Your scene set is ready",
+      "subtitle": "A cohesive set that feels like one shoot.",
+      "subtitlePartial": "We only kept the shots that truly look like you.",
+      "compensation": "Used <b>{used}</b> credits · <b>{dropped}</b> shot(s) didn't make it. We refunded you <b>{refunded}</b> credits as compensation. The <Double>Double</Double> boost is on us.",
+      "download": "Download",
+      "downloadAll": "Download all",
+      "sharing": "Preparing…",
+      "unlockFull": "Unlock the full 9-photo set",
+      "again": "Try another scene",
+      "cover": "Cover",
+      "close": "Close",
+      "prev": "Previous",
+      "next": "Next"
+    },
+    "errors": {
+      "upload": "We couldn't upload that photo. Try another.",
+      "tooLarge": "That image is over 12MB. Try a smaller one.",
+      "invalidType": "Please upload a photo (JPG / PNG / HEIC).",
+      "generic": "Something went wrong. Please try again.",
+      "noCredits": "You're out of credits for the full set.",
+      "insufficientCredits": "Not enough credits — buy a pack or subscribe to continue."
+    }
+  },
+  "common": {
+    "brand": {
+      "name": "SceneSelf",
+      "tagline": "SceneSelf",
+      "copyright": "Copyright © 2026 SceneSelf. All rights reserved.",
+      "allRightsReserved": "All rights reserved"
+    },
+    "actions": {
+      "signIn": "Sign in",
+      "signUp": "Sign Up",
+      "signOut": "Sign Out",
+      "getStarted": "Get Started",
+      "startFree": "Start Free",
+      "startTrial": "Start Trial",
+      "contactSales": "Contact Sales",
+      "learnMore": "Learn More",
+      "viewAll": "View All",
+      "submit": "Submit",
+      "cancel": "Cancel",
+      "save": "Save",
+      "delete": "Delete",
+      "edit": "Edit",
+      "update": "Update",
+      "continue": "Continue",
+      "back": "Back",
+      "next": "Next"
+    },
+    "status": {
+      "loading": "Loading...",
+      "verified": "Verified",
+      "pending": "Pending",
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
+  "navigation": {
+    "main": {
+      "pricing": "Pricing",
+      "blog": "Blog",
+      "contact": "Contact",
+      "docs": "Docs",
+      "dashboard": "Dashboard",
+      "credits": "Credits",
+      "profile": "Profile",
+      "settings": "Settings"
+    },
+    "footer": {
+      "product": {
+        "title": "Product"
+      },
+      "legal": {
+        "title": "Legal",
+        "terms": "Terms of Service",
+        "privacy": "Privacy Policy",
+        "cookies": "Cookie Policy",
+        "refund": "Refund Policy"
+      },
+      "newsletter": {
+        "title": "Stay in the loop"
+      },
+      "social": {
+        "twitter": "Twitter",
+        "linkedin": "LinkedIn",
+        "github": "GitHub"
+      }
+    }
+  },
+  "hero": {
+    "badge": "⚡ The First Starter Built for Vibe Coding",
+    "title": "Vibe Code Your AI SaaS to Production",
+    "description": "Turn your everyday photos into cinematic story sets. SceneSelf generates unified, magazine-grade scene albums from a single selfie — no studio, no shoot, no waiting.",
+    "cta": {
+      "primary": "View Docs",
+      "secondary": "Get Code"
+    },
+    "modal": {
+      "eyebrow": "Code Access",
+      "title": "Get the source code from our course community",
+      "description": "The full SceneSelf launch kit, generation presets, and companion materials are distributed inside our creator community.",
+      "instruction": "If you're enrolled, open the course page below in a new tab to access the code, updates, and course resources.",
+      "linkLabel": "Open the course community",
+      "linkHint": "Course community: https://scys.com/deepsea/2001/course",
+      "close": "Close"
+    }
+  },
+  "features": {
+    "title": "Everything You Need for Vibe Coding Success",
+    "subtitle": "Stop scheduling photo shoots. Pick a scene, upload a selfie — SceneSelf delivers a coherent album in minutes.",
+    "items": {
+      "aiOptimized": {
+        "title": "Built for AI-Assisted Development",
+        "description": "Perfectly structured for Cursor, Windsurf, and Claude Code. Every file, every component optimized for AI understanding and modification."
+      },
+      "zeroPipeline": {
+        "title": "Zero to Production Pipeline",
+        "description": "Authentication, payments, database, deployment - all configured. Just prompt your AI assistant and watch your SaaS come to life."
+      },
+      "nonTechnical": {
+        "title": "Non-Technical Founder Friendly",
+        "description": "Don't know React from Rails? Doesn't matter. If you can describe your idea clearly, you can ship a SaaS product."
+      },
+      "productionGrade": {
+        "title": "Production-Grade from Day One",
+        "description": "Real users, real payments, real scale. Built on Next.js, PostgreSQL, and Creem - the same stack powering billion-dollar companies."
+      }
+    }
+  },
+  "pricing": {
+    "title": "Pricing",
+    "subtitle": "Pick a cadence that matches how often you want a new scene set.",
+    "description": "Every plan unlocks the same complete scene set with watermark removed. Choose weekly for one-off sets, monthly for steady storytelling, or yearly for serial creators.",
+    "popular": "Most popular",
+    "comparison": {
+      "title": "Plan Comparison",
+      "rows": {
+        "purchaseType": "Billing",
+        "price": "Price",
+        "credits": "Credits per cycle",
+        "delivery": "Credit delivery",
+        "watermark": "Watermark",
+        "bestFor": "Best for"
+      },
+      "values": {
+        "weekly": "Weekly",
+        "monthly": "Monthly",
+        "yearly": "Yearly",
+        "instantAfterPayment": "Added instantly after each billing cycle",
+        "watermarkRemoved": "Removed while subscription is active",
+        "bestForWeekly": "Trying SceneSelf for a one-off shoot",
+        "bestForMonthly": "Building a steady visual story month after month",
+        "bestForYearly": "Serial creators publishing weekly across the year"
+      }
+    },
+    "details": {
+      "creditsPerCycle": "{credits} credits per cycle",
+      "weeklyDelivery": "Renews weekly, credits added instantly",
+      "monthlyDelivery": "Renews monthly, credits added instantly",
+      "yearlyDelivery": "Renews yearly, credits added instantly",
+      "watermarkRemoved": "Watermark removed on all generated scenes"
+    },
+    "tiers": {
+      "weekly": {
+        "name": "Weekly",
+        "price": "$2.99",
+        "cadence": "per week",
+        "description": "A short-run option for trying a scene set or a single concept.",
+        "cta": "Choose Weekly",
+        "features": [
+          "1,500 credits per week",
+          "Enough credits for a full scene set",
+          "Watermark removed on every generated scene",
+          "Cancel anytime"
+        ]
+      },
+      "monthly": {
+        "name": "Monthly",
+        "price": "$9.90",
+        "cadence": "per month",
+        "description": "The best fit for building a steady visual story month after month.",
+        "cta": "Choose Monthly",
+        "features": [
+          "8,000 credits per month",
+          "Room for several scene sets every month",
+          "Watermark removed on every generated scene",
+          "Cancel anytime"
+        ]
+      },
+      "yearly": {
+        "name": "Yearly",
+        "price": "$99",
+        "cadence": "per year",
+        "description": "Serial creators publishing across the year — best per-credit value.",
+        "cta": "Choose Yearly",
+        "features": [
+          "100,000 credits per year",
+          "Most credits per dollar for high-volume creators",
+          "Watermark removed on every generated scene",
+          "Cancel anytime"
+        ]
+      }
+    }
+  },
+  "testimonials": {
+    "title": "Success Stories from Vibe Coders",
+    "subtitle": "Creators, brands and everyday photographers sharing how they ship cinematic scene albums with SceneSelf.",
+    "items": [
+      {
+        "name": "Alex Chen",
+        "quote": "I shot an entire seasonal lookbook with SceneSelf in one afternoon. No studio, no model fee, no reshoots.",
+        "designation": "Marketing Manager turned Founder"
+      },
+      {
+        "name": "Jordan Lee",
+        "quote": "Spent years learning to code. Now my non-technical co-founder ships features faster than me using Vibe Coding. This is the future.",
+        "designation": "Technical Co-founder"
+      },
+      {
+        "name": "Alice Johnson",
+        "quote": "Our brand campaign would have cost five figures. SceneSelf delivered the same cinematic feel for the price of a coffee.",
+        "designation": "Serial Entrepreneur"
+      },
+      {
+        "name": "Bob Smith",
+        "quote": "I generated 30 scene variants this month alone. SceneSelf is my secret weapon for daily content.",
+        "designation": "Indie Hacker"
+      },
+      {
+        "name": "Cathy Lee",
+        "quote": "I pick a scene, upload a selfie, and the album is done. Shipping content has never been this fast.",
+        "designation": "Product Manager"
+      },
+      {
+        "name": "David Wright",
+        "quote": "The authentication, payments, and deployment just work. I focus on unique features. My SaaS was profitable week one.",
+        "designation": "Solo Founder"
+      },
+      {
+        "name": "Eva Green",
+        "quote": "The efficiency it brings is unmatched. It's a vital tool that has helped us cut costs and improve our end product significantly.",
+        "designation": "Operations Director"
+      },
+      {
+        "name": "Frank Moore",
+        "quote": "A robust solution that fits perfectly into our workflow. It has enhanced our team's capabilities and allowed us to tackle more complex projects.",
+        "designation": "Project Manager"
+      },
+      {
+        "name": "Grace Hall",
+        "quote": "It's incredibly intuitive and easy to use. Even those without technical expertise can leverage its power to improve their workflows.",
+        "designation": "Marketing Specialist"
+      },
+      {
+        "name": "Henry Ford",
+        "quote": "It has saved us countless hours. Highly recommended for anyone looking to enhance their efficiency and productivity.",
+        "designation": "Operations Analyst"
+      },
+      {
+        "name": "Ivy Wilson",
+        "quote": "A must-have tool for any professional. It's revolutionized the way we approach problem-solving and decision-making.",
+        "designation": "Business Consultant"
+      },
+      {
+        "name": "Jack Brown",
+        "quote": "The results are always impressive. This AI has helped us to not only meet but exceed our performance targets.",
+        "designation": "Performance Manager"
+      },
+      {
+        "name": "Kathy Adams",
+        "quote": "It helps us achieve what was once thought impossible. The AI's capabilities are groundbreaking and have opened new avenues for us.",
+        "designation": "Innovation Lead"
+      },
+      {
+        "name": "Leo Carter",
+        "quote": "Transformative technology with real impact. It has streamlined our operations and brought unprecedented efficiency to our processes.",
+        "designation": "Technology Strategist"
+      },
+      {
+        "name": "Mia Turner",
+        "quote": "It's simply revolutionary! The way it integrates with our existing systems and enhances them is nothing short of miraculous.",
+        "designation": "Systems Integrator"
+      }
+    ]
+  },
+  "companies": {
+    "title": "Built with Industry-Leading Technologies",
+    "subtitle": "Built on modern stack trusted by the world's best teams"
+  },
+  "gridFeatures": {
+    "aiReady": {
+      "title": "AI-Ready Architecture",
+      "description": "Pre-configured AI workflows for chat, image, and video generation, powered by Volcano Engine by default."
+    },
+    "creem": {
+      "title": "Creem Payments",
+      "description": "Complete billing system with subscriptions, usage tracking, and customer portal built-in."
+    },
+    "auth": {
+      "title": "Authentication System",
+      "description": "Better Auth with email/password and OAuth. Session management and protected routes ready."
+    },
+    "deploy": {
+      "title": "One-Click Deploy",
+      "description": "Deploy to Vercel, Railway, or any platform instantly. Production-ready from day one."
+    },
+    "typescript": {
+      "title": "TypeScript + Tailwind",
+      "description": "Modern tech stack with Next.js 14, TypeScript, Tailwind CSS, and shadcn/ui components."
+    },
+    "database": {
+      "title": "Database + ORM",
+      "description": "PostgreSQL with Drizzle ORM. Type-safe queries and migrations configured."
+    },
+    "seo": {
+      "title": "SEO & Marketing",
+      "description": "Meta tags, Open Graph, sitemap, and analytics. Everything for organic growth."
+    },
+    "vibeCoding": {
+      "title": "Vibe Coding Ready",
+      "description": "Optimized for Cursor, Windsurf, and Claude Code. AI understands every component."
+    }
+  },
+  "cta": {
+    "title": "Ready to Ship Your AI SaaS?",
+    "description": "Join thousands of creators who ship cinematic scene albums with SceneSelf.",
+    "button": "Get Code"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign in to your account",
+      "emailLabel": "Email address",
+      "emailPlaceholder": "hello@johndoe.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "••••••••",
+      "forgotPassword": "Forgot password?",
+      "noAccount": "Don't have an account?",
+      "signUpLink": "Sign Up",
+      "signInButton": "Sign in",
+      "signingIn": "Signing in...",
+      "errors": {
+        "invalidEmail": "Please enter valid email",
+        "emailRequired": "Please enter email",
+        "passwordRequired": "Please enter password",
+        "loginFailed": "Login failed. Please try again.",
+        "googleLoginFailed": "Google login failed. Please try again."
+      }
+    },
+    "signup": {
+      "title": "Sign up for an account",
+      "nameLabel": "Full name",
+      "namePlaceholder": "Alex Johnson",
+      "emailLabel": "Email address",
+      "emailPlaceholder": "hello@johndoe.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "••••••••",
+      "hasAccount": "Already have an account?",
+      "signInLink": "Sign in",
+      "signUpButton": "Sign Up",
+      "signingUp": "Signing up...",
+      "marketingOptInLabel": "Email me product updates and tips (optional, you can unsubscribe anytime)",
+      "errors": {
+        "nameRequired": "Please enter your name",
+        "invalidEmail": "Please enter valid email",
+        "emailRequired": "Please enter email",
+        "passwordRequired": "Please enter password",
+        "signupFailed": "Sign up failed. Please try again.",
+        "googleSignupFailed": "Google sign up failed. Please try again."
+      }
+    },
+    "social": {
+      "googleSignIn": "Continue with Google",
+      "or": "Or continue with"
+    },
+    "checkEmail": {
+      "title": "Check Your Email",
+      "description": "We've sent a verification link to your email address. Please click the link to verify your account and get started.",
+      "notReceived": "Didn't receive the email?",
+      "checkSpam": "Check your spam or junk folder",
+      "checkEmailCorrect": "Make sure you entered the correct email",
+      "waitAndCheck": "Wait a few minutes and check again",
+      "resendButton": "Resend Verification Email",
+      "resending": "Sending...",
+      "resendSuccess": "Verification email sent successfully! Please check your inbox.",
+      "resendError": "Failed to resend verification email.",
+      "backToLogin": "Back to Login",
+      "securityNote": "For your security, the verification link will expire in 24 hours."
+    },
+    "verifyEmail": {
+      "verifying": "Verifying Email",
+      "verifyingDescription": "Please wait while we verify your email address...",
+      "success": "Email Verified!",
+      "successDescription": "Your email has been successfully verified! Redirecting to login...",
+      "alreadyVerified": "Already Verified",
+      "failed": "Verification Failed",
+      "goToLogin": "Go to Login",
+      "backToSignUp": "Back to Sign Up",
+      "requestNew": "Request New Verification Email",
+      "checkSpamNote": "Check your spam folder if you don't see our emails"
+    },
+    "emailVerifiedGuard": {
+      "title": "Email Verification Required",
+      "description": "Please verify your email address to access this page. Check your inbox for the verification link we sent to:",
+      "resendButton": "Resend Verification Email",
+      "resending": "Sending...",
+      "resendSuccess": "Verification email sent! Please check your inbox.",
+      "resendError": "Failed to send verification email. Please try again.",
+      "signOutLink": "Sign out and try a different account"
+    }
+  },
+  "Admin": {
+    "sidebar": {
+      "title": "Admin Panel",
+      "subtitle": "System Management",
+      "dashboard": "Dashboard",
+      "users": "User Management",
+      "subscriptions": "Subscriptions",
+      "credits": "Credits Management",
+      "redemption": "Redemption Codes",
+      "apiKeys": "Partner API Keys",
+      "backToDashboard": "Back to User Dashboard"
+    },
+    "header": {
+      "welcome": "Welcome",
+      "adminBadge": "Admin"
+    },
+    "dashboard": {
+      "title": "Admin Dashboard",
+      "totalUsers": "Total Users",
+      "activeUsers": "Active Users",
+      "totalRevenue": "Total Revenue",
+      "totalPayments": "Total Payments",
+      "creditsUsed": "Credits Used",
+      "recentUsers": "Recent Users",
+      "recentPayments": "Recent Payments",
+      "credits": "Credits",
+      "viewAllUsers": "View All Users",
+      "viewAllPayments": "View All Payments",
+      "unknownUser": "Unknown User",
+      "totalSceneJobs": "Total Scene Jobs"
+    },
+    "users": {
+      "title": "User Management",
+      "searchPlaceholder": "Search by name or email...",
+      "searchAction": "Search",
+      "clearSearch": "Clear",
+      "totalUsers": "{count} users",
+      "matchingUsers": "{count} matching users for \"{query}\"",
+      "pageSummary": "Showing {from}-{to} of {total}",
+      "emptyState": "No users found yet",
+      "emptySearchState": "No users match this search",
+      "user": "User",
+      "role": "Role",
+      "credits": "Credits",
+      "status": "Status",
+      "joined": "Joined",
+      "actions": "Actions",
+      "admin": "Admin",
+      "banned": "Banned",
+      "active": "Active",
+      "unverified": "Unverified",
+      "edit": "Edit",
+      "ban": "Ban",
+      "unban": "Unban",
+      "viewDetails": "View Details",
+      "enterCredits": "Enter new credit amount",
+      "banReason": "Ban Reason",
+      "banExpires": "Ban Expires",
+      "userDetails": "User Details",
+      "name": "Name",
+      "email": "Email",
+      "lastActive": "Last Active",
+      "close": "Close",
+      "roleUpdated": "Role updated successfully",
+      "roleUpdateFailed": "Failed to update role",
+      "userBanned": "User has been banned",
+      "userUnbanned": "User has been unbanned",
+      "banFailed": "Failed to ban/unban user",
+      "creditsUpdated": "Credits updated successfully",
+      "creditsUpdateFailed": "Failed to update credits",
+      "subscription": "Subscription",
+      "manage": "Manage",
+      "adjust": "Adjust",
+      "adjustCredits": "Adjust Credits",
+      "currentCredits": "Current Credits",
+      "adjustment": "Adjustment",
+      "newBalance": "New Balance",
+      "reason": "Reason",
+      "manualAdjustment": "Manual Adjustment",
+      "refund": "Refund",
+      "bonus": "Bonus",
+      "compensation": "Compensation",
+      "cancel": "Cancel",
+      "addCredits": "Add Credits",
+      "deductCredits": "Deduct Credits",
+      "manageSubscription": "Manage Subscription",
+      "currentPlan": "Current Plan",
+      "selectPlan": "Select Plan",
+      "updateSubscription": "Update Subscription",
+      "subscriptionUpdated": "Subscription updated successfully",
+      "subscriptionUpdateFailed": "Failed to update subscription",
+      "pagination": {
+        "previous": "Previous",
+        "next": "Next",
+        "page": "Page {{current}} of {{total}}"
+      }
+    },
+    "subscriptions": {
+      "title": "Subscription Management",
+      "totalSubscriptions": "Total Subscriptions",
+      "activeSubscriptions": "Active Subscriptions",
+      "canceledSubscriptions": "Canceled",
+      "expiredSubscriptions": "Expired",
+      "searchPlaceholder": "Search user, plan...",
+      "allStatus": "All Status",
+      "active": "Active",
+      "canceled": "Canceled",
+      "expired": "Expired",
+      "trial": "Trial",
+      "user": "User",
+      "plan": "Plan",
+      "status": "Status",
+      "expiryDate": "Expiry Date",
+      "createdAt": "Created At",
+      "daysRemaining": "{{days}} days remaining",
+      "unknownUser": "Unknown User",
+      "noSubscriptions": "No subscriptions found",
+      "pagination": {
+        "previous": "Previous",
+        "next": "Next",
+        "page": "Page {{current}} of {{total}}"
+      }
+    },
+    "credits": {
+      "title": "Credits Management",
+      "totalIssued": "Total Issued",
+      "totalUsed": "Total Used",
+      "totalTransactions": "Total Transactions",
+      "avgUsage": "Avg Usage",
+      "searchPlaceholder": "Search user, reason...",
+      "allTypes": "All Types",
+      "earned": "Earned",
+      "spent": "Spent",
+      "user": "User",
+      "change": "Change",
+      "reason": "Reason",
+      "balance": "Balance",
+      "date": "Time",
+      "subscriptionCycle": "Subscription Cycle",
+      "subscriptionSchedule": "Subscription Installment",
+      "oneTimePack": "Credit Pack",
+      "chatUsage": "Chat Usage",
+      "adjustment": "Manual Adjustment",
+      "unknownUser": "Unknown User",
+      "noTransactions": "No transactions found",
+      "topUsers": "Top Users",
+      "pagination": {
+        "previous": "Previous",
+        "next": "Next",
+        "page": "Page {{current}} of {{total}}"
+      }
+    },
+    "redemption": {
+      "title": "Redemption Codes",
+      "newBatch": "New Batch",
+      "loading": "Loading...",
+      "empty": "No batches yet.",
+      "createdByAdmin": "Admin",
+      "backToList": "Back",
+      "table": {
+        "batchId": "Batch ID",
+        "createdBy": "Created By",
+        "channel": "Channel",
+        "credits": "Credits",
+        "total": "Total",
+        "used": "Used",
+        "remaining": "Remaining",
+        "createdAt": "Created At"
+      },
+      "modal": {
+        "title": "Generate Batch",
+        "successTitle": "Batch Generated",
+        "count": "Count",
+        "credits": "Credits per code",
+        "channel": "Channel (optional)",
+        "channelPlaceholder": "e.g. newsletter-jan",
+        "cancel": "Cancel",
+        "create": "Generate",
+        "submitting": "Generating...",
+        "generated": "Generated {count} codes in batch {batch}.",
+        "downloadCsv": "Download CSV",
+        "close": "Close"
+      },
+      "detail": {
+        "code": "Code",
+        "credits": "Credits",
+        "status": "Status",
+        "used": "Used",
+        "unused": "Available",
+        "usedBy": "Used By",
+        "usedAt": "Used At",
+        "empty": "No codes in this batch.",
+        "summary": "Total {total} · Used {used} · Remaining {remaining}"
+      }
+    },
+    "apiKeys": {
+      "title": "Partner API Keys",
+      "newKey": "New API Key",
+      "loading": "Loading...",
+      "empty": "No API keys yet.",
+      "deactivate": "Deactivate",
+      "confirmDeactivate": "Deactivate this API key? Existing batches stay intact but this key can no longer generate new codes.",
+      "status": {
+        "active": "Active",
+        "deactivated": "Deactivated"
+      },
+      "table": {
+        "name": "Name",
+        "keyPrefix": "Prefix",
+        "dailyLimit": "Daily Limit",
+        "codesToday": "Today",
+        "totalGenerated": "Total",
+        "lastUsedAt": "Last Used",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "modal": {
+        "title": "Create Partner API Key",
+        "successTitle": "API Key Created",
+        "name": "Partner Name",
+        "namePlaceholder": "e.g. Acme Corp",
+        "dailyLimit": "Daily Code Limit",
+        "cancel": "Cancel",
+        "create": "Create",
+        "submitting": "Creating...",
+        "warning": "Copy this key now. For security, you won't be able to see it again after closing this dialog.",
+        "nameLabel": "Name",
+        "copy": "Copy",
+        "copied": "Copied!",
+        "done": "Done"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome back",
+    "welcomeBonus": {
+      "title": "🎉 Welcome to SceneSelf!",
+      "message": "Congratulations on your successful registration! We've added 300 credits welcome bonus to your account.",
+      "description": "Use these credits to try our AI chat, image generation, video generation, and more features.",
+      "ctaButton": "Try Now",
+      "dismissButton": "Got it"
+    },
+    "cards": {
+      "personalInfo": {
+        "title": "Personal Info",
+        "labels": {
+          "name": "Name",
+          "email": "Email",
+          "status": "Status",
+          "notSet": "Not set"
+        }
+      },
+      "quickActions": {
+        "title": "Quick Actions",
+        "editProfile": "Edit Profile",
+        "accountSettings": "Account Settings",
+        "securitySettings": "Security Settings",
+        "changePassword": "Change Password"
+      },
+      "statistics": {
+        "title": "Statistics",
+        "labels": {
+          "loginCount": "Login Count",
+          "memberSince": "Member Since",
+          "plan": "Plan",
+          "credits": "Credits",
+          "today": "Today"
+        },
+        "plans": {
+          "free": "Free",
+          "weekly": "Weekly",
+          "monthly": "Monthly",
+          "yearly": "Yearly"
+        },
+        "upgradePlan": "View pricing",
+        "viewCredits": "View Credits"
+      }
+    },
+    "paymentSuccess": "✅ Payment successful! Your credits will be updated shortly.",
+    "creditHistory": {
+      "title": "Credit History",
+      "noRecords": "No credit history yet",
+      "columns": {
+        "time": "Time",
+        "type": "Type",
+        "description": "Description",
+        "amount": "Amount"
+      },
+      "types": {
+        "purchase": "Purchase",
+        "subscription": "Subscription",
+        "usage": "Usage",
+        "refund": "Refund",
+        "adjustment": "Adjustment",
+        "other": "Other"
+      },
+      "reasons": {
+        "subscription_cycle": "Subscription Credits",
+        "one_time_pack": "Credit Pack Purchase",
+        "chat_usage": "AI Chat Usage",
+        "refund": "Refund Credits",
+        "adjustment": "System Adjustment",
+        "registration_bonus": "New User Welcome Bonus"
+      }
+    }
+  },
+  "credits": {
+    "title": "Credits Management",
+    "subtitle": "Manage your credits and view usage history",
+    "balance": {
+      "title": "Current Balance",
+      "description": "Available credits for AI operations"
+    },
+    "purchase": {
+      "title": "Need more credits?",
+      "credits": "Credits",
+      "upgradePlan": "View pricing",
+      "upgradeHint": "Upgrade your subscription for more credits per cycle."
+    },
+    "statistics": {
+      "title": "Usage Statistics",
+      "thisMonth": "This Month",
+      "totalPurchased": "Total Purchased",
+      "totalUsed": "Total Used"
+    },
+    "history": {
+      "title": "Transaction History",
+      "noRecords": "No transaction history yet",
+      "loadMore": "Load More",
+      "columns": {
+        "time": "Time",
+        "type": "Type",
+        "description": "Description",
+        "amount": "Amount",
+        "balance": "Balance"
+      },
+      "types": {
+        "purchase": "Purchase",
+        "subscription": "Subscription",
+        "usage": "Usage",
+        "refund": "Refund",
+        "adjustment": "Adjustment",
+        "bonus": "Bonus",
+        "other": "Other"
+      },
+      "reasons": {
+        "subscription_cycle": "Subscription Credits",
+        "one_time_pack": "Credit Pack Purchase",
+        "chat_usage": "AI Chat Usage",
+        "image_generation": "Image Generation",
+        "video_generation": "Video Generation",
+        "refund": "Refund Credits",
+        "adjustment": "System Adjustment",
+        "registration_bonus": "New User Welcome Bonus",
+        "welcome_bonus": "Welcome Bonus",
+        "referral_bonus": "Referral Bonus",
+        "redemption": "Redemption Code"
+      }
+    },
+    "redeem": {
+      "title": "Redeem a code",
+      "subtitle": "Enter a 12-character redemption code to add credits to your balance.",
+      "button": "Redeem",
+      "processing": "Redeeming...",
+      "invalid": "Invalid code format. Codes are 12 characters.",
+      "notFound": "Code not found.",
+      "alreadyUsed": "This code has already been used.",
+      "expired": "This code has expired.",
+      "unauthorized": "Please sign in to redeem a code.",
+      "failed": "Failed to redeem code.",
+      "success": "Added {credits} credits. New balance: {balance}."
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "subtitle": "Manage your account settings and preferences",
+    "sections": {
+      "basicInfo": {
+        "title": "Basic Information",
+        "fullName": "Full Name",
+        "email": "Email Address",
+        "verificationStatus": "Verification Status",
+        "notSet": "Not set",
+        "nameNotSet": "Name not set",
+        "accountId": "Account ID"
+      },
+      "accountSettings": {
+        "title": "Account Settings",
+        "memberSince": "Member Since",
+        "lastLogin": "Last Login",
+        "accountType": "Account Type"
+      }
+    },
+    "form": {
+      "nameLabel": "Name",
+      "namePlaceholder": "Enter your name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "Enter your email",
+      "updateButton": "Update Profile",
+      "updating": "Updating...",
+      "updateSuccess": "Profile updated successfully",
+      "updateError": "Failed to update profile"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your profile, billing, and security from one place.",
+    "sections": {
+      "profile": {
+        "title": "Profile",
+        "description": "Update the name shown across your workspace.",
+        "nameLabel": "Display name",
+        "namePlaceholder": "Enter your name",
+        "emailLabel": "Email address",
+        "save": "Save changes",
+        "saving": "Saving...",
+        "saveSuccess": "Profile updated successfully.",
+        "saveError": "Failed to update profile.",
+        "validation": "Name must be at least 2 characters."
+      },
+      "billing": {
+        "title": "Billing & Credits",
+        "description": "See your current plan and jump into credits or pricing.",
+        "currentPlan": "Current plan",
+        "creditsBalance": "Credits balance",
+        "renewal": "Next renewal",
+        "noRenewal": "No active subscription",
+        "manageCredits": "Manage credits",
+        "viewPricing": "View pricing"
+      },
+      "security": {
+        "title": "Security",
+        "description": "Review account status and sign out safely.",
+        "emailStatus": "Email status",
+        "accountId": "Account ID",
+        "memberSince": "Member since",
+        "viewProfile": "View profile",
+        "signOut": "Sign out"
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "We'd love to hear from you. Send us a message and we'll respond as soon as possible.",
+    "description": "Please reach out to us and we will get back to you at the speed of light.",
+    "testimonial": {
+      "title": "SceneSelf is used by thousands of creators",
+      "description": "Among many photo and AI tools, SceneSelf stands out for delivering unified, magazine-grade scene albums in minutes."
+    },
+    "form": {
+      "nameLabel": "Full Name",
+      "namePlaceholder": "John Doe",
+      "emailLabel": "Email address",
+      "emailPlaceholder": "hello@johndoe.com",
+      "companyLabel": "Company",
+      "companyPlaceholder": "Your Company",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Enter your message here",
+      "submitButton": "Submit",
+      "submitting": "Sending...",
+      "submitSuccess": "Message sent successfully!",
+      "submitError": "Failed to send message. Please try again."
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Latest insights and updates from our team",
+    "readMore": "Read More",
+    "minRead": "min read"
+  },
+  "errors": {
+    "404": {
+      "title": "404 - Page Not Found",
+      "message": "The page you are looking for doesn't exist.",
+      "backHome": "Go to Homepage"
+    },
+    "500": {
+      "title": "Something Went Wrong",
+      "message": "We're experiencing technical difficulties. Please try again later.",
+      "backHome": "Back to Home"
+    },
+    "general": {
+      "title": "An Error Occurred",
+      "message": "Something unexpected happened. Please try again.",
+      "tryAgain": "Try Again"
+    }
+  },
+  "featuredTestimonials": {
+    "people": [
+      {
+        "name": "John Doe",
+        "designation": "Software Engineer"
+      },
+      {
+        "name": "Robert Johnson",
+        "designation": "Product Manager"
+      },
+      {
+        "name": "Jane Smith",
+        "designation": "Data Scientist"
+      },
+      {
+        "name": "Emily Davis",
+        "designation": "UX Designer"
+      },
+      {
+        "name": "Taylor Brooks",
+        "designation": "Full-Stack Developer"
+      },
+      {
+        "name": "Dora",
+        "designation": "The Explorer"
+      }
+    ]
+  },
+  "footer": {
+    "tagline": "Transform your SaaS ideas into reality with the power of AI.",
+    "product": {
+      "title": "Product",
+      "features": "Features",
+      "pricing": "Pricing",
+      "documentation": "Documentation"
+    },
+    "company": {
+      "title": "Company",
+      "about": "About",
+      "blog": "Blog",
+      "careers": "Careers"
+    },
+    "legal": {
+      "title": "Legal",
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "cookies": "Cookies"
+    },
+    "social": {
+      "title": "Social",
+      "twitter": "Twitter",
+      "linkedin": "LinkedIn",
+      "github": "GitHub"
+    },
+    "newsletter": {
+      "title": "Subscribe to Newsletter",
+      "description": "Get the latest updates and news directly in your inbox.",
+      "placeholder": "Enter your email",
+      "subscribe": "Subscribe"
+    }
+  }
+}

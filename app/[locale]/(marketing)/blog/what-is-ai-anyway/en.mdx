@@ -1,0 +1,52 @@
+import { BlogLayout } from "@/components/blog-layout";
+import Thumbnail from "./thumbnail.jpeg";
+
+export const blog = {
+  author: { name: "SceneSelf Team", src: "/avatar.jpeg" },
+  date: "2026-06-05",
+  title: "From One Selfie to a Cohesive Photo Set",
+  description:
+    "What actually happens when you upload a selfie and type a scene. The five-stage pipeline that turns one photo into six.",
+  image: Thumbnail,
+};
+
+export const metadata = {
+  title: blog.title,
+  description: blog.description,
+  openGraph: {
+    images: [blog.image.src ?? "/og-default.jpg"],
+  },
+};
+export default (props) => <BlogLayout blog={blog} {...props} />;
+
+## What's happening between "submit" and "done"
+
+Most AI photo tools do a face swap. We don't. SceneSelf builds a coherent set of six photos where the outfit, lighting, accessories, and mood all stay consistent — because a real photo dump from a real day looks consistent. Here's the pipeline.
+
+### Stage 1 — Analyzing your selfie
+
+We extract the visual cues that need to stay locked across all six photos: face geometry, hair color and length, skin tone, build. None of this leaves our servers, and the selfie itself auto-deletes in 24 hours.
+
+### Stage 2 — Building your storyline
+
+Your one-line scene description ("Tokyo night walk", "opening my first cafe") gets read by a story director model. It picks one of eight storyline types and writes six distinct beats — each beat is one moment in the story, with its own setting, activity, expression, and shot angle.
+
+### Stage 3 — Setting the scenes
+
+For each beat, we lock the attire and accessories explicitly: every garment listed by color and material, every accessory worn the same way across all six. This is the step that solves the "different outfit every photo" problem most AI tools have.
+
+### Stage 4 — Generating your photos
+
+Six photos generate in parallel. The first one acts as a visual anchor — once it lands, the other five take it as a reference, so the lighting, color, and accessory positions stay aligned across the set.
+
+### Stage 5 — Polishing the final set
+
+Each photo passes a quality check (no distorted hands, plastic skin, or off-model identity). If a frame doesn't pass, we rescue it with another generation pass — sometimes twice. The result: a set that reads like one shoot, not six separate prompts.
+
+## What you don't see
+
+- **No training.** Your selfie is never added to any AI training dataset.
+- **No third-party sharing.** Storage is on private object storage, transmitted over TLS only.
+- **Auto-delete.** Original selfies are removed 24 hours after upload.
+
+The whole pipeline takes about 90 to 170 seconds end-to-end. You can close the tab and come back — generation runs server-side, not in your browser.

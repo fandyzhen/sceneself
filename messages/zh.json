@@ -1,0 +1,1300 @@
+{
+  "scene": {
+    "brand": "SceneSelf",
+    "tagline": "一张自拍,一组场景照片。",
+    "landing": {
+      "nav": {
+        "examples": "案例",
+        "how": "怎么用",
+        "cta": "免费试用"
+      },
+      "hero": {
+        "h1a": "一张自拍。",
+        "h1b": "一整组场景照片。",
+        "sub": "输入一个向往的场景 —— “在迪拜的一天”“东京夜晚散步”“开了自己的咖啡店”。得到一组同一个你身处其中的连贯照片,直接发 Instagram 和 TikTok。",
+        "cta": "生成免费预览",
+        "diff": "走进任何你想象的人生 —— 带回一组成片证明你真的活过那个版本。",
+        "trust": "免费 4 张预览,无需注册即可开始。"
+      },
+      "beforeAfter": {
+        "kicker": "同一次拍摄,而非换图",
+        "before": "你的自拍",
+        "after": "你的场景成组"
+      },
+      "clusters": {
+        "title": "把自己想象到任何场景",
+        "sub": "大家最爱的一些场景。输入你自己的 —— 什么都行。",
+        "travel": "旅行",
+        "travelEx": "在迪拜的一天",
+        "milestones": "里程碑",
+        "milestonesEx": "开了自己的咖啡店",
+        "lifestyle": "生活方式",
+        "lifestyleEx": "慵懒的清晨",
+        "fantasy": "幻想",
+        "fantasyEx": "复古 90s 街拍",
+        "seasonal": "节日季节",
+        "seasonalEx": "圣诞集市夜晚"
+      },
+      "how": {
+        "kicker": "怎么用",
+        "title": "三步得到一组属于你的故事",
+        "s1": "传一张自拍",
+        "s1d": "正脸清晰即可,24 小时后自动删除。",
+        "s2": "描述一个场景",
+        "s2d": "一句话 —— 我们规划一整组连贯的拍摄。",
+        "s3": "得到一整组成片",
+        "s3d": "一组不同时刻串成一段故事,直接可发。"
+      },
+      "finalCta": {
+        "title": "看见身处梦想场景的自己",
+        "titleA": "轮到你了。",
+        "titleB": "一段故事的距离。",
+        "sub": "免费预览。无需信用卡。一整组成片像同一次拍摄。",
+        "button": "生成我的免费预览",
+        "trust": "自拍 24h 自动删 · 不训练 · 随时取消"
+      },
+      "cinema": {
+        "kicker": "真实成片,真实用户",
+        "h1a": "一张自拍。",
+        "h1b": "一整段故事。",
+        "sub": "输入一个想象的场景 —— 我们生成你身处其中的一整组不同时刻。一组连贯成片,不是单张换背景。",
+        "cta": "免费试用",
+        "trust": "免费预览,无需信用卡。",
+        "hint": "悬停任意一张,高亮它所属的整组",
+        "scrollHint": "向下"
+      },
+      "scenes": {
+        "kicker": "8 种世界",
+        "title": "不只 1 张照片。",
+        "titleAccent": "8 种打开自己的方式。",
+        "sub": "选一个方向 —— 或写你自己的一句话。每一组都是一段完整的故事。",
+        "tryThis": "试这个",
+        "sixShots": "一整组",
+        "tryYourOwn": "或者写你自己的场景",
+        "types": {
+          "journey": {
+            "label": "旅程体验",
+            "prompt": "在迪拜的一天"
+          },
+          "fantasy_role": {
+            "label": "幻想角色",
+            "prompt": "穿越古代当将军"
+          },
+          "profession": {
+            "label": "职业身份",
+            "prompt": "成为大厨,被国际大厨赞赏"
+          },
+          "ownership_flex": {
+            "label": "拥有炫耀",
+            "prompt": "我的兰博基尼周末"
+          },
+          "milestone_event": {
+            "label": "高光事件",
+            "prompt": "开了我的第一家咖啡店"
+          },
+          "seasonal": {
+            "label": "节日季节",
+            "prompt": "圣诞夜市黄昏"
+          },
+          "transformation": {
+            "label": "蜕变成长",
+            "prompt": "从爱好者到大厨"
+          },
+          "lifestyle": {
+            "label": "生活美学",
+            "prompt": "晨跑公园,松弛日常"
+          }
+        }
+      },
+      "trust": {
+        "delete": {
+          "title": "自拍 24 小时自动删除",
+          "sub": "你的照片只用来让成片像你 —— 然后就消失。"
+        },
+        "noTrain": {
+          "title": "绝不用于训练 AI",
+          "sub": "你的脸不会进入任何训练数据。承诺到位。"
+        },
+        "encrypted": {
+          "title": "端到端加密",
+          "sub": "存于私有对象存储,TLS 传输,不与第三方共享。"
+        }
+      },
+      "pricing": {
+        "kicker": "定价",
+        "title": "免费开始。喜欢了再升级。",
+        "popular": "最受欢迎",
+        "perWeek": "/ 周",
+        "perMonth": "/ 月",
+        "perYear": "/ 年",
+        "choose": "立即开始",
+        "detailsLink": "想看完整对比?",
+        "detailsCta": "查看完整定价",
+        "tiers": {
+          "weekly": {
+            "label": "周付",
+            "credits": "1,500 积分 / 周",
+            "f1": "约 5 组完整成片",
+            "f2": "随时取消",
+            "f3": "8 类故事线全开"
+          },
+          "monthly": {
+            "label": "月付",
+            "credits": "8,000 积分 / 月",
+            "f1": "约 27 组完整成片",
+            "f2": "无水印",
+            "f3": "优先生成队列"
+          },
+          "yearly": {
+            "label": "年付",
+            "credits": "10 万积分 / 年",
+            "f1": "约 333 组完整成片",
+            "f2": "相比月付省 2 个月",
+            "f3": "新故事线优先体验"
+          }
+        }
+      }
+    },
+    "steps": {
+      "upload": "自拍",
+      "describe": "场景",
+      "tone": "调性",
+      "focus": "侧重",
+      "clarify": "细节",
+      "review": "预览"
+    },
+    "back": "返回",
+    "upload": {
+      "title": "从一张自拍开始",
+      "subtitle": "正脸清晰的照片效果最好。我们只用它来保持成组照片像你本人,生成后即删除。",
+      "cta": "上传自拍",
+      "hint": "JPG 或 PNG · 至少 300×300",
+      "replace": "更换",
+      "remove": "移除",
+      "analyzing": "正在检查照片…",
+      "ready": "很棒",
+      "continue": "继续",
+      "faceNoFace": "没检测到清晰的正脸，换一张自拍试试～",
+      "faceMultiple": "照片里好像不止一个人，用单人正脸自拍效果最好。",
+      "confirmOwn": "我确认这是本人照片，且我有权使用它。"
+    },
+    "describe": {
+      "title": "描述你向往的场景",
+      "subtitle": "一句话就够,剩下的交给我们。",
+      "placeholder": "在迪拜的一天…",
+      "examplesLabel": "需要灵感?",
+      "chips": {
+        "tokyo": "东京夜晚散步",
+        "fantasyHero": "变身超人一日",
+        "vogue": "Vogue 编辑忙碌的一天",
+        "lambo": "我的兰博基尼周末",
+        "cafe": "开了自己的咖啡店",
+        "slowSunday": "慢周日，咖啡和书",
+        "xmas": "圣诞集市夜晚",
+        "glowUp": "我在巴厘岛 glow-up 的一年"
+      },
+      "submit": "开始想象",
+      "thinking": "正在理解你的场景…"
+    },
+    "clarify": {
+      "tone": {
+        "title": "想要什么感觉?",
+        "subtitle": "选一个调性 — 带「推荐」的最匹配。",
+        "aiHint": "⭐ 为你推荐",
+        "aiBadge": "推荐",
+        "next": "下一步"
+      },
+      "focus": {
+        "title": "最想突出什么?",
+        "subtitle": "根据你的描述定制 — 选一个体验侧重。"
+      },
+      "other": "其他",
+      "otherPlaceholder": "自己写一个…",
+      "rewriteNotice": "已作为创意 editorial 场景生成。",
+      "translatedNotice": "已自动翻译为英文以获得最佳生成效果。",
+      "rejectedTitle": "换个方式可能更好 ✨",
+      "rejectedBody": "这个场景暂时没法直接生成。试试这些类似的方向 👇",
+      "start": "生成我的故事"
+    },
+    "tones": {
+      "narrative_doc": {
+        "label": "叙事纪实",
+        "hint": "真实记录的纪实感"
+      },
+      "surprise_highlight": {
+        "label": "惊喜高光",
+        "hint": "难忘高光的惊喜感"
+      },
+      "healing_chill": {
+        "label": "松弛治愈",
+        "hint": "慢节奏的温暖治愈"
+      },
+      "cinematic_drama": {
+        "label": "电影戏剧",
+        "hint": "电影般的戏剧张力"
+      },
+      "versailles_flex": {
+        "label": "凡尔赛炫耀",
+        "hint": "低调奢华的上流感"
+      },
+      "funny_meme": {
+        "label": "搞笑沙雕",
+        "hint": "轻松搞笑的玩梗感"
+      },
+      "romantic": {
+        "label": "浪漫氛围",
+        "hint": "柔光浪漫的梦境感"
+      },
+      "epic_blood": {
+        "label": "燃系热血",
+        "hint": "高能热血的燃系感"
+      }
+    },
+    "focus": {
+      "ownership_flex": {
+        "luxury": "极致豪华",
+        "lifestyle": "上流生活方式",
+        "social": "社交名利场",
+        "detail": "质感细节"
+      },
+      "fantasy_role": {
+        "world": "世界观沉浸",
+        "charisma": "角色魅力",
+        "epic": "史诗大场面",
+        "aesthetic": "唯美意境"
+      },
+      "milestone_event": {
+        "peak": "高光时刻",
+        "prep": "幕后准备",
+        "celebrate": "欢庆",
+        "emotion": "情感"
+      },
+      "profession": {
+        "authority": "专业权威",
+        "warm": "亲和温度",
+        "backstage": "幕后真实",
+        "peak": "高光时刻"
+      },
+      "transformation": {
+        "before_after": "前后对比",
+        "process": "过程记录",
+        "result": "成果绽放"
+      },
+      "seasonal": {
+        "festive": "节日氛围",
+        "cozy": "温馨治愈",
+        "scenery": "季节风景",
+        "party": "欢聚"
+      },
+      "lifestyle": {
+        "calm": "松弛日常",
+        "active": "活力运动",
+        "home": "居家温度",
+        "taste": "品味格调"
+      },
+      "journey": {
+        "scenery": "风景人文",
+        "food": "美食",
+        "shopping": "购物",
+        "leisure": "悠闲放空"
+      }
+    },
+    "review": {
+      "title": "你的拍摄方案",
+      "subtitle": "一组连贯的 {count} 张照片 — 像一次真实的随手拍。",
+      "start": "生成免费预览",
+      "free": "免费 {count} 张预览",
+      "shot": "第 {index} 张"
+    },
+    "generating": {
+      "title": "正在冲洗你的照片",
+      "subtitle": "每张就绪后逐一显影。",
+      "patience": "为了质量，我们舍弃速度 —— 每一帧都打磨到对的样子，而不是赶时间。可以切换到其他应用、冲杯咖啡、出去走走。生成会在后台继续，随时回来都会看到你的成片在等你。",
+      "developing": "显影中…",
+      "pending": "正在构图",
+      "cover": "封面",
+      "moods": {
+        "0": "正在布置场景…",
+        "1": "正在寻找光线…",
+        "2": "正在捕捉自然瞬间…",
+        "3": "正在追逐黄金时刻…"
+      },
+      "stages": {
+        "0": "正在读取你的光影…",
+        "1": "正在编排 6 个场景…",
+        "2": "正在搭建画面细节…",
+        "3": "正在捕捉自然瞬间…",
+        "4": "正在打磨质感与肤色…"
+      },
+      "steps": {
+        "analyzing": "分析你的自拍",
+        "building": "构建你的故事线",
+        "setting": "布置场景",
+        "generating": "生成你的照片",
+        "polishing": "精修最终成片"
+      },
+      "progress": "已显影 {ready}/{total}",
+      "errorTitle": "暂时没能开始",
+      "backToEdit": "返回修改"
+    },
+    "result": {
+      "title": "你的场景成组照片已就绪",
+      "subtitle": "一组像同一次拍摄的连贯照片。",
+      "subtitlePartial": "我们只保留了真正像你的那几张。",
+      "compensation": "消耗 <b>{used}</b> 积分 · <b>{dropped}</b> 张未能交付。我们补偿了 <b>{refunded}</b> 积分作为弥补。<Double>双倍</Double>奖励,我们承担。",
+      "download": "下载",
+      "downloadAll": "全部下载",
+      "sharing": "打包中…",
+      "unlockFull": "解锁完整 9 张成组",
+      "again": "换个场景",
+      "cover": "封面",
+      "close": "关闭",
+      "prev": "上一张",
+      "next": "下一张"
+    },
+    "errors": {
+      "upload": "照片上传失败,换一张试试。",
+      "tooLarge": "图片超过 12MB,换小一点的。",
+      "invalidType": "请上传一张照片(JPG/PNG/HEIC)。",
+      "generic": "出了点问题,请重试。",
+      "noCredits": "完整成组的积分不足了。",
+      "insufficientCredits": "积分不足,购买积分包或订阅后再试。"
+    }
+  },
+  "common": {
+    "brand": {
+      "name": "SceneSelf",
+      "tagline": "SceneSelf",
+      "copyright": "版权所有 © 2026 SceneSelf。保留所有权利。",
+      "allRightsReserved": "保留所有权利"
+    },
+    "actions": {
+      "signIn": "登录",
+      "signUp": "注册",
+      "signOut": "退出登录",
+      "getStarted": "开始使用",
+      "startFree": "免费开始",
+      "startTrial": "开始试用",
+      "contactSales": "联系销售",
+      "learnMore": "了解更多",
+      "viewAll": "查看全部",
+      "submit": "提交",
+      "cancel": "取消",
+      "save": "保存",
+      "delete": "删除",
+      "edit": "编辑",
+      "update": "更新",
+      "continue": "继续",
+      "back": "返回",
+      "next": "下一步"
+    },
+    "status": {
+      "loading": "加载中...",
+      "verified": "已验证",
+      "pending": "待处理",
+      "active": "已激活",
+      "inactive": "未激活"
+    }
+  },
+  "navigation": {
+    "main": {
+      "pricing": "定价",
+      "blog": "博客",
+      "contact": "联系我们",
+      "docs": "文档",
+      "dashboard": "仪表盘",
+      "credits": "积分管理",
+      "profile": "个人资料",
+      "settings": "设置"
+    },
+    "footer": {
+      "product": {
+        "title": "产品"
+      },
+      "legal": {
+        "title": "法律",
+        "terms": "服务条款",
+        "privacy": "隐私政策",
+        "cookies": "Cookie 政策",
+        "refund": "退款政策"
+      },
+      "newsletter": {
+        "title": "订阅最新动态"
+      },
+      "social": {
+        "twitter": "Twitter",
+        "linkedin": "领英",
+        "github": "GitHub"
+      }
+    }
+  },
+  "hero": {
+    "badge": "⚡ 专为 Vibe Coding 打造的首款入门套件",
+    "title": "通过 Vibe Coding 将您的 AI SaaS 产品投入生产",
+    "description": "把日常照片变成电影感的故事场景。SceneSelf 只需一张自拍，就能生成统一调性、杂志级别的成套场景影集——不用棚拍、不用预约、不用等待。",
+    "cta": {
+      "primary": "查看文档",
+      "secondary": "获取代码"
+    },
+    "modal": {
+      "eyebrow": "源码获取",
+      "title": "请在课程社区获取源码",
+      "description": "SceneSelf 的完整上线工具包、生成预设和配套资料都放在创作者社区里统一发放。",
+      "instruction": "如果你已经加入课程，点击下方链接即可在新窗口打开课程社区，获取代码与相关资料。",
+      "linkLabel": "前往课程社区",
+      "linkHint": "课程社区：https://scys.com/deepsea/2001/course",
+      "close": "关闭"
+    }
+  },
+  "features": {
+    "title": "Vibe Coding 成功所需的一切功能",
+    "subtitle": "告别约拍排期。选一个场景、上传一张自拍，SceneSelf 在几分钟内交付一整套画面。",
+    "items": {
+      "aiOptimized": {
+        "title": "为 AI 辅助开发而生",
+        "description": "为 Cursor、Windsurf 和 Claude Code 等工具完美结构化。每个文件、每个组件都经过优化，便于 AI 理解和修改。"
+      },
+      "zeroPipeline": {
+        "title": "从零到生产的完整流程",
+        "description": "身份验证、支付、数据库、部署——一切均已配置完毕。只需向您的 AI 助手发出指令，即可见证您的 SaaS 产品诞生。"
+      },
+      "nonTechnical": {
+        "title": "对非技术背景的创始人友好",
+        "description": "分不清 React 和 Rails？没关系。只要您能清晰地描述您的想法，就能成功交付一款 SaaS 产品。"
+      },
+      "productionGrade": {
+        "title": "从第一天起即达生产级别",
+        "description": "支持真实用户、真实支付、真实规模。基于 Next.js、PostgreSQL 和 Creem 构建——与价值数十亿美元公司使用的技术栈一致。"
+      }
+    }
+  },
+  "pricing": {
+    "title": "定价",
+    "subtitle": "按你想生成场景集的频率挑一档。",
+    "description": "三档订阅都解锁完整成片并去除水印。临时拍一组选周付，稳定连载选月付，全年系列创作选年付。",
+    "popular": "最受欢迎",
+    "comparison": {
+      "title": "方案对比",
+      "rows": {
+        "purchaseType": "计费周期",
+        "price": "价格",
+        "credits": "每周期点数",
+        "delivery": "点数发放",
+        "watermark": "水印",
+        "bestFor": "适合人群"
+      },
+      "values": {
+        "weekly": "周付",
+        "monthly": "月付",
+        "yearly": "年付",
+        "instantAfterPayment": "每个周期续费后立即到账",
+        "watermarkRemoved": "订阅有效期内全部去除",
+        "bestForWeekly": "想先试一组场景的临时创作者",
+        "bestForMonthly": "稳定连载、按月更新视觉的创作者",
+        "bestForYearly": "全年高频出图的连载创作者"
+      }
+    },
+    "details": {
+      "creditsPerCycle": "每周期 {credits} 点",
+      "weeklyDelivery": "每周续费，点数立即到账",
+      "monthlyDelivery": "每月续费，点数立即到账",
+      "yearlyDelivery": "每年续费，点数立即到账",
+      "watermarkRemoved": "所有生成场景均不带水印"
+    },
+    "tiers": {
+      "weekly": {
+        "name": "周付",
+        "price": "$2.99",
+        "cadence": "每周",
+        "description": "适合临时拍一组场景或单次概念尝试。",
+        "cta": "选择周付",
+        "features": [
+          "每周 1,500 点数",
+          "够生成一整组完整场景",
+          "所有生成场景无水印",
+          "可随时取消"
+        ]
+      },
+      "monthly": {
+        "name": "月付",
+        "price": "$9.90",
+        "cadence": "每月",
+        "description": "稳定连载、按月更新视觉故事的最佳节奏。",
+        "cta": "选择月付",
+        "features": [
+          "每月 8,000 点数",
+          "够每月生成多组场景集",
+          "所有生成场景无水印",
+          "可随时取消"
+        ]
+      },
+      "yearly": {
+        "name": "年付",
+        "price": "$99",
+        "cadence": "每年",
+        "description": "适合全年系列创作者，单点数最划算。",
+        "cta": "选择年付",
+        "features": [
+          "每年 100,000 点数",
+          "高频创作者的最优单价",
+          "所有生成场景无水印",
+          "可随时取消"
+        ]
+      }
+    }
+  },
+  "testimonials": {
+    "title": "来自 Vibe Coders 的成功故事",
+    "subtitle": "创作者、品牌方与日常拍摄者分享他们如何用 SceneSelf 交付电影感场景影集。",
+    "items": [
+      {
+        "name": "Alex Chen",
+        "quote": "我用 SceneSelf 一个下午就拍完了整季的 lookbook，不用棚、不用模特费、不用补拍。",
+        "designation": "营销经理转型创始人"
+      },
+      {
+        "name": "Jordan Lee",
+        "quote": "我花了多年学习编码。现在我的非技术联合创始人使用 Vibe Coding 发布功能比我还快。这就是未来。",
+        "designation": "技术联合创始人"
+      },
+      {
+        "name": "Alice Johnson",
+        "quote": "原本要五位数预算的品牌大片，SceneSelf 用一杯咖啡的钱就交付了一样的电影感。",
+        "designation": "连续创业者"
+      },
+      {
+        "name": "Bob Smith",
+        "quote": "光这个月我就生成了 30 套场景变体。SceneSelf 是我日更内容的秘密武器。",
+        "designation": "独立黑客"
+      },
+      {
+        "name": "Cathy Lee",
+        "quote": "选场景、传自拍、影集就好了。出片从未如此快速。",
+        "designation": "产品经理"
+      },
+      {
+        "name": "David Wright",
+        "quote": "身份验证、支付和部署都可以直接使用。我专注于独特的功能。我的 SaaS 第一周就盈利了。",
+        "designation": "独立创始人"
+      },
+      {
+        "name": "Eva Green",
+        "quote": "它带来的效率是无与伦比的。这是一个重要的工具，帮助我们削减成本并显著改善了最终产品。",
+        "designation": "运营总监"
+      },
+      {
+        "name": "Frank Moore",
+        "quote": "一个完美融入我们工作流程的强大解决方案。它增强了我们团队的能力，让我们能够处理更复杂的项目。",
+        "designation": "项目经理"
+      },
+      {
+        "name": "Grace Hall",
+        "quote": "它非常直观且易于使用。即使没有技术专业知识的人也可以利用它的强大功能来改善工作流程。",
+        "designation": "市场营销专家"
+      },
+      {
+        "name": "Henry Ford",
+        "quote": "它为我们节省了无数小时。强烈推荐给任何想要提高效率和生产力的人。",
+        "designation": "运营分析师"
+      },
+      {
+        "name": "Ivy Wilson",
+        "quote": "任何专业人士的必备工具。它彻底改变了我们解决问题和决策的方式。",
+        "designation": "商业顾问"
+      },
+      {
+        "name": "Jack Brown",
+        "quote": "结果总是令人印象深刻。这个 AI 不仅帮助我们达到了性能目标，还超越了预期。",
+        "designation": "绩效经理"
+      },
+      {
+        "name": "Kathy Adams",
+        "quote": "它帮助我们实现了曾经被认为不可能的事情。AI 的能力是突破性的，为我们开辟了新的道路。",
+        "designation": "创新负责人"
+      },
+      {
+        "name": "Leo Carter",
+        "quote": "具有真正影响力的变革性技术。它简化了我们的运营，为我们的流程带来了前所未有的效率。",
+        "designation": "技术策略师"
+      },
+      {
+        "name": "Mia Turner",
+        "quote": "简直是革命性的！它与我们现有系统的集成和增强方式简直是奇迹。",
+        "designation": "系统集成师"
+      }
+    ]
+  },
+  "companies": {
+    "title": "使用行业领先技术构建",
+    "subtitle": "基于现代技术栈构建，被全球顶尖团队信赖"
+  },
+  "gridFeatures": {
+    "aiReady": {
+      "title": "AI 就绪架构",
+      "description": "预配置聊天、图像和视频生成工作流，默认接入 Volcano Engine。填好密钥即可开始构建。"
+    },
+    "creem": {
+      "title": "Creem 支付",
+      "description": "内置完整的计费系统，包括订阅、使用量跟踪和客户门户。"
+    },
+    "auth": {
+      "title": "身份认证系统",
+      "description": "Better Auth 支持邮箱密码和 OAuth。会话管理和受保护路由已就绪。"
+    },
+    "deploy": {
+      "title": "一键部署",
+      "description": "即刻部署到 Vercel、Railway 或任何平台。从第一天起即可投入生产。"
+    },
+    "typescript": {
+      "title": "TypeScript + Tailwind",
+      "description": "现代技术栈包括 Next.js 14、TypeScript、Tailwind CSS 和 shadcn/ui 组件。"
+    },
+    "database": {
+      "title": "数据库 + ORM",
+      "description": "PostgreSQL 配合 Drizzle ORM。类型安全的查询和迁移已配置。"
+    },
+    "seo": {
+      "title": "SEO 和营销",
+      "description": "元标签、Open Graph、站点地图和分析。为有机增长准备的一切。"
+    },
+    "vibeCoding": {
+      "title": "Vibe Coding 就绪",
+      "description": "针对 Cursor、Windsurf 和 Claude Code 进行了优化。AI 能理解每个组件。"
+    }
+  },
+  "cta": {
+    "title": "准备好交付您的 AI SaaS 产品了吗？",
+    "description": "加入数千名创作者的行列，他们已经用 SceneSelf 交付了电影感的场景影集。",
+    "button": "获取代码"
+  },
+  "auth": {
+    "login": {
+      "title": "登录您的账户",
+      "emailLabel": "邮箱地址",
+      "emailPlaceholder": "hello@johndoe.com",
+      "passwordLabel": "密码",
+      "passwordPlaceholder": "••••••••",
+      "forgotPassword": "忘记密码？",
+      "noAccount": "还没有账户？",
+      "signUpLink": "注册",
+      "signInButton": "登录",
+      "signingIn": "登录中...",
+      "errors": {
+        "invalidEmail": "请输入有效的邮箱地址",
+        "emailRequired": "请输入邮箱地址",
+        "passwordRequired": "请输入密码",
+        "loginFailed": "登录失败，请重试。",
+        "googleLoginFailed": "Google 登录失败，请重试。"
+      }
+    },
+    "signup": {
+      "title": "注册一个新账户",
+      "nameLabel": "姓名",
+      "namePlaceholder": "张三",
+      "emailLabel": "邮箱地址",
+      "emailPlaceholder": "hello@example.com",
+      "passwordLabel": "密码",
+      "passwordPlaceholder": "••••••••",
+      "hasAccount": "已经有账户了？",
+      "signInLink": "登录",
+      "signUpButton": "注册",
+      "signingUp": "注册中...",
+      "marketingOptInLabel": "希望接收产品更新和使用提示（可选，随时可退订）",
+      "errors": {
+        "nameRequired": "请输入您的姓名",
+        "invalidEmail": "请输入有效的邮箱地址",
+        "emailRequired": "请输入邮箱地址",
+        "passwordRequired": "请输入密码",
+        "signupFailed": "注册失败，请重试。",
+        "googleSignupFailed": "Google 注册失败，请重试。"
+      }
+    },
+    "social": {
+      "googleSignIn": "使用 Google 继续",
+      "or": "或者继续使用"
+    },
+    "checkEmail": {
+      "title": "请查收您的邮件",
+      "description": "我们已向您的邮箱发送了验证链接。请点击链接验证您的账户并开始使用。",
+      "notReceived": "没有收到邮件？",
+      "checkSpam": "检查垃圾邮件文件夹",
+      "checkEmailCorrect": "确认输入的邮箱地址是否正确",
+      "waitAndCheck": "等待几分钟后再次查看",
+      "resendButton": "重新发送验证邮件",
+      "resending": "发送中...",
+      "resendSuccess": "验证邮件发送成功！请查收您的邮箱。",
+      "resendError": "发送验证邮件失败，请重试。",
+      "backToLogin": "返回登录",
+      "securityNote": "为了您的安全，验证链接将在24小时后失效。"
+    },
+    "verifyEmail": {
+      "verifying": "正在验证邮箱",
+      "verifyingDescription": "请稍候，我们正在验证您的邮箱地址...",
+      "success": "邮箱验证成功！",
+      "successDescription": "您的邮箱已成功验证！正在跳转到登录页面...",
+      "alreadyVerified": "已验证",
+      "failed": "验证失败",
+      "goToLogin": "前往登录",
+      "backToSignUp": "返回注册",
+      "requestNew": "重新发送验证邮件",
+      "checkSpamNote": "如果没有收到邮件，请检查垃圾邮件文件夹"
+    },
+    "emailVerifiedGuard": {
+      "title": "需要验证邮箱",
+      "description": "请验证您的邮箱地址以访问此页面。请查收我们发送到以下邮箱的验证链接：",
+      "resendButton": "重新发送验证邮件",
+      "resending": "发送中...",
+      "resendSuccess": "验证邮件已发送！请查收您的邮箱。",
+      "resendError": "发送验证邮件失败，请重试。",
+      "signOutLink": "退出并使用其他账户"
+    }
+  },
+  "Admin": {
+    "sidebar": {
+      "title": "管理后台",
+      "subtitle": "系统管理",
+      "dashboard": "仪表板",
+      "users": "用户管理",
+      "subscriptions": "订阅管理",
+      "credits": "积分管理",
+      "redemption": "兑换码",
+      "apiKeys": "合作伙伴 API Key",
+      "backToDashboard": "返回用户面板"
+    },
+    "header": {
+      "welcome": "欢迎",
+      "adminBadge": "管理员"
+    },
+    "dashboard": {
+      "title": "管理员仪表板",
+      "totalUsers": "总用户数",
+      "activeUsers": "活跃用户",
+      "totalRevenue": "总收入",
+      "totalPayments": "总支付数",
+      "creditsUsed": "已消耗积分",
+      "recentUsers": "最近注册用户",
+      "recentPayments": "最近支付记录",
+      "credits": "积分",
+      "viewAllUsers": "查看所有用户",
+      "viewAllPayments": "查看所有支付",
+      "unknownUser": "未知用户",
+      "totalSceneJobs": "总 Scene 任务数"
+    },
+    "users": {
+      "title": "用户管理",
+      "searchPlaceholder": "搜索用户姓名或邮箱...",
+      "searchAction": "搜索",
+      "clearSearch": "清空",
+      "totalUsers": "共 {count} 个用户",
+      "matchingUsers": "\"{query}\" 匹配到 {count} 个用户",
+      "pageSummary": "显示第 {from}-{to} 条，共 {total} 条",
+      "emptyState": "暂无用户",
+      "emptySearchState": "没有匹配的用户",
+      "user": "用户",
+      "role": "角色",
+      "credits": "积分",
+      "status": "状态",
+      "joined": "加入时间",
+      "actions": "操作",
+      "admin": "管理员",
+      "banned": "已禁用",
+      "active": "活跃",
+      "unverified": "未验证",
+      "edit": "编辑",
+      "ban": "禁用",
+      "unban": "解禁",
+      "viewDetails": "查看详情",
+      "enterCredits": "输入新的积分数量",
+      "banReason": "禁用原因",
+      "banExpires": "禁用到期",
+      "userDetails": "用户详情",
+      "name": "姓名",
+      "email": "邮箱",
+      "lastActive": "最后活跃",
+      "close": "关闭",
+      "roleUpdated": "角色已更新",
+      "roleUpdateFailed": "角色更新失败",
+      "userBanned": "用户已禁用",
+      "userUnbanned": "用户已解禁",
+      "banFailed": "禁用操作失败",
+      "creditsUpdated": "积分已更新",
+      "creditsUpdateFailed": "积分更新失败",
+      "subscription": "订阅",
+      "manage": "管理",
+      "adjust": "调整",
+      "adjustCredits": "调整积分",
+      "currentCredits": "当前积分",
+      "adjustment": "调整值",
+      "newBalance": "新余额",
+      "reason": "原因",
+      "manualAdjustment": "手动调整",
+      "refund": "退款",
+      "bonus": "奖励",
+      "compensation": "补偿",
+      "cancel": "取消",
+      "addCredits": "增加积分",
+      "deductCredits": "扣除积分",
+      "manageSubscription": "管理订阅",
+      "currentPlan": "当前套餐",
+      "selectPlan": "选择套餐",
+      "updateSubscription": "更新订阅",
+      "subscriptionUpdated": "订阅已更新",
+      "subscriptionUpdateFailed": "订阅更新失败",
+      "pagination": {
+        "previous": "上一页",
+        "next": "下一页",
+        "page": "第 {{current}} / {{total}} 页"
+      }
+    },
+    "subscriptions": {
+      "title": "订阅管理",
+      "totalSubscriptions": "总订阅数",
+      "activeSubscriptions": "活跃订阅",
+      "canceledSubscriptions": "已取消",
+      "expiredSubscriptions": "已过期",
+      "searchPlaceholder": "搜索用户、套餐...",
+      "allStatus": "所有状态",
+      "active": "活跃",
+      "canceled": "已取消",
+      "expired": "已过期",
+      "trial": "试用中",
+      "user": "用户",
+      "plan": "套餐",
+      "status": "状态",
+      "expiryDate": "到期日期",
+      "createdAt": "创建时间",
+      "daysRemaining": "剩余 {{days}} 天",
+      "unknownUser": "未知用户",
+      "noSubscriptions": "暂无订阅记录",
+      "pagination": {
+        "previous": "上一页",
+        "next": "下一页",
+        "page": "第 {{current}} / {{total}} 页"
+      }
+    },
+    "credits": {
+      "title": "积分管理",
+      "totalIssued": "总发放",
+      "totalUsed": "总消耗",
+      "totalTransactions": "总交易数",
+      "avgUsage": "平均消耗",
+      "searchPlaceholder": "搜索用户、原因...",
+      "allTypes": "所有类型",
+      "earned": "获得",
+      "spent": "消耗",
+      "user": "用户",
+      "change": "变动",
+      "reason": "原因",
+      "balance": "余额",
+      "date": "时间",
+      "subscriptionCycle": "订阅周期",
+      "subscriptionSchedule": "订阅分期",
+      "oneTimePack": "积分包",
+      "chatUsage": "对话消耗",
+      "adjustment": "手动调整",
+      "unknownUser": "未知用户",
+      "noTransactions": "暂无交易记录",
+      "topUsers": "积分排行榜",
+      "pagination": {
+        "previous": "上一页",
+        "next": "下一页",
+        "page": "第 {{current}} / {{total}} 页"
+      }
+    },
+    "redemption": {
+      "title": "兑换码",
+      "newBatch": "新建批次",
+      "loading": "加载中...",
+      "empty": "暂无批次。",
+      "createdByAdmin": "管理员",
+      "backToList": "返回",
+      "table": {
+        "batchId": "批次 ID",
+        "createdBy": "创建者",
+        "channel": "渠道",
+        "credits": "面额",
+        "total": "总数",
+        "used": "已用",
+        "remaining": "剩余",
+        "createdAt": "创建时间"
+      },
+      "modal": {
+        "title": "生成批次",
+        "successTitle": "批次已生成",
+        "count": "数量",
+        "credits": "每码积分",
+        "channel": "渠道（可选）",
+        "channelPlaceholder": "例如：newsletter-jan",
+        "cancel": "取消",
+        "create": "生成",
+        "submitting": "生成中...",
+        "generated": "已生成 {count} 个码,批次 {batch}。",
+        "downloadCsv": "下载 CSV",
+        "close": "关闭"
+      },
+      "detail": {
+        "code": "兑换码",
+        "credits": "积分",
+        "status": "状态",
+        "used": "已用",
+        "unused": "可用",
+        "usedBy": "兑换用户",
+        "usedAt": "兑换时间",
+        "empty": "此批次暂无兑换码。",
+        "summary": "共 {total} · 已用 {used} · 剩余 {remaining}"
+      }
+    },
+    "apiKeys": {
+      "title": "合作伙伴 API Key",
+      "newKey": "新建 API Key",
+      "loading": "加载中...",
+      "empty": "暂无 API Key。",
+      "deactivate": "撤销",
+      "confirmDeactivate": "确定撤销此 API Key？已生成的批次不受影响,但此 Key 将无法再生成新码。",
+      "status": {
+        "active": "活跃",
+        "deactivated": "已撤销"
+      },
+      "table": {
+        "name": "合作伙伴",
+        "keyPrefix": "前缀",
+        "dailyLimit": "每日上限",
+        "codesToday": "今日已生成",
+        "totalGenerated": "累计生成",
+        "lastUsedAt": "上次使用",
+        "status": "状态",
+        "actions": "操作"
+      },
+      "modal": {
+        "title": "创建合作伙伴 API Key",
+        "successTitle": "API Key 已创建",
+        "name": "合作伙伴名称",
+        "namePlaceholder": "例如：Acme Corp",
+        "dailyLimit": "每日兑换码上限",
+        "cancel": "取消",
+        "create": "创建",
+        "submitting": "创建中...",
+        "warning": "请立即复制此 Key。出于安全考虑,关闭后将无法再查看明文。",
+        "nameLabel": "名称",
+        "copy": "复制",
+        "copied": "已复制!",
+        "done": "完成"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "仪表盘",
+    "welcome": "欢迎回来",
+    "welcomeBonus": {
+      "title": "🎉 欢迎加入 SceneSelf！",
+      "message": "恭喜您成功注册！我们已为您的账户赠送 300 积分新人礼包。",
+      "description": "这些积分可用于体验我们的 AI 对话、图像生成、视频生成等功能。",
+      "ctaButton": "立即体验",
+      "dismissButton": "知道了"
+    },
+    "cards": {
+      "personalInfo": {
+        "title": "个人信息",
+        "labels": {
+          "name": "姓名",
+          "email": "邮箱",
+          "status": "状态",
+          "notSet": "未设置"
+        }
+      },
+      "quickActions": {
+        "title": "快捷操作",
+        "editProfile": "编辑个人资料",
+        "accountSettings": "账户设置",
+        "securitySettings": "安全设置"
+      },
+      "statistics": {
+        "title": "统计信息",
+        "labels": {
+          "loginCount": "登录次数",
+          "memberSince": "注册于",
+          "plan": "当前方案",
+          "credits": "点数",
+          "today": "今天"
+        },
+        "plans": {
+          "free": "免费版",
+          "weekly": "周付",
+          "monthly": "月付",
+          "yearly": "年付"
+        },
+        "upgradePlan": "查看定价",
+        "viewCredits": "查看积分"
+      }
+    },
+    "paymentSuccess": "✅ 支付成功！您的点数将很快更新。",
+    "creditHistory": {
+      "title": "积分记录",
+      "noRecords": "暂无积分记录",
+      "columns": {
+        "time": "时间",
+        "type": "类型",
+        "description": "说明",
+        "amount": "金额"
+      },
+      "types": {
+        "purchase": "购买",
+        "subscription": "订阅",
+        "usage": "消耗",
+        "refund": "退款",
+        "adjustment": "调整",
+        "other": "其他"
+      },
+      "reasons": {
+        "subscription_cycle": "订阅赠送积分",
+        "one_time_pack": "购买积分包",
+        "chat_usage": "AI 对话消耗",
+        "refund": "退款返还",
+        "adjustment": "系统调整",
+        "registration_bonus": "新人注册礼包"
+      }
+    }
+  },
+  "credits": {
+    "title": "积分管理",
+    "subtitle": "管理您的积分并查看使用记录",
+    "balance": {
+      "title": "当前余额",
+      "description": "可用于 AI 操作的积分"
+    },
+    "purchase": {
+      "title": "积分不够用？",
+      "credits": "积分",
+      "upgradePlan": "查看定价",
+      "upgradeHint": "升级订阅可以获得更多每周期积分。"
+    },
+    "statistics": {
+      "title": "使用统计",
+      "thisMonth": "本月消耗",
+      "totalPurchased": "累计购买",
+      "totalUsed": "累计使用"
+    },
+    "history": {
+      "title": "交易记录",
+      "noRecords": "暂无交易记录",
+      "loadMore": "加载更多",
+      "columns": {
+        "time": "时间",
+        "type": "类型",
+        "description": "说明",
+        "amount": "数量",
+        "balance": "余额"
+      },
+      "types": {
+        "purchase": "购买",
+        "subscription": "订阅",
+        "usage": "消耗",
+        "refund": "退款",
+        "adjustment": "调整",
+        "bonus": "奖励",
+        "other": "其他"
+      },
+      "reasons": {
+        "subscription_cycle": "订阅赠送积分",
+        "one_time_pack": "购买积分包",
+        "chat_usage": "AI 对话消耗",
+        "image_generation": "图像生成",
+        "video_generation": "视频生成",
+        "refund": "退款返还",
+        "adjustment": "系统调整",
+        "registration_bonus": "新人注册礼包",
+        "welcome_bonus": "欢迎奖励",
+        "referral_bonus": "推荐奖励",
+        "redemption": "兑换码"
+      }
+    },
+    "redeem": {
+      "title": "兑换码",
+      "subtitle": "输入 12 位兑换码以增加积分余额。",
+      "button": "立即兑换",
+      "processing": "兑换中...",
+      "invalid": "格式不正确,兑换码为 12 位。",
+      "notFound": "兑换码不存在。",
+      "alreadyUsed": "此兑换码已被使用。",
+      "expired": "此兑换码已过期。",
+      "unauthorized": "请先登录再兑换。",
+      "failed": "兑换失败。",
+      "success": "已增加 {credits} 积分,当前余额 {balance}。"
+    }
+  },
+  "profile": {
+    "title": "个人资料",
+    "subtitle": "管理您的账户设置和偏好",
+    "sections": {
+      "basicInfo": {
+        "title": "基本信息",
+        "fullName": "姓名",
+        "email": "邮箱地址",
+        "verificationStatus": "验证状态",
+        "notSet": "未设置",
+        "nameNotSet": "姓名未设置",
+        "accountId": "账户 ID"
+      },
+      "accountSettings": {
+        "title": "账户详情",
+        "memberSince": "注册于",
+        "lastLogin": "最近登录",
+        "accountType": "账户类型"
+      }
+    },
+    "form": {
+      "nameLabel": "姓名",
+      "namePlaceholder": "请输入您的姓名",
+      "emailLabel": "邮箱",
+      "emailPlaceholder": "请输入您的邮箱地址",
+      "updateButton": "更新资料",
+      "updating": "更新中...",
+      "updateSuccess": "个人资料更新成功",
+      "updateError": "个人资料更新失败"
+    }
+  },
+  "settings": {
+    "title": "设置",
+    "subtitle": "在一个地方管理个人资料、账单和账户安全。",
+    "sections": {
+      "profile": {
+        "title": "个人资料",
+        "description": "更新在工作区中展示的名称。",
+        "nameLabel": "显示名称",
+        "namePlaceholder": "输入您的名字",
+        "emailLabel": "邮箱地址",
+        "save": "保存更改",
+        "saving": "保存中...",
+        "saveSuccess": "个人资料已更新。",
+        "saveError": "更新个人资料失败。",
+        "validation": "名称至少需要 2 个字符。"
+      },
+      "billing": {
+        "title": "账单与积分",
+        "description": "查看当前方案，并快速进入积分和定价页面。",
+        "currentPlan": "当前方案",
+        "creditsBalance": "积分余额",
+        "renewal": "下次续费",
+        "noRenewal": "当前没有激活订阅",
+        "manageCredits": "管理积分",
+        "viewPricing": "查看定价"
+      },
+      "security": {
+        "title": "安全",
+        "description": "查看账户状态并安全退出登录。",
+        "emailStatus": "邮箱状态",
+        "accountId": "账户 ID",
+        "memberSince": "注册时间",
+        "viewProfile": "查看个人资料",
+        "signOut": "退出登录"
+      }
+    }
+  },
+  "contact": {
+    "title": "联系我们",
+    "subtitle": "我们很乐意倾听您的声音。给我们发送消息，我们会尽快回复。",
+    "description": "请联系我们，我们会以光速回复您。",
+    "testimonial": {
+      "title": "SceneSelf 被数千名创作者使用",
+      "description": "在众多照片和 AI 工具中，SceneSelf 以分钟级交付杂志级别的统一场景影集脱颖而出。"
+    },
+    "form": {
+      "nameLabel": "姓名",
+      "namePlaceholder": "张三",
+      "emailLabel": "邮箱地址",
+      "emailPlaceholder": "hello@example.com",
+      "companyLabel": "公司",
+      "companyPlaceholder": "某某科技有限公司",
+      "messageLabel": "消息",
+      "messagePlaceholder": "请在此处输入您的消息",
+      "submitButton": "提交",
+      "submitting": "发送中...",
+      "submitSuccess": "消息发送成功！",
+      "submitError": "消息发送失败，请重试。"
+    }
+  },
+  "blog": {
+    "title": "博客",
+    "subtitle": "来自我们团队的最新见解与更新",
+    "readMore": "阅读更多",
+    "minRead": "分钟阅读"
+  },
+  "errors": {
+    "404": {
+      "title": "404 - 页面未找到",
+      "message": "您正在寻找的页面不存在。",
+      "backHome": "返回首页"
+    },
+    "500": {
+      "title": "出错了",
+      "message": "我们遇到了一些技术问题，请稍后重试。",
+      "backHome": "返回首页"
+    },
+    "general": {
+      "title": "发生错误",
+      "message": "发生了一些意外情况，请重试。",
+      "tryAgain": "重试"
+    }
+  },
+  "featuredTestimonials": {
+    "people": [
+      {
+        "name": "张伟",
+        "designation": "软件工程师"
+      },
+      {
+        "name": "王强",
+        "designation": "产品经理"
+      },
+      {
+        "name": "李娜",
+        "designation": "数据科学家"
+      },
+      {
+        "name": "陈婷",
+        "designation": "UX设计师"
+      },
+      {
+        "name": "赵明",
+        "designation": "全栈开发者"
+      },
+      {
+        "name": "朱悦",
+        "designation": "探索者"
+      }
+    ]
+  },
+  "footer": {
+    "tagline": "利用 AI 的力量，将您的 SaaS 创意转化为现实。",
+    "product": {
+      "title": "产品",
+      "features": "功能",
+      "pricing": "定价",
+      "documentation": "文档"
+    },
+    "company": {
+      "title": "公司",
+      "about": "关于我们",
+      "blog": "博客",
+      "careers": "招聘"
+    },
+    "legal": {
+      "title": "法律",
+      "privacy": "隐私政策",
+      "terms": "服务条款",
+      "cookies": "Cookie 政策"
+    },
+    "social": {
+      "title": "社交",
+      "twitter": "Twitter",
+      "linkedin": "领英",
+      "github": "GitHub"
+    },
+    "newsletter": {
+      "title": "订阅邮件",
+      "description": "获取最新动态和资讯，直接发送到您的邮箱。",
+      "placeholder": "输入您的邮箱",
+      "subscribe": "订阅"
+    }
+  }
+}

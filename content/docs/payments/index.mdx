@@ -1,0 +1,51 @@
+---
+title: Payments Overview
+description: Subscription billing with Creem.
+---
+
+## Overview
+
+SceneSelf uses [Creem](https://creem.io) for recurring subscription billing. One-time credit packs are not part of the launch config; all access flows through the three subscription tiers below.
+
+## Subscription Plans
+
+Configured in `constants/billing.ts`. All tiers use `grantSchedule: { mode: "per_cycle" }` — credits are granted in full at every renewal.
+
+| Plan | Price | Credits | Cycle |
+|------|-------|---------|-------|
+| Weekly | $2.99 | 1,500 | per week |
+| Monthly *(recommended)* | $9.90 | 8,000 | per month |
+| Yearly | $99 | 100,000 | per year |
+
+`RECOMMENDED_PLAN` (default `"monthly"`) controls the "Most popular" highlight on the pricing page.
+
+## Payment Flow
+
+1. **User clicks buy** → Frontend calls `/api/payments/creem/checkout`
+2. **Checkout session created** → Creem API returns a payment URL
+3. **User completes payment** → Creem sends webhook to `/api/payments/creem/webhook`
+4. **Webhook processing**:
+   - Signature verification (HMAC-SHA256)
+   - Idempotency check (prevents duplicate processing)
+   - Payment record inserted
+   - Subscription record created/updated
+   - Credits granted to user
+   - Confirmation email sent
+
+## Credit Delivery
+
+All three plans grant their full cycle credits on each renewal — no installments. Because of this, the `/api/cron/subscription-grants` cron is optional at launch and only needed if installment-style plans are reintroduced later.
+
+## Testing
+
+Set `CREEM_SIMULATE="true"` in `.env` to bypass real payment processing during development.
+
+## Required Environment Variables
+
+```
+CREEM_API_KEY
+CREEM_WEBHOOK_SECRET
+CREEM_WEEKLY_PRICE_ID
+CREEM_MONTHLY_PRICE_ID
+CREEM_YEARLY_PRICE_ID
+```
