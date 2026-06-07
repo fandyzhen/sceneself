@@ -4,6 +4,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 > 📎 仓库根还有一份 [AGENTS.md](AGENTS.md),里面是"ground rules"(底线 / 不变量 / 易踩坑点),给所有 AI 编程工具用。两份文档互补:本文件偏架构与命令,AGENTS.md 偏底线与约束 — **修改前请同时参考**。
 
+## AI 协作约定(最高优先级)
+
+回答涉及外部产品/服务/平台的**具体事实**(定价、限制、配额、API 行为、政策、版本特性等)时,**必须用 WebSearch / WebFetch 查最新一手资料**,不许靠训练时的记忆答。已知容易过期的领域:
+
+- 第三方平台政策与定价(Vercel / Cloudflare / Resend / Creem / OpenRouter / Neon / GitHub 等)
+- 框架/库的版本特性(Next.js / Drizzle / Better Auth / Fumadocs 等)
+- 模型 ID、模型上下文窗口、模型计费
+- SaaS 商用条款、合规要求
+
+引用时附上来源 URL(WebSearch 已强制)。  
+本地代码事实(本仓库里的文件)优先用 Read / Grep / Bash 验证,同样不许靠印象。
+
 ## 项目概览
 
 **SceneSelf** 是一个 **AI 场景照片集生成器**——用户上传一张自拍 + 一句话场景描述,产出一组 6 张电影级、竖版 (4:5)、风格统一的写真照片(例:旅行九宫格、节日大片、幻想角色集锦等)。

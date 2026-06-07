@@ -28,6 +28,7 @@ Optimize changes for two goals at the same time:
 
 ## Ground Rules
 
+- **Verify facts at answer-time, not from memory.** When the user asks about anything external (third-party platform pricing/limits/policies — Vercel, Cloudflare, Resend, Creem, OpenRouter, Neon, GitHub, etc. — or framework/library version-specific behavior — Next.js, Drizzle, Better Auth, etc., or model IDs/context windows/pricing), use WebSearch/WebFetch to look up current docs and cite the URL. Don't answer from training-time recall. Local code facts (this repo) get verified with Read/Grep/Bash, same principle.
 - Use `pnpm`. `package.json` declares `pnpm@10` as the package manager.
 - Prefer accurate docs over aspirational docs. If the code and docs disagree, fix one of them.
 - Do not reintroduce remote demo asset dependencies that the app serves locally (`public/starter` / `.asset-sources/starter-demo`).
