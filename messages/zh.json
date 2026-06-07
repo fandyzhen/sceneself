@@ -1203,8 +1203,6 @@
       "namePlaceholder": "张三",
       "emailLabel": "邮箱地址",
       "emailPlaceholder": "hello@example.com",
-      "companyLabel": "公司",
-      "companyPlaceholder": "某某科技有限公司",
       "messageLabel": "消息",
       "messagePlaceholder": "请在此处输入您的消息",
       "submitButton": "提交",

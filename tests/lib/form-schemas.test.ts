@@ -20,10 +20,10 @@ describe("form schemas", () => {
   });
 
   it("trims marketing form values before validation", () => {
+    // contact 表单已下线 company 字段(schema/UI/API 都不带),所以测试只断言 3 字段。
     const result = contactSchema.safeParse({
       name: "  SceneSelf  ",
       email: "  team@example.com  ",
-      company: "  Example Inc  ",
       message: "  Hello there  ",
     });
 
@@ -31,7 +31,6 @@ describe("form schemas", () => {
     expect(result.data).toEqual({
       name: "SceneSelf",
       email: "team@example.com",
-      company: "Example Inc",
       message: "Hello there",
     });
   });

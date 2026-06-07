@@ -1204,8 +1204,6 @@
       "namePlaceholder": "John Doe",
       "emailLabel": "Email address",
       "emailPlaceholder": "hello@johndoe.com",
-      "companyLabel": "Company",
-      "companyPlaceholder": "Your Company",
       "messageLabel": "Message",
       "messagePlaceholder": "Enter your message here",
       "submitButton": "Submit",
