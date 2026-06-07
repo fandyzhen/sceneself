@@ -10,9 +10,13 @@ import { runJob } from "@/lib/scene/orchestrator";
 import { getErrorMessage } from "@/lib/error-utils";
 import type { ScenePlan } from "@/lib/scene/types";
 
-// runJob 在 after() 里后台跑 6 张写真(reference chaining 串行第 1 帧 + 其余并发)
-// 总耗时 1-3 分钟。Vercel Pro 最大 300s,Fluid Compute 可到 800s。
-export const maxDuration = 300;
+// runJob 在 after() 里后台跑 6 张写真(reference chaining 串行第 1 帧 + 其余并发)。
+// 实测 200s 内出图,但极端场景(OpenRouter 限流堆叠 + 救援 + salvage 全触发)
+// 可能逼近 300s 上限 → 用户白扣 300 积分卡 generating。
+// Vercel Pro + Fluid Compute(vercel.json fluid:true)允许 800s,
+// 计费按 active CPU(等 LLM 的 I/O 时间 $0),所以 800s 实际花费 ≈ 300s。
+// 极端救命 vs 几乎零成本 = 选 800s。
+export const maxDuration = 800;
 
 export async function POST(req: NextRequest) {
   try {
