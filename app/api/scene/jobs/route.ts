@@ -10,6 +10,10 @@ import { runJob } from "@/lib/scene/orchestrator";
 import { getErrorMessage } from "@/lib/error-utils";
 import type { ScenePlan } from "@/lib/scene/types";
 
+// runJob 在 after() 里后台跑 6 张写真(reference chaining 串行第 1 帧 + 其余并发)
+// 总耗时 1-3 分钟。Vercel Pro 最大 300s,Fluid Compute 可到 800s。
+export const maxDuration = 300;
+
 export async function POST(req: NextRequest) {
   try {
     // v2：生成是扣积分动作，必须登录（注册即送 300 积分 = 免费体验一次）。

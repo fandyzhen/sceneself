@@ -85,6 +85,9 @@ function getErrorMessage(error: unknown, fallback = "Unknown error") {
   return error instanceof Error ? error.message : fallback;
 }
 
+// HMAC 验签 + 多张表事务 + 发购买确认邮件。
+export const maxDuration = 60;
+
 export async function POST(req: NextRequest) {
   // Read raw body for signature verification
   const rawBody = await req.text();

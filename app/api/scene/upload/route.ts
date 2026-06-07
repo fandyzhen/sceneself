@@ -14,6 +14,9 @@ const MAX_BYTES = 12 * 1024 * 1024; // 12MB，容纳手机高清自拍 / HEIC
 // HEIC 走 heic-convert 转 JPEG；其余非 JPEG/PNG 用 sharp 一律转 JPEG，确保下游可用。
 const VOLCANO_NATIVE_CONTENT_TYPES = new Set(["image/jpeg", "image/jpg", "image/png", "image/webp"]);
 
+// HEIC 转码 + R2 上传 + face check(vision LLM)。
+export const maxDuration = 60;
+
 export async function POST(req: NextRequest) {
   try {
     const form = await req.formData();

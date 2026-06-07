@@ -13,6 +13,9 @@ const SAFE_CHIPS = [
   "Dream CEO-style office portrait set",
 ];
 
+// IntentRewriter + PromptModeration + 消歧问题 = 多次 LLM 调用。
+export const maxDuration = 60;
+
 export async function POST(req: NextRequest) {
   try {
     const { rawPrompt } = (await req.json()) as { rawPrompt?: string };

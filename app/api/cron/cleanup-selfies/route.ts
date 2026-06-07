@@ -13,6 +13,9 @@ const CRON_SECRET = process.env.CRON_SECRET;
 const CRON_JOBS_USERNAME = process.env.CRON_JOBS_USERNAME;
 const CRON_JOBS_PASSWORD = process.env.CRON_JOBS_PASSWORD;
 
+// 数据库读 N 行 → 串行删 R2 → DB 更新。每行 R2 删除 ~200-500ms,N 大时给足余量。
+export const maxDuration = 300;
+
 export async function GET(req: NextRequest) {
   const authHeader = req.headers.get("authorization") ?? "";
   const hasBasicCreds = Boolean(CRON_JOBS_USERNAME && CRON_JOBS_PASSWORD);

@@ -8,6 +8,9 @@ const CRON_JOBS_PASSWORD = process.env.CRON_JOBS_PASSWORD;
 const DEFAULT_LIMIT = 50;
 const MAX_LIMIT = 500;
 
+// 批处理 subscription_credit_schedule:每条 DB 事务 + 邮件,N 大时给足余量。
+export const maxDuration = 60;
+
 export async function GET(req: NextRequest) {
   const authHeader = req.headers.get("authorization") ?? "";
   const hasBasicCreds = Boolean(CRON_JOBS_USERNAME && CRON_JOBS_PASSWORD);
