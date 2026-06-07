@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "crons": [
+    {
+      "path": "/api/cron/cleanup-selfies",
+      "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/subscription-grants",
+      "schedule": "0 * * * *"
+    }
+  ]
+}

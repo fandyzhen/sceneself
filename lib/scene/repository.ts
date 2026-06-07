@@ -113,7 +113,21 @@ export async function getJobWithFrames(
   return { job, frames };
 }
 
-// 隐私清理：job 完成后删除自拍与身份特征（SPEC 9.2）。
+// 隐私清理:job 完成后删除自拍与身份特征(SPEC 9.2 / privacy 第 3 节)。
+// 必须 ① 先删 R2 上的物理文件 ② 再清 DB 字段。
+// R2 删除是 best-effort(失败不阻断,有 lifecycle rule 兜底),DB 清理是强制。
 export async function purgeIdentity(id: string): Promise<void> {
+  const { tryDeleteFromR2Url } = await import("../r2-storage");
+  // 取当前 selfieUrl + identityRef,这些是 R2 上的真实文件凭证
+  const [row] = await db
+    .select({ selfieUrl: generationJob.selfieUrl, identityRef: generationJob.identityRef })
+    .from(generationJob)
+    .where(eq(generationJob.id, id))
+    .limit(1);
+  if (row) {
+    if (row.selfieUrl) await tryDeleteFromR2Url(row.selfieUrl);
+    const refUrls = (row.identityRef as { selfieUrls?: string[] } | null)?.selfieUrls ?? [];
+    for (const u of refUrls) await tryDeleteFromR2Url(u);
+  }
   await db.update(generationJob).set({ selfieUrl: null, identityRef: null }).where(eq(generationJob.id, id));
 }

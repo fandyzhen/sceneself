@@ -71,6 +71,40 @@ export async function deleteFromR2(key: string): Promise<void> {
 }
 
 /**
+ * 从 R2 公网 URL 反推 key。
+ * 例:`https://pub-xxx.r2.dev/selfies/u/abc.jpg` → `selfies/u/abc.jpg`。
+ * 返回 null 时表示该 URL 不是 R2 上传产物(可能是 data URL 占位、provider URL 兜底等)。
+ * 运行时读 env 以便测试与多租户场景动态生效。
+ */
+export function keyFromR2Url(url: string | null | undefined): string | null {
+  if (!url || typeof url !== 'string') return null;
+  const base = process.env.STORAGE_PUBLIC_URL || '';
+  if (!base) return null;
+  const prefix = base.endsWith('/') ? base : base + '/';
+  if (!url.startsWith(prefix)) return null;
+  const key = url.slice(prefix.length);
+  return key.length > 0 ? key : null;
+}
+
+/**
+ * 隐私清理用的 best-effort 删除:接受 URL,反推 key 后删除 R2 对象。
+ * 不抛异常 — 失败只打日志。DB 字段无论如何必须清,R2 这边由 lifecycle rule 兜底。
+ * 非 R2 来源的 URL(data URL / provider URL)直接 no-op。
+ */
+export async function tryDeleteFromR2Url(url: string | null | undefined): Promise<boolean> {
+  const key = keyFromR2Url(url);
+  if (!key) return false;
+  if (!r2Client) return false;
+  try {
+    await deleteFromR2(key);
+    return true;
+  } catch (error) {
+    console.error('[R2] tryDeleteFromR2Url failed for key', key, error);
+    return false;
+  }
+}
+
+/**
  * Parse a data URL into (contentType, buffer). Returns null for non-data URLs.
  * 形如 `data:image/png;base64,iVBOR...`
  */
