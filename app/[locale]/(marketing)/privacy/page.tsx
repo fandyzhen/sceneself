@@ -258,12 +258,12 @@ export default function PrivacyPage() {
             If you have any questions or concerns about this Privacy Policy or our data practices, please contact us at:
           </p>
           <ul className="list-none space-y-2 mt-4">
-            <li>Email: privacy@sceneself.com</li>
+            <li>Email: support@sceneself.com</li>
             <li>Support: support@sceneself.com</li>
             <li>Website: https://sceneself.com</li>
           </ul>
           <p className="mt-4">
-            SceneSelf is an independent service operated by a solo developer. For privacy, data-deletion, or any other requests, the fastest way to reach us is by email at privacy@sceneself.com. We typically respond within 24–48 hours.
+            SceneSelf is an independent service operated by a solo developer. For privacy, data-deletion, or any other requests, the fastest way to reach us is by email at support@sceneself.com. We typically respond within 24–48 hours.
           </p>
         </section>
       </div>

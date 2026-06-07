@@ -244,7 +244,7 @@ export default function CookiesPage() {
             If you have any questions about our use of cookies or this Cookie Policy, please contact us at:
           </p>
           <ul className="list-none space-y-2 mt-4">
-            <li>Email: privacy@sceneself.com</li>
+            <li>Email: support@sceneself.com</li>
             <li>Support: support@sceneself.com</li>
             <li>Website: https://sceneself.com</li>
             <li>Operated by: an independent developer (please reach us by email; typical response within 24–48 hours)</li>

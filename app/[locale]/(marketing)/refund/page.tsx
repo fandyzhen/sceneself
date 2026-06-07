@@ -276,7 +276,7 @@ export default function RefundPage() {
           </p>
           <ul className="list-none space-y-2 mt-4">
             <li><strong>Support Email:</strong> support@sceneself.com</li>
-            <li><strong>Billing Disputes:</strong> billing@sceneself.com</li>
+            <li><strong>Billing Disputes:</strong> support@sceneself.com</li>
             <li><strong>Response Time:</strong> Within 24–48 hours, Monday to Friday</li>
             <li><strong>Website:</strong> https://sceneself.com</li>
             <li><strong>Operated by:</strong> an independent developer</li>
