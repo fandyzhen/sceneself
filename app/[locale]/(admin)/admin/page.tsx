@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { user, payment, generationJob, creditLedger } from "@/lib/db/schema";
+import { user, payment, generationJob, generationFrame, creditLedger } from "@/lib/db/schema";
 import { sql } from "drizzle-orm";
 import { AdminDashboard } from "@/features/admin/components/admin-dashboard";
 
@@ -11,7 +11,9 @@ export default async function AdminPage() {
     totalPayments,
     totalRevenue,
     totalSceneJobs,
-    totalCreditsUsed
+    totalCreditsUsed,
+    monthlyDroppedStats,
+    topConsumersRaw,
   ] = await Promise.all([
     // 总用户数
     db.select({ count: sql<number>`count(*)` }).from(user),
@@ -33,7 +35,34 @@ export default async function AdminPage() {
     // 总积分消耗
     db.select({ total: sql<number>`COALESCE(sum(abs(${creditLedger.delta})), 0)` })
       .from(creditLedger)
-      .where(sql`${creditLedger.delta} < 0`)
+      .where(sql`${creditLedger.delta} < 0`),
+
+    // 本月 dropped 率 = dropped / (passed + swapped + dropped),只算最终态。
+    // 衡量产品质量 + 成本压力:dropped 高 → 2× 退款多 → 利润下滑。
+    db.select({
+      dropped: sql<number>`COUNT(*) FILTER (WHERE ${generationFrame.status} = 'dropped')`,
+      delivered: sql<number>`COUNT(*) FILTER (WHERE ${generationFrame.status} IN ('passed', 'swapped'))`,
+    })
+      .from(generationFrame)
+      .where(sql`${generationFrame.createdAt} > DATE_TRUNC('month', NOW())`),
+
+    // 本月 top 10 消耗用户(按 scene_set 扣费聚合)。识别囤积型重度用户。
+    db
+      .select({
+        userId: creditLedger.userId,
+        userName: user.name,
+        userEmail: user.email,
+        consumed: sql<number>`SUM(ABS(${creditLedger.delta}))`,
+        txns: sql<number>`COUNT(*)`,
+      })
+      .from(creditLedger)
+      .leftJoin(user, sql`${creditLedger.userId} = ${user.id}`)
+      .where(
+        sql`${creditLedger.delta} < 0 AND ${creditLedger.reason} = 'scene_set' AND ${creditLedger.createdAt} > DATE_TRUNC('month', NOW())`,
+      )
+      .groupBy(creditLedger.userId, user.name, user.email)
+      .orderBy(sql`SUM(ABS(${creditLedger.delta})) DESC`)
+      .limit(10),
   ]);
 
   // 获取最近的用户
@@ -67,6 +96,20 @@ export default async function AdminPage() {
     .orderBy(sql`${payment.createdAt} desc`)
     .limit(5);
 
+  const droppedRow = monthlyDroppedStats[0];
+  const droppedCount = Number(droppedRow?.dropped ?? 0);
+  const deliveredCount = Number(droppedRow?.delivered ?? 0);
+  const totalFrames = droppedCount + deliveredCount;
+  const monthlyDroppedRate = totalFrames > 0 ? droppedCount / totalFrames : 0;
+
+  const topConsumers = topConsumersRaw.map(c => ({
+    userId: c.userId,
+    userName: c.userName,
+    userEmail: c.userEmail,
+    consumed: Number(c.consumed),
+    txns: Number(c.txns),
+  }));
+
   const stats = {
     totalUsers: totalUsers[0].count,
     activeUsers: activeUsers[0].count,
@@ -74,7 +117,17 @@ export default async function AdminPage() {
     totalRevenue: totalRevenue[0].total / 100, // 转换为元
     totalSceneJobs: totalSceneJobs[0].count,
     totalCreditsUsed: totalCreditsUsed[0].total,
+    monthlyDroppedRate,
+    monthlyDroppedCount: droppedCount,
+    monthlyDeliveredCount: deliveredCount,
   };
 
-  return <AdminDashboard stats={stats} recentUsers={recentUsers} recentPayments={recentPayments} />;
+  return (
+    <AdminDashboard
+      stats={stats}
+      recentUsers={recentUsers}
+      recentPayments={recentPayments}
+      topConsumers={topConsumers}
+    />
+  );
 }

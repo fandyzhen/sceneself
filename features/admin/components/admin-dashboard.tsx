@@ -7,7 +7,9 @@ import {
   TrendingUp,
   Camera,
   Database,
-  Activity
+  Activity,
+  AlertTriangle,
+  TrendingDown
 } from "lucide-react";
 import Link from "next/link";
 import { useLocale } from "next-intl";
@@ -32,6 +34,14 @@ interface AdminRecentPayment {
   createdAt: Date;
 }
 
+interface AdminTopConsumer {
+  userId: string;
+  userName: string | null;
+  userEmail: string | null;
+  consumed: number;
+  txns: number;
+}
+
 interface AdminDashboardProps {
   stats: {
     totalUsers: number;
@@ -40,12 +50,16 @@ interface AdminDashboardProps {
     totalRevenue: number;
     totalSceneJobs: number;
     totalCreditsUsed: number;
+    monthlyDroppedRate: number;
+    monthlyDroppedCount: number;
+    monthlyDeliveredCount: number;
   };
   recentUsers: AdminRecentUser[];
   recentPayments: AdminRecentPayment[];
+  topConsumers: AdminTopConsumer[];
 }
 
-export function AdminDashboard({ stats, recentUsers, recentPayments }: AdminDashboardProps) {
+export function AdminDashboard({ stats, recentUsers, recentPayments, topConsumers }: AdminDashboardProps) {
   const t = useTranslations("Admin.dashboard");
   const locale = useLocale();
 
@@ -91,6 +105,14 @@ export function AdminDashboard({ stats, recentUsers, recentPayments }: AdminDash
       icon: Database,
       color: "bg-muted",
       link: `/admin/credits`
+    },
+    {
+      title: t("monthlyDroppedRate"),
+      // 百分比 + 绝对值上下文(dropped / total)。> 15% 高亮警告(成本压力大)
+      value: `${(stats.monthlyDroppedRate * 100).toFixed(1)}% (${stats.monthlyDroppedCount}/${stats.monthlyDroppedCount + stats.monthlyDeliveredCount})`,
+      icon: stats.monthlyDroppedRate > 0.15 ? AlertTriangle : TrendingDown,
+      color: "bg-muted",
+      link: `/admin/credits`,
     },
   ];
 
@@ -224,6 +246,41 @@ export function AdminDashboard({ stats, recentUsers, recentPayments }: AdminDash
               {t("viewAllPayments")}
             </Link>
           </div>
+        </div>
+      </div>
+
+      {/* 本月消耗最多的用户(识别囤积型 / 重度白嫖) */}
+      <div className="bg-background rounded-lg border border-border">
+        <div className="p-4 border-b border-border">
+          <h3 className="font-semibold text-foreground">
+            {t("topConsumers")}
+          </h3>
+          <p className="text-xs text-muted-foreground mt-1">{t("topConsumersHint")}</p>
+        </div>
+        <div className="p-4">
+          {topConsumers.length === 0 ? (
+            <p className="text-sm text-muted-foreground text-center py-6">{t("noConsumersThisMonth")}</p>
+          ) : (
+            <div className="space-y-2">
+              {topConsumers.map((consumer, idx) => (
+                <div key={consumer.userId} className="flex items-center justify-between py-2 border-b border-border last:border-0">
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-mono text-muted-foreground w-6">{idx + 1}</span>
+                    <div>
+                      <p className="font-medium text-foreground">{consumer.userName || t("unknownUser")}</p>
+                      <p className="text-xs text-muted-foreground">{consumer.userEmail}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-medium text-foreground">{consumer.consumed.toLocaleString()} {t("creditsUnit")}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {Math.floor(consumer.consumed / 300)} {t("setsLabel")} · {consumer.txns} {t("txnsLabel")}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -778,7 +778,14 @@
       "viewAllUsers": "View All Users",
       "viewAllPayments": "View All Payments",
       "unknownUser": "Unknown User",
-      "totalSceneJobs": "Total Scene Jobs"
+      "totalSceneJobs": "Total Scene Jobs",
+      "monthlyDroppedRate": "Dropped Rate (This Month)",
+      "topConsumers": "Top Consumers (This Month)",
+      "topConsumersHint": "Top 10 users by Scene credits consumed this month. Spot hoarder / heavy-leak risks.",
+      "noConsumersThisMonth": "No consumption recorded this month yet.",
+      "creditsUnit": "credits",
+      "setsLabel": "sets",
+      "txnsLabel": "txns"
     },
     "users": {
       "title": "User Management",

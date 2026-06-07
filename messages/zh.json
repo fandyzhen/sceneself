@@ -778,7 +778,14 @@
       "viewAllUsers": "查看所有用户",
       "viewAllPayments": "查看所有支付",
       "unknownUser": "未知用户",
-      "totalSceneJobs": "总 Scene 任务数"
+      "totalSceneJobs": "总 Scene 任务数",
+      "monthlyDroppedRate": "本月 dropped 率",
+      "topConsumers": "本月消耗最多的用户",
+      "topConsumersHint": "本月按 Scene 扣费聚合 top 10。识别囤积型 / 重度白嫖风险用户。",
+      "noConsumersThisMonth": "本月还没有积分消耗记录。",
+      "creditsUnit": "积分",
+      "setsLabel": "组",
+      "txnsLabel": "次"
     },
     "users": {
       "title": "用户管理",
