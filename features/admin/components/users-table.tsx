@@ -2,7 +2,7 @@
 
 import { type FormEvent, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Button } from "@/components/button";
 import {
   Ban,
@@ -48,6 +48,7 @@ export function UsersTable({
   const [isCreditsModalOpen, setIsCreditsModalOpen] = useState(false);
   const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
   const t = useTranslations("Admin.users");
+  const locale = useLocale();
   const hasResults = users.length > 0;
   const pageStart = totalUsers === 0 ? 0 : (currentPage - 1) * pageSize + 1;
   const pageEnd = totalUsers === 0 ? 0 : Math.min(totalUsers, pageStart + users.length - 1);
@@ -290,7 +291,7 @@ export function UsersTable({
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-1 text-sm text-muted-foreground">
                       <Calendar className="h-3 w-3" />
-                      {new Date(user.createdAt).toLocaleDateString()}
+                      {new Date(user.createdAt).toLocaleDateString(locale)}
                     </div>
                   </td>
                   <td className="px-6 py-4">

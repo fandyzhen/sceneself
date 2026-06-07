@@ -850,7 +850,7 @@
       "pagination": {
         "previous": "Previous",
         "next": "Next",
-        "page": "Page {{current}} of {{total}}"
+        "page": "Page {current} of {total}"
       }
     },
     "subscriptions": {
@@ -870,13 +870,13 @@
       "status": "Status",
       "expiryDate": "Expiry Date",
       "createdAt": "Created At",
-      "daysRemaining": "{{days}} days remaining",
+      "daysRemaining": "{days} days remaining",
       "unknownUser": "Unknown User",
       "noSubscriptions": "No subscriptions found",
       "pagination": {
         "previous": "Previous",
         "next": "Next",
-        "page": "Page {{current}} of {{total}}"
+        "page": "Page {current} of {total}"
       }
     },
     "credits": {
@@ -905,7 +905,7 @@
       "pagination": {
         "previous": "Previous",
         "next": "Next",
-        "page": "Page {{current}} of {{total}}"
+        "page": "Page {current} of {total}"
       }
     },
     "redemption": {

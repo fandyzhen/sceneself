@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import {
   ShoppingCart,
   Search,
@@ -37,6 +37,7 @@ export function SubscriptionsTable({ subscriptions: initialSubscriptions, stats 
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [subscriptionPage, setSubscriptionPage] = useState(1);
   const t = useTranslations("Admin.subscriptions");
+  const locale = useLocale();
   const normalizedSearchTerm = searchTerm.trim().toLowerCase();
 
   const filteredSubscriptions = initialSubscriptions.filter((sub) => {
@@ -255,7 +256,7 @@ export function SubscriptionsTable({ subscriptions: initialSubscriptions, stats 
                       {sub.currentPeriodEnd ? (
                         <div>
                           <div className="text-sm text-foreground">
-                            {new Date(sub.currentPeriodEnd).toLocaleDateString()}
+                            {new Date(sub.currentPeriodEnd).toLocaleDateString(locale)}
                           </div>
                           {daysUntilExpiry !== null && daysUntilExpiry > 0 && (
                             <div className="text-xs text-muted-foreground">
@@ -269,7 +270,7 @@ export function SubscriptionsTable({ subscriptions: initialSubscriptions, stats 
                     </td>
                     <td className="px-6 py-4">
                       <div className="text-sm text-muted-foreground">
-                        {new Date(sub.createdAt).toLocaleDateString()}
+                        {new Date(sub.createdAt).toLocaleDateString(locale)}
                       </div>
                     </td>
                   </tr>

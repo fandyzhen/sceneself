@@ -850,7 +850,7 @@
       "pagination": {
         "previous": "上一页",
         "next": "下一页",
-        "page": "第 {{current}} / {{total}} 页"
+        "page": "第 {current} / {total} 页"
       }
     },
     "subscriptions": {
@@ -870,13 +870,13 @@
       "status": "状态",
       "expiryDate": "到期日期",
       "createdAt": "创建时间",
-      "daysRemaining": "剩余 {{days}} 天",
+      "daysRemaining": "剩余 {days} 天",
       "unknownUser": "未知用户",
       "noSubscriptions": "暂无订阅记录",
       "pagination": {
         "previous": "上一页",
         "next": "下一页",
-        "page": "第 {{current}} / {{total}} 页"
+        "page": "第 {current} / {total} 页"
       }
     },
     "credits": {
@@ -905,7 +905,7 @@
       "pagination": {
         "previous": "上一页",
         "next": "下一页",
-        "page": "第 {{current}} / {{total}} 页"
+        "page": "第 {current} / {total} 页"
       }
     },
     "redemption": {

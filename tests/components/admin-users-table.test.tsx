@@ -48,6 +48,7 @@ vi.mock("next-intl", () => ({
 
     return translate;
   },
+  useLocale: () => "en",
 }));
 
 vi.mock("next/navigation", () => ({
