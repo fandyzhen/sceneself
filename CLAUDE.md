@@ -221,9 +221,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 | Plan | 价格 | 积分 | 周期 | 发放模式 |
 |------|------|------|------|---------|
-| `weekly` | $2.99 | 1500 | 周 | `per_cycle`(每周期一次性发) |
-| `monthly` ⭐ 推荐 | $9.90 | 8000 | 月 | `per_cycle` |
-| `yearly` | $99.00 | 100000 | 年 | `per_cycle` |
+| `weekly` | $9.90 | 1500 | 周 | `per_cycle`(每周期一次性发) |
+| `monthly` ⭐ 推荐 | $29.00 | 8000 | 月 | `per_cycle` |
+| `yearly` | $299.00 | 100000 | 年 | `per_cycle` |
 
 > ⚠️ 旧文档里的 `starter_monthly` / `pro_monthly` / `pack_200` 都已下线,**不要再引用**。
 > ⚠️ `grantSchedule.mode = "installments"` 类型还在 [constants/billing.ts](constants/billing.ts) 保留(供未来扩展),但当前三档都是 `per_cycle`,**年付不再分 12 期发放**。

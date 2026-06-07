@@ -81,9 +81,9 @@ describe("marketing pricing", () => {
     expect(screen.getByRole("heading", { name: "Weekly" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Monthly" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Yearly" })).toBeInTheDocument();
-    expect(screen.getByText("$2.99")).toBeInTheDocument();
     expect(screen.getByText("$9.90")).toBeInTheDocument();
-    expect(screen.getByText("$99")).toBeInTheDocument();
+    expect(screen.getByText("$29")).toBeInTheDocument();
+    expect(screen.getByText("$299")).toBeInTheDocument();
     expect(screen.getByText("Most popular")).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "Starter" })).not.toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "Pro" })).not.toBeInTheDocument();

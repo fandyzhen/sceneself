@@ -504,7 +504,7 @@
     "tiers": {
       "weekly": {
         "name": "周付",
-        "price": "$2.99",
+        "price": "$9.90",
         "cadence": "每周",
         "description": "适合临时拍一组场景或单次概念尝试。",
         "cta": "选择周付",
@@ -517,7 +517,7 @@
       },
       "monthly": {
         "name": "月付",
-        "price": "$9.90",
+        "price": "$29",
         "cadence": "每月",
         "description": "稳定连载、按月更新视觉故事的最佳节奏。",
         "cta": "选择月付",
@@ -530,7 +530,7 @@
       },
       "yearly": {
         "name": "年付",
-        "price": "$99",
+        "price": "$299",
         "cadence": "每年",
         "description": "适合全年系列创作者，单点数最划算。",
         "cta": "选择年付",

@@ -31,15 +31,15 @@ describe("billing config", () => {
 
   it("三档 cycle 与 priceCents/credits 与 launch-todo 一致", () => {
     expect(subscriptionPlans.weekly.cycle).toBe("week");
-    expect(subscriptionPlans.weekly.priceCents).toBe(299);
+    expect(subscriptionPlans.weekly.priceCents).toBe(990);
     expect(subscriptionPlans.weekly.creditsPerCycle).toBe(1500);
 
     expect(subscriptionPlans.monthly.cycle).toBe("month");
-    expect(subscriptionPlans.monthly.priceCents).toBe(990);
+    expect(subscriptionPlans.monthly.priceCents).toBe(2900);
     expect(subscriptionPlans.monthly.creditsPerCycle).toBe(8000);
 
     expect(subscriptionPlans.yearly.cycle).toBe("year");
-    expect(subscriptionPlans.yearly.priceCents).toBe(9900);
+    expect(subscriptionPlans.yearly.priceCents).toBe(29900);
     expect(subscriptionPlans.yearly.creditsPerCycle).toBe(100000);
   });
 

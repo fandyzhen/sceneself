@@ -233,9 +233,9 @@ function PricingTease() {
   const locale = useLocale();
   const pricingHref = locale === "en" ? "/pricing" : `/${locale}/pricing`;
   const tiers = [
-    { k: "weekly", price: "$2.99", period: t("pricing.perWeek"), highlight: false },
-    { k: "monthly", price: "$9.90", period: t("pricing.perMonth"), highlight: true },
-    { k: "yearly", price: "$99", period: t("pricing.perYear"), highlight: false },
+    { k: "weekly", price: "$9.90", period: t("pricing.perWeek"), highlight: false },
+    { k: "monthly", price: "$29", period: t("pricing.perMonth"), highlight: true },
+    { k: "yearly", price: "$299", period: t("pricing.perYear"), highlight: false },
   ];
   return (
     <section className="relative border-t border-amber-200/[0.08] bg-stone-950 py-20 sm:py-28">

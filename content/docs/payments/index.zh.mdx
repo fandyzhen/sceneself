@@ -1,50 +1,49 @@
 ---
 title: 支付系统概览
-description: 使用 Creem 的订阅计费和一次性购买。
+description: 使用 Creem 的订阅计费。
 ---
 
 ## 概述
 
-SceneSelf 使用 [Creem](https://creem.io) 进行支付处理，支持周期性订阅和一次性积分包购买。
+SceneSelf 使用 [Creem](https://creem.io) 进行支付处理,提供三档周期性订阅。
 
 ## 订阅计划
 
-在 `constants/billing.ts` 中配置：
+在 `constants/billing.ts` 中配置:
 
-| 计划 | 价格 | 积分 |
-|------|------|------|
-| Starter 月付 | $29/月 | 1,000/月 |
-| Starter 年付 | $290/年 | 12,000/年（每月发放 1,000） |
-| Pro 月付 | $99/月 | 10,000/月 |
-| Pro 年付 | $990/年 | 120,000/年（每月发放 10,000） |
+| 计划 | 价格 | 积分 | 周期 |
+|------|------|------|------|
+| Weekly | $9.90 | 1,500 | 每周 |
+| Monthly *(推荐)* | $29 | 8,000 | 每月 |
+| Yearly | $299 | 100,000 | 每年 |
 
-## 一次性积分包
+`RECOMMENDED_PLAN`(默认 `"monthly"`)控制定价页"最受欢迎"高亮。
 
-| 积分包 | 价格 | 积分 |
-|--------|------|------|
-| 200 积分 | $5 | 200 |
+> 历史的一次性"积分包"(story-pack)和 Starter/Pro 双档套餐已下线。
 
 ## 支付流程
 
 1. **用户点击购买** → 前端调用 `/api/payments/creem/checkout`
 2. **创建 Checkout Session** → Creem API 返回支付链接
 3. **用户完成支付** → Creem 发送 webhook 到 `/api/payments/creem/webhook`
-4. **Webhook 处理**：
-   - 签名验证（HMAC-SHA256）
-   - 幂等性检查（防止重复处理）
+4. **Webhook 处理**:
+   - 签名验证(HMAC-SHA256)
+   - 幂等性检查(防止重复处理)
    - 插入支付记录
    - 创建/更新订阅记录
-   - 发放积分
+   - 发放积分(瞬间到账)
+   - 写 `subscription_credit_schedule`(供 cron 续期发放)
    - 发送确认邮件
 
-## 年付订阅分期发放
+## 周期续费
 
-年付计划不会一次性发放所有积分，而是按月分期：
+三档全部 `per_cycle` 一次性发放,**不分期**:
+- Weekly: Creem 每周自动续费 → webhook → +1,500 积分
+- Monthly: Creem 每月自动续费 → webhook → +8,000 积分
+- Yearly: Creem 每年自动续费 → webhook → +100,000 积分
 
-- 购买年付计划 → 立即发放第一个月积分
-- 剩余 11 个月 → 计划存储在 `subscriptionCreditSchedule` 表中
-- 定时任务（`/api/cron/subscription-grants`）每小时运行，处理到期的积分发放
+`subscription-grants` cron 是防御性兜底(目前 3 档不依赖,但建议跑以防 webhook 失败时补偿)。
 
 ## 测试
 
-在 `.env` 中设置 `CREEM_SIMULATE="true"` 可跳过真实支付，方便开发测试。
+在 `.env` 中设置 `CREEM_SIMULATE="true"` 可跳过真实支付,方便开发测试。

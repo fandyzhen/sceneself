@@ -47,7 +47,7 @@ export const subscriptionPlans: Record<PlanKey, SubscriptionPlan> = {
   weekly: {
     key: "weekly",
     kind: "subscription",
-    priceCents: 299,
+    priceCents: 990,
     currency: "usd",
     creditsPerCycle: 1500,
     cycle: "week",
@@ -57,7 +57,7 @@ export const subscriptionPlans: Record<PlanKey, SubscriptionPlan> = {
   monthly: {
     key: "monthly",
     kind: "subscription",
-    priceCents: 990,
+    priceCents: 2900,
     currency: "usd",
     creditsPerCycle: 8000,
     cycle: "month",
@@ -67,7 +67,7 @@ export const subscriptionPlans: Record<PlanKey, SubscriptionPlan> = {
   yearly: {
     key: "yearly",
     kind: "subscription",
-    priceCents: 9900,
+    priceCents: 29900,
     currency: "usd",
     creditsPerCycle: 100000,
     cycle: "year",

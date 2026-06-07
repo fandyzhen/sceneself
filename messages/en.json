@@ -504,7 +504,7 @@
     "tiers": {
       "weekly": {
         "name": "Weekly",
-        "price": "$2.99",
+        "price": "$9.90",
         "cadence": "per week",
         "description": "A short-run option for trying a scene set or a single concept.",
         "cta": "Choose Weekly",
@@ -517,7 +517,7 @@
       },
       "monthly": {
         "name": "Monthly",
-        "price": "$9.90",
+        "price": "$29",
         "cadence": "per month",
         "description": "The best fit for building a steady visual story month after month.",
         "cta": "Choose Monthly",
@@ -530,7 +530,7 @@
       },
       "yearly": {
         "name": "Yearly",
-        "price": "$99",
+        "price": "$299",
         "cadence": "per year",
         "description": "Serial creators publishing across the year — best per-credit value.",
         "cta": "Choose Yearly",
