@@ -296,7 +296,7 @@ The important groups:
 - Demo assets are intentionally localized into `public/starter`. Do not switch them back to remote runtime URLs.
 - Fumadocs ships Tailwind v4-oriented CSS, so the repo deliberately syncs that stylesheet into `public/` and loads it via `<link>` to avoid Tailwind v3/PostCSS conflicts.
 - Turbopack can still feel heavy on some macOS setups. Prefer `pnpm dev:webpack` if local dev becomes sluggish.
-- `PROMPT_MODERATION_PROVIDER=local` is for development only. **Switch to `llm` or `creem` before live payments.**
+- `PROMPT_MODERATION_PROVIDER`: the code default is `llm` (OpenRouter Gemini semantic moderation — recommended). `local` is English-only regex keywords and misses Chinese, variants, and synonyms — **don't ship with `local`**, Creem merchant review will reject "no content filter mechanism". `creem` is a placeholder for Creem's own moderation API which hasn't been released — picking it currently fail-closes every prompt.
 - `SCENE_DEV_FALLBACK=true` returns placeholder images when there's no OpenRouter key. Disable in production.
 - **Vision-LLM identity false negatives are real.** `SCENE_IDENTITY_OVERRIDE_QUALITY` (default 4) lets a frame pass when quality is high but `same_person=false` (likely misjudgment). Turning `SCENE_IDENTITY_STRICT=true` removes that override and will measurably increase dropped frames.
 - The 6/6 delivery contract for paid users depends on **salvage + rescue** + (once integrated) **face-swap fallback**. Don't quietly disable any layer. The face-swap stub returning null is the current intentional state — the orchestrator still calls it so future integration is drop-in.

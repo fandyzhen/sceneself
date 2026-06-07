@@ -334,7 +334,11 @@ SELFIE_RETENTION_HOURS="24"   # 自拍清理时限
 SCENE_DEV_FALLBACK="true"     # 无 key 时返回占位图
 
 # Scene provider 切换
-PROMPT_MODERATION_PROVIDER="local"   # local | llm | creem(上线前必须切到 llm 或 creem)
+# 代码默认 llm(本地不显式设也走 llm,见 lib/scene/config.ts:31)。
+# - llm: ★ 用 OpenRouter Gemini Flash Lite 做语义审核,推荐
+# - local: 英文正则关键词,中文/变体全漏,只 dev 偷懒,上线必须避开
+# - creem: 占位,Creem 自家 API 没发布,选了会 fail closed 拒绝所有 prompt
+PROMPT_MODERATION_PROVIDER="llm"
 
 # 支付(必需,真上线用)
 CREEM_API_KEY="..."
@@ -448,7 +452,7 @@ newsletter_subscription (id, email, userId?, status, unsubscribeToken, subscribe
 4. **Partner API key**: DB 只存 sha256 hash,明文仅创建时返回一次,前 8 位识别
 5. **兑换码字符集**: 去掉 `0/O/1/I/L`,12 位大写,unique
 6. **自拍隐私**: `selfieUrl` + `identityRef` 按 `SELFIE_RETENTION_HOURS` 由 `/api/cron/cleanup-selfies` 清理
-7. **Prompt 审核**: `PROMPT_MODERATION_PROVIDER` 切换 `local`(开发)/ `llm`(Gemini)/ `creem`(上线前必须切)
+7. **Prompt 审核**: `PROMPT_MODERATION_PROVIDER` —— 代码默认 `llm`(OpenRouter Gemini 语义审核,推荐);`local` 仅英文正则,只 dev 偷懒;`creem` 是占位(Creem API 未发布,选了会拒绝所有 prompt)
 8. **内容改写**: `IntentRewriter` 把不安全口径自动改成 editorial 版,而非硬拒
 9. **用户封禁**: `user.banned` + `banReason` + `banExpires`
 10. **敏感词**: build 时跑 [scripts/check-forbidden-words.mjs](scripts/check-forbidden-words.mjs) 兜底
@@ -474,7 +478,7 @@ pnpm db:migrate  # 用迁移文件
 - 后台建好 weekly / monthly / yearly 三档产品,把 priceId 写入对应环境变量
 - Webhook URL: `https://your-domain.com/api/payments/creem/webhook`
 - 监听事件: `checkout.completed`, `subscription.paid`, `subscription.active`
-- **上线前**把 `PROMPT_MODERATION_PROVIDER` 切到 `creem` 或 `llm`(不能用 `local`)
+- **确认 `PROMPT_MODERATION_PROVIDER` = `llm`**(代码默认就是,但 `.env` 显式覆盖了要改回);**不要**切 `local`(英文正则,中文/变体全漏,Creem 商户审核会因"无内容过滤机制"被拒);**不要**切 `creem`(Creem 自家 moderation API 还没发布,选了会 fail closed 拒绝所有 prompt)
 
 ### 4. Cron
 每小时打:
