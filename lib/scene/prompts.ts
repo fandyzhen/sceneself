@@ -183,6 +183,12 @@ ABSOLUTE rules:
    - At least 4 of 6 beats MUST be front or three_quarter (the subject's face is recognizably visible).
    - At most 2 of 6 beats may be profile or back_view, and ONLY when the scene narratively requires it — facing an opponent, looking out at a vista, holding someone close, focused on a task in front of them, walking away into the distance. A profile or back_view chosen for any other reason (especially to avoid identity verification) is a failure.
    - Identity verification on back_view / profile beats falls back to body proportions, hair, exposed skin, and outfit silhouette — the rendered subject must match those across the whole set.
+15. EVERY beat is a SCROLL-STOPPING PEAK MOMENT, never a dull transition (CRITICAL — this set should read like 6 viral short-video opening frames). For EACH of the 6 beats:
+   - Pick the single MOST memorable, MOST photogenic, MOST on-tone INSTANT of that scene — the peak of the action or emotion, the exact frame that would make someone stop scrolling. NOT a generic wide shot of an empty place; the decisive moment.
+   - Write setting + activity + expression_beat RICHLY and CONCRETELY enough that the rendered image clearly shows THAT peak instant (what the subject is doing at the climax, what their face/body is doing, the one striking visual detail that sells it). Detail here is good — the caption shown to the user is condensed separately, so do not hold back on scene detail.
+   - The MAIN SUBJECT must be clearly present and the visual focus in every beat — vary how (front / three-quarter / profile / back-view / mid-action), but never a pure empty-scenery frame.
+   - The chosen TONE must be unmistakable in every beat's composition, light, mood and body language (a documentary beat feels candid/raw; a cinematic beat feels backlit/dramatic; a cozy beat feels soft/warm; an epic beat feels wide/powerful; etc.).
+   - is_highlight marks the single strongest beat (used as the cover), but the OTHER 5 must ALSO be standout, share-worthy moments — zero filler beats.
 
 Reply STRICT JSON only, no markdown fences.`;
 
@@ -217,6 +223,7 @@ Per system rule 7: output attire.outfit as a SINGLE COMMA-SEPARATED LIST of ever
 ${eraRule} ${selfieRule}
 ${i.companion ? `Companion present: ${i.companion} — show this second person ONLY as back view/silhouette/held hand, never their face.` : ""}
 Produce EXACTLY ${i.shotCount} beats, each a DIFFERENT scene (different setting + activity). Exactly one beat is_highlight=true.
+Per system rule 15: make EVERY beat a scroll-stopping PEAK MOMENT (the most memorable, most on-tone instant of that scene, like a viral short-video opening frame), with the main subject clearly present and the chosen tone unmistakable — write setting/activity/expression_beat richly so the image shows that exact peak. No filler, no empty-scenery beats.
 Reply ONLY JSON of this shape:
 {"attire":{"outfit":"specific period/role-appropriate outfit","hairstyle":"...","accessory":"period/role-appropriate prop or 'none'"},"beats":[{"index":1,"scene_title":"...","setting":"concrete place","activity":"...","shot_perspective":"selfie|friend_candid","shot_size":"wide|medium","face_orientation":"front|three_quarter|profile|back_view","wardrobe":"main or change:<desc>","expression_beat":"...","is_highlight":false}]}
 Rules: settings visibly different; at least half wide UNLESS your attire includes face-occluding headwear/mask (helmet, hood, visor, cap, toque, beanie, mask) — in that case wide shots at most 2 of ${i.shotCount}, medium becomes default, action/combat/crowd beats MUST be medium not wide (per system rule 9); the attire MUST fit the era (no modern clothing in historical/fantasy); ${i.allowSelfie ? "" : "all beats friend_candid;"} exactly one is_highlight=true.`;

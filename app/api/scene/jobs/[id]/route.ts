@@ -31,6 +31,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
         isCover: f.isCover,
         narrativeRole: f.shotSpec?.narrative_role ?? null,
         summary: f.shotSpec?.summary ?? null,
+        caption: f.shotSpec?.caption ?? null,
       }));
 
     return NextResponse.json({

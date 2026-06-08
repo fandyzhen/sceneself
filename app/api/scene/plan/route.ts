@@ -9,8 +9,9 @@ export const maxDuration = 60;
 // 生成 scene_plan（帧数按 tier）。纯规划，不创建 job、不扣 credits。
 export async function POST(req: NextRequest) {
   try {
-    const { safePrompt, answers, tier } = (await req.json()) as {
+    const { safePrompt, rawPrompt, answers, tier } = (await req.json()) as {
       safePrompt?: string;
+      rawPrompt?: string; // 用户原始输入（未翻译），用于把展示 caption 本地化成输入语言
       answers?: Record<string, string>;
       tier?: string;
     };
@@ -26,7 +27,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: moderation.userMessage }, { status: 422 });
     }
 
-    const scenePlan = await buildScenePlan(safePrompt, answers ?? {}, shotCountForTier(t));
+    const scenePlan = await buildScenePlan(
+      safePrompt,
+      answers ?? {},
+      shotCountForTier(t),
+      typeof rawPrompt === "string" && rawPrompt.trim() ? rawPrompt : safePrompt,
+    );
     return NextResponse.json({ scenePlan });
   } catch (error) {
     return NextResponse.json({ error: getErrorMessage(error, "Could not plan this scene.") }, { status: 500 });

@@ -54,6 +54,9 @@ export async function translateToEnglish(text: string): Promise<string> {
   }
 }
 
+// 注：展示用 caption 的生成已迁移到 services/caption.ts（writeSceneCaptions，按 tone 语感提炼爆款钩子）。
+// 本文件只保留「输入翻译为英文供出图」的职责。
+
 export interface NormalizedPrompt {
   /** Prompt 实际用于 IntentRewriter / ScenePlanner 的英文文本 */
   workingPrompt: string;

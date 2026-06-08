@@ -5,6 +5,7 @@ import { createOpenRouterChat } from "../../openrouter/chat";
 import { sceneConfig, hasTextProviderKey } from "../config";
 import { detectAnchorObject, buildContinuityFromAttire, buildFramePromptFromBeat, slugForPlan, titleForPlan, VALID_CLUSTERS, VALID_COHERENCE } from "../scene-plan";
 import { generateStoryline } from "./story-line";
+import { writeSceneCaptions } from "./caption";
 import { SCENE_PLANNER_SYSTEM, classifyInstruction, questionsInstruction, safeAlternativesInstruction, storylineClassifyInstruction } from "../prompts";
 import { getStorylineType, STORYLINE_TYPES, SCENE_TONES } from "../../../constants/scene-storylines";
 import type {
@@ -136,6 +137,9 @@ export async function buildScenePlan(
   safePrompt: string,
   answers: Record<string, string>,
   shotCount: number,
+  // 用户的原始输入（未翻译）。用于把展示用 caption 本地化成用户的输入语言。
+  // 不传则用 safePrompt（多为英文 → caption 保持英文）。
+  rawPrompt?: string,
 ): Promise<ScenePlan> {
   const analysis = await analyzeInput(safePrompt);
   const def = storylineDef(analysis.storyline_type);
@@ -165,7 +169,15 @@ export async function buildScenePlan(
     is_candid: true,
     expression_beat: b.expression_beat,
     image_prompt: buildFramePromptFromBeat(safePrompt, b, continuity, constraints),
+    caption: "" as string,
   }));
+
+  // 展示用 caption：把【已丰富的 6 个场景】各提炼成 1 句爆款钩子（用户语言 + 所选 tone 语感）。
+  // 注意：caption 只给用户看（弹幕 + 结果页图片下方），不参与出图；出图仍用上面的丰富 image_prompt。
+  const captions = await writeSceneCaptions(beats, toneId, rawPrompt ?? safePrompt);
+  shots.forEach((s, i) => {
+    s.caption = (captions[i] || s.narrative_role || s.summary || "").trim();
+  });
 
   return {
     scenario: slugForPlan(safePrompt),

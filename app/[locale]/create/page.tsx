@@ -148,10 +148,12 @@ export default function CreatePage() {
     const safePrompt = clarify.safePrompt;
     const currentSelfieUrl = selfieUrl;
     const currentAnswers = answers;
+    const currentRawPrompt = rawPrompt;
 
     void (async () => {
       try {
-        const planned = await api.planScene(safePrompt, currentAnswers);
+        // 传 rawPrompt → 后端据其语言把展示 caption 本地化（中文输入出中文等）
+        const planned = await api.planScene(safePrompt, currentAnswers, currentRawPrompt);
         if (!planned.scenePlan) {
           setSetupError(planned.error ?? t("errors.generic"));
           return;
@@ -176,7 +178,7 @@ export default function CreatePage() {
         setSetupError(t("errors.generic"));
       }
     })();
-  }, [clarify, answers, selfieUrl, locale, router, t]);
+  }, [clarify, answers, selfieUrl, rawPrompt, locale, router, t]);
 
   const backToClarifyFromGenerating = useCallback(() => {
     setSetupError(null);
@@ -442,7 +444,6 @@ export default function CreatePage() {
                     suggestions={clarify?.tone_suggestions ?? []}
                     selected={answers.tone}
                     otherOpen={!!otherOpen.tone}
-                    wasTranslated={!!clarify?.wasTranslated}
                     rewriteApplied={!!clarify?.rewriteApplied}
                     onPick={(toneId) => { setOtherOpen(o => ({ ...o, tone: false })); setAnswers(a => ({ ...a, tone: toneId })); }}
                     onPickOther={() => { if (otherOpen.tone) return; setOtherOpen(o => ({ ...o, tone: true })); setAnswers(a => ({ ...a, tone: "" })); }}
@@ -597,7 +598,7 @@ function GeneratingView({
   // （旧 stages/stageIdx 话术由新版 ProgressLadder 直接展开 5 步取代）
 
   // 渲染用的 shots：实际 shots 若空（plan 还没回）则给 6 个占位 stub
-  const renderShots: Array<{ index: number; narrativeRole?: string | null }> =
+  const renderShots: Array<{ index: number; narrativeRole?: string | null; caption?: string | null }> =
     shots.length > 0
       ? shots
       : Array.from({ length: TOTAL }, (_, i) => ({ index: i + 1, narrativeRole: null }));
@@ -654,7 +655,7 @@ function GeneratingView({
                 selfiePreview={selfiePreview}
                 delaySec={i * 0.35}
                 elapsed={elapsed}
-                narrativeRole={f?.narrativeRole ?? shot.narrativeRole ?? null}
+                narrativeRole={shot.caption ?? f?.caption ?? f?.narrativeRole ?? shot.narrativeRole ?? null}
                 coverLabel={t("generating.cover")}
                 developingLabel={t("generating.developing")}
               />
@@ -811,20 +812,22 @@ const DANMAKU_SLOT = (DANMAKU_BAR5_END - DANMAKU_BAR1_END) / 6; // ≈8.33s：�
 
 interface DanmakuShot {
   index: number;
+  caption?: string | null;
   narrative_role?: string;
   summary?: string;
   narrativeRole?: string | null;
 }
 
 function DanmakuOverlay({ shots, hide }: { shots: DanmakuShot[]; hide: boolean }) {
-  // 内容：narrative_role（剧情节拍）+ summary（具体场景）拼成一句≈10 词的场景概述。
-  // plan 还没回来（无 role/summary）就整体不渲染，比假数据强。
+  // 内容：优先用 caption（已按用户输入语言本地化）；缺省回退英文 narrative_role · summary。
+  // plan 还没回来（无文本）就整体不渲染，比假数据强。
   const items = shots
     .slice(0, 6)
     .map((s, i) => {
       const role = (s.narrative_role || s.narrativeRole || "").trim();
       const summary = (s.summary || "").trim();
-      let text = role && summary ? `${role} · ${summary}` : summary || role;
+      const fallback = role && summary ? `${role} · ${summary}` : summary || role;
+      let text = (s.caption || "").trim() || fallback;
       if (text.length > 64) text = text.slice(0, 63) + "…";
       return { i, text };
     })
@@ -1132,7 +1135,6 @@ function ToneStep({
   suggestions,
   selected,
   otherOpen,
-  wasTranslated,
   rewriteApplied,
   onPick,
   onPickOther,
@@ -1145,7 +1147,6 @@ function ToneStep({
   suggestions: string[];
   selected: string | undefined;
   otherOpen: boolean;
-  wasTranslated: boolean;
   rewriteApplied: boolean;
   onPick: (toneId: string) => void;
   onPickOther: () => void;
@@ -1159,11 +1160,6 @@ function ToneStep({
         {t("clarify.tone.title")}
       </h1>
       <p className="mt-3 text-sm text-stone-400">{t("clarify.tone.subtitle")}</p>
-      {wasTranslated && (
-        <p className="mt-4 rounded-xl border border-amber-300/15 bg-amber-300/[0.05] px-3.5 py-2.5 text-xs text-amber-200/90">
-          {t("clarify.translatedNotice")}
-        </p>
-      )}
       {rewriteApplied && (
         <p className="mt-4 rounded-xl border border-amber-300/15 bg-amber-300/[0.05] px-3.5 py-2.5 text-xs text-amber-200/90">
           {t("clarify.rewriteNotice")}
@@ -1398,8 +1394,17 @@ function Lightbox({
 
       <div onClick={e => e.stopPropagation()} className="relative max-h-[82vh] w-auto max-w-[90vw]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={f.imageUrl ?? ""} alt={f.narrativeRole ?? ""} className="max-h-[82vh] w-auto max-w-[90vw] rounded-2xl object-contain" />
-        <div className="mt-3 flex items-center justify-between">
+        <img src={f.imageUrl ?? ""} alt={f.narrativeRole ?? ""} className="max-h-[78vh] w-auto max-w-[90vw] rounded-2xl object-contain" />
+        {/* 场景概述（弹幕同款文字，跟随用户输入语言）：caption 缺省回退 role · summary */}
+        {(() => {
+          const cap =
+            (f.caption && f.caption.trim()) ||
+            (f.narrativeRole && f.summary ? `${f.narrativeRole} · ${f.summary}` : f.summary || f.narrativeRole || "");
+          return cap ? (
+            <p className="mt-3 text-center text-[13px] leading-relaxed text-stone-200 sm:text-sm">{cap}</p>
+          ) : null;
+        })()}
+        <div className="mt-2 flex items-center justify-between">
           <span className="text-xs tabular-nums text-stone-400">{index + 1} / {frames.length}</span>
           <button
             type="button"

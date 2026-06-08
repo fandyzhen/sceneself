@@ -100,6 +100,10 @@ export interface ShotSpec {
   // 组内 outfit 一致是对的，但表情统一会让 6 张看起来假；每帧必须有 distinct beat。
   expression_beat?: string;
   image_prompt: string; // 英文完整 prompt，LLM 写，用户永不接触
+  // 展示用一句话场景概述（弹幕 + 结果页 lightbox 用）。跟随用户【输入语言】：
+  // 输入中文→中文，英文→英文，其它语种→对应语种。由 buildScenePlan 据 rawPrompt 本地化生成。
+  // 缺省时前端回退到 `narrative_role · summary`（英文）。
+  caption?: string;
 }
 
 // ── 故事线领域类型(v2:故事线分解机制)──────────────

@@ -172,10 +172,12 @@ const ACTIVITY_STYLING: Record<Activity, ActivityStyling> = {
       "fitted charcoal grey cotton crew-neck t-shirt with sleeves slightly rolled, dark indigo wash jeans (NO chef toque, NO chef hat of any kind, NO double-breasted chef jacket, NO white chef whites, NO checkered chef trousers — this is an indie third-wave cafe owner, not a Michelin chef)",
     // 性别中立：随自拍本人的发型，长发收起。避免强套女性发髻导致男性用户出错。
     hairstyle: "natural hair matching the reference selfie, neatly kept and tied back if long",
-    shoes: "white minimal low-top leather sneakers (Common Projects / Stan Smith style, lightly scuffed)",
+    shoes: "white minimal low-top leather sneakers (Common Projects / Stan Smith style, clean and new)",
     jewelry: "no chef hat, no toque; at most a single thin chain necklace, nothing else",
+    // 围裙：① 崭新干净（开业第一天，不能旧/磨损/脏污）；② 系带在【前襟】系成可见蝴蝶结，
+    // 每一张都必须出现同样的前系带，解决「两张缺系带、样式不一致」。逐帧 prompt 会原样复述此串。
     accessory:
-      "natural undyed linen bistro apron with a single chest pocket, tied at the waist with a simple knot (NO chef whites, NO chef jacket)",
+      "a brand-new, crisp and clean natural-linen half apron worn at the waist with a single chest pocket — the apron strings are wrapped to the FRONT and tied in a neat visible bow knot centered at the waist in EVERY photo (the front tie and bow must be clearly visible and identical in all shots); the apron looks freshly bought for opening day — NO fading, NO stains, NO fraying, NO chef whites, NO chef jacket",
   },
   formal_event: {
     outfit: "elegant black cocktail dress with thin straps, knee-length",
@@ -381,6 +383,8 @@ export function buildFallbackScenePlan(
     is_candid: true,
     expression_beat: b.expression_beat,
     image_prompt: buildFramePromptFromBeat(safePrompt, b, continuity),
+    // 展示用 caption（fallback 路径同步、不调 LLM）：用场景标题，不拼地点（避免「动作·地点」死板感）
+    caption: (b.scene_title || b.setting || "").trim(),
   }));
 
   return {

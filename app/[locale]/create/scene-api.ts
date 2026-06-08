@@ -29,6 +29,8 @@ export interface FrameView {
   isCover: boolean;
   narrativeRole: string | null;
   summary: string | null;
+  /** 展示用一句话场景概述（弹幕 + lightbox），跟随用户输入语言 */
+  caption: string | null;
 }
 
 export interface JobView {
@@ -73,11 +75,12 @@ export async function clarifyScene(rawPrompt: string): Promise<ClarifyResult> {
 export async function planScene(
   safePrompt: string,
   answers: Record<string, string>,
+  rawPrompt?: string,
 ): Promise<{ scenePlan?: ScenePlan; error?: string }> {
   const res = await fetch("/api/scene/plan", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ safePrompt, answers }),
+    body: JSON.stringify({ safePrompt, answers, rawPrompt }),
   });
   return (await res.json()) as { scenePlan?: ScenePlan; error?: string };
 }
