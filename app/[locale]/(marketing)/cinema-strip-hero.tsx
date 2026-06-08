@@ -70,7 +70,11 @@ function MarqueeRow({ images, duration, direction, className, activeSetId, onSet
   return (
     <div className={`relative flex-1 overflow-hidden ${className ?? ""}`}>
       <div
-        className="flex h-full gap-[6px] will-change-transform"
+        // w-max（width:max-content）是关键：不加的话内层 flex 会被 overflow-hidden 父容器撑成视口宽，
+        // 而 keyframe 的 translate3d(-50%) 是「自身宽度」的 50% → 只挪了半个视口就回弹，
+        // 表现为「几乎不动」（实测 ~5px/s）。加 w-max 后自身宽度=整份内容宽，-50% 正好是一份拷贝，
+        // 无缝循环成立，duration 也才真正对应速度。
+        className="flex h-full w-max gap-[6px] will-change-transform"
         style={{
           animation: `${animationName} ${duration}s linear infinite`,
           animationPlayState: activeSetId ? "paused" : "running",
@@ -144,7 +148,7 @@ export function CinemaStripHero() {
         <Perforation />
         <MarqueeRow
           images={ROW1}
-          duration={40}
+          duration={170}
           direction="left"
           activeSetId={activeSetId}
           onSetHover={handleHover}
@@ -153,7 +157,7 @@ export function CinemaStripHero() {
         <Perforation />
         <MarqueeRow
           images={ROW2}
-          duration={55}
+          duration={235}
           direction="right"
           activeSetId={activeSetId}
           onSetHover={handleHover}
@@ -162,7 +166,7 @@ export function CinemaStripHero() {
         {/* 第 3 行只在桌面显示,移动端隐藏避免太密 */}
         <MarqueeRow
           images={ROW3}
-          duration={32}
+          duration={140}
           direction="left"
           className="hidden lg:block"
           activeSetId={activeSetId}

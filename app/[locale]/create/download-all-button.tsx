@@ -1,10 +1,13 @@
 "use client";
 
-// 一键打包/分享全部成片：
-// - 移动端（iPhone/iPad/Android）优先 Web Share API（带 files，能直接保存到相册或发到 IM）
-// - 桌面统一走 zip 下载（桌面 Chrome 的 share 系统集成不完整，常看似"无反应"）
-// - 任何阶段失败都在按钮下方显示错误 + console.error，让用户知道
-// jszip 走 dynamic import 防止首屏 bundle 增大。
+// 单张 / 全部下载（v4：走同源代理）：
+// - 用户体验要求：点击单张 → 下载这一张；点击全部 → 逐张触发下载，不打包。
+// - R2 public bucket（pub-*.r2.dev）默认不带 CORS 头，前端直接 fetch 会被拦
+//   （这就是用户最初投诉的"Could not load images"根因）。
+//   解法：所有下载都走 /api/scene/download?url=...&name=... 同源代理，
+//   服务端透传 + Content-Disposition: attachment，让浏览器原生触发下载弹窗，
+//   完全绕开 CORS / a[download] 跨域被忽略的问题。
+// - 全部下载：循环逐张触发，每次小间隔（~400ms）防止浏览器去重 / 拒绝连点。
 import { useState } from "react";
 import { Download } from "lucide-react";
 
@@ -24,19 +27,17 @@ function slugify(s: string) {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 30) || "scene";
 }
 
-function ext(mime: string) {
-  if (mime.includes("png")) return "png";
-  if (mime.includes("webp")) return "webp";
-  return "jpg";
-}
-
-function isMobileDevice(): boolean {
-  if (typeof navigator === "undefined") return false;
-  // 优先用 UA-CH（Chrome 89+）
-  const uaData = (navigator as { userAgentData?: { mobile?: boolean } }).userAgentData;
-  if (uaData && typeof uaData.mobile === "boolean") return uaData.mobile;
-  // 回退到 UA 嗅探
-  return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+// 触发一次浏览器原生下载（filename 由 server Content-Disposition 头声明）。
+// 单张 / 全部下载共用。返回 Promise 让调用方可以串行 + 加间隔。
+export async function downloadImage(url: string, filename: string): Promise<void> {
+  const proxy = `/api/scene/download?url=${encodeURIComponent(url)}&name=${encodeURIComponent(filename)}`;
+  const a = document.createElement("a");
+  a.href = proxy;
+  a.download = filename;
+  a.rel = "noopener";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 
 export function DownloadAllButton({ frames, prompt, label, sharingLabel }: Props) {
@@ -48,60 +49,24 @@ export function DownloadAllButton({ frames, prompt, label, sharingLabel }: Props
     if (busy || urls.length === 0) return;
     setBusy(true);
     setError(null);
-    try {
-      const slug = slugify(prompt);
-      // fetch 全部图片为 blob。失败的话基本是 R2 CORS 问题。
-      const files: File[] = [];
-      for (let i = 0; i < urls.length; i++) {
-        const u = urls[i];
-        try {
-          const r = await fetch(u, { mode: "cors" });
-          if (!r.ok) throw new Error(`HTTP ${r.status}`);
-          const b = await r.blob();
-          const name = `sceneself-${slug}-${String(i + 1).padStart(2, "0")}.${ext(b.type)}`;
-          files.push(new File([b], name, { type: b.type }));
-        } catch (e) {
-          console.error(`[DownloadAllButton] fetch image ${i + 1} failed:`, e);
-          throw new Error(
-            "Could not load images. Please right-click each image to save individually.",
-          );
-        }
+    const slug = slugify(prompt);
+    let triggered = 0;
+    for (let i = 0; i < urls.length; i++) {
+      try {
+        const name = `sceneself-${slug}-${String(i + 1).padStart(2, "0")}.jpg`;
+        await downloadImage(urls[i], name);
+        triggered++;
+        // 间隔 400ms：让浏览器把多次下载识别为独立动作，避免被合并 / 触发"是否允许多次下载"提示后被拒。
+        await new Promise(res => setTimeout(res, 400));
+      } catch (e) {
+        console.error(`[DownloadAllButton] download image ${i + 1} failed:`, e);
       }
-
-      // 移动端优先 Web Share API
-      if (isMobileDevice() && typeof navigator !== "undefined" && "share" in navigator) {
-        const nav = navigator as Navigator & { canShare?: (data: ShareData) => boolean };
-        if (typeof nav.canShare === "function" && nav.canShare({ files })) {
-          try {
-            await nav.share({ files, title: "My SceneSelf scene" });
-            return;
-          } catch (e) {
-            // 用户取消 → 不降级
-            if (e instanceof Error && e.name === "AbortError") return;
-            console.warn("[DownloadAllButton] share failed, falling back to zip:", e);
-            // 其它错误继续降级 zip
-          }
-        }
-      }
-
-      // 桌面 / 移动端 share 失败 → 打 zip 下载
-      const { default: JSZip } = await import("jszip");
-      const zip = new JSZip();
-      files.forEach(f => zip.file(f.name, f));
-      const blob = await zip.generateAsync({ type: "blob" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `sceneself-${slug}-${urls.length}-photos.zip`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(url), 1500);
-    } catch (e) {
-      console.error("[DownloadAllButton] handleClick failed:", e);
-      setError(e instanceof Error ? e.message : "Download failed. Please try again or right-click each image to save individually.");
-    } finally {
-      setBusy(false);
+    }
+    setBusy(false);
+    if (triggered === 0) {
+      setError("Download failed. Please try again.");
+    } else if (triggered < urls.length) {
+      setError(`${urls.length - triggered} of ${urls.length} image(s) failed to download.`);
     }
   }
 

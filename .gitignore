@@ -66,3 +66,6 @@ public/fumadocs-style.css
 
 # Visual companion mockups (brainstorming)
 .superpowers/
+
+# Playwright MCP 浏览器测试缓存（截图/日志/下载）
+.playwright-mcp/

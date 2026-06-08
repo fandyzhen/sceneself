@@ -12,7 +12,7 @@ import { CREDITS_PER_PHOTO, UNDELIVERED_REFUND_MULTIPLIER } from "@/lib/scene/pr
 import * as api from "./scene-api";
 import type { ScenePlan } from "@/lib/scene/types";
 import type { ClarifyResult, JobView } from "./scene-api";
-import { DownloadAllButton } from "./download-all-button";
+import { DownloadAllButton, downloadImage } from "./download-all-button";
 
 const display = Fraunces({
   subsets: ["latin"],
@@ -638,56 +638,53 @@ function GeneratingView({
 
       <h1 className={`${displayClass} text-[2.1rem] font-medium leading-[1.05] text-stone-50`}>{t("generating.title")}</h1>
 
-      {/* 6 张图（顶部）—— 顺序：6 图 → 阶梯进度 → 整体进度条 → 耐心提示 */}
-      <div className={`mt-6 grid gap-3 ${TOTAL > 4 ? "grid-cols-3" : "grid-cols-2"}`}>
-        {renderShots.map((shot, i) => {
-          const f = frameByIndex.get(shot.index);
-          return (
-            <DevelopingCell
-              key={shot.index}
-              frameIndex={shot.index}
-              total={TOTAL}
-              url={f?.imageUrl ?? null}
-              cover={!!f?.isCover}
-              selfiePreview={selfiePreview}
-              delaySec={i * 0.35}
-              elapsed={elapsed}
-              narrativeRole={f?.narrativeRole ?? shot.narrativeRole ?? null}
-              coverLabel={t("generating.cover")}
-              developingLabel={t("generating.developing")}
-            />
-          );
-        })}
+      {/* 6 张图（顶部）—— 顺序：6 图 → 阶梯进度。
+          relative 父容器供弹幕层定位；弹幕层只覆盖 6 张图区域，不超出。 */}
+      <div className="relative mt-6">
+        <div className={`grid gap-3 ${TOTAL > 4 ? "grid-cols-3" : "grid-cols-2"}`}>
+          {renderShots.map((shot, i) => {
+            const f = frameByIndex.get(shot.index);
+            return (
+              <DevelopingCell
+                key={shot.index}
+                frameIndex={shot.index}
+                total={TOTAL}
+                url={f?.imageUrl ?? null}
+                cover={!!f?.isCover}
+                selfiePreview={selfiePreview}
+                delaySec={i * 0.35}
+                elapsed={elapsed}
+                narrativeRole={f?.narrativeRole ?? shot.narrativeRole ?? null}
+                coverLabel={t("generating.cover")}
+                developingLabel={t("generating.developing")}
+              />
+            );
+          })}
+        </div>
+        {/* 弹幕层：6 条场景概要从右往左飘过；超出图区即被 overflow-hidden 截掉。
+            全部就绪后自动淡出，腾出舞台给最终结果。 */}
+        <DanmakuOverlay shots={renderShots} hide={readyCount >= TOTAL} />
       </div>
 
-      {/* 阶梯进度（6 图下方）：5 步顺序展开 + 每步横向 bar */}
+      {/* 阶梯进度（6 图下方）：6 步顺序展开 + 每步横向 bar */}
       <ProgressLadder
         t={t}
         elapsed={elapsed}
         readyCount={readyCount}
         totalCount={TOTAL}
       />
-
-      {/* 整体进度条（最下面，120s 推 99%；全部就绪则提前 100%） */}
-      <OverallProgress elapsed={elapsed} readyCount={readyCount} totalCount={TOTAL} />
-
-      {/* 耐心提示：移到最下面 — 不写秒数，强调"质量胜过速度" */}
-      <div className="mt-5 rounded-2xl border border-amber-200/15 bg-amber-200/[0.04] px-4 py-3 text-[13px] leading-relaxed text-amber-100/85 sm:text-sm">
-        {t("generating.patience")}
-      </div>
     </motion.section>
   );
 }
 
-// 阶梯进度（5 步顺序展开）：用户产品要求 —
-// - 一项跑完才显示下一项（不是 5 步全展示等高）
-// - 每步用横向 bar 从 0→100% 推进
-// - 时长配置:[20s, 20s, 20s, 30s, 30s] 累积 = [20, 40, 60, 90, 120]
-// - 第 4 步「生成你的照片」:首图就绪(readyCount>=1) → 立即跳完
-// - 第 5 步「精修」:全部就绪(readyCount==totalCount) → 100%;否则推到 99% 卡住
-// - 整体已 120s+ 仍未全就绪:全部步骤推满到 99%（OverallProgress 会卡 99%）
-const STEP_DURATIONS = [20, 20, 20, 30, 30] as const; // 秒
-const STEP_KEYS = ["analyzing", "building", "setting", "generating", "polishing"] as const;
+// 阶梯进度（6 步顺序展开）：v4 产品要求 —
+// - 部署到 Vercel 后生成显著变快,把节奏全部前压
+// - 时长配置:[10s, 5s, 10s, 15s, 20s, 30s] 累积 = [10, 15, 25, 40, 60, 90]
+// - 第 4 步（rendering, 15s）即使第一张提前出来也不提前结束（按时间走完）
+// - 第 6 步（polishing, 30s）：全部就绪 → 100%；否则推到 99% 卡住
+// - 不再渲染总进度条 / patience 文案（用户要求去掉）
+const STEP_DURATIONS = [10, 5, 10, 15, 20, 30] as const; // 秒
+const STEP_KEYS = ["analyzing", "composing", "setting", "rendering", "detailing", "polishing"] as const;
 
 function ProgressLadder({
   t,
@@ -701,7 +698,6 @@ function ProgressLadder({
   totalCount: number;
 }) {
   const allReady = totalCount > 0 && readyCount >= totalCount;
-  const firstReady = readyCount >= 1;
 
   // 计算每步状态：done / active / hidden
   // 累积时间点：cumStart[i] = sum(STEP_DURATIONS[0..i-1])
@@ -710,7 +706,8 @@ function ProgressLadder({
     cumStart.push(cumStart[i] + STEP_DURATIONS[i]);
   }
 
-  // 普通时间分配下当前是哪一步
+  // 普通时间分配下当前是哪一步（纯按 elapsed 推进，
+  // 第 4 步不被首图提前结束 —— 用户产品要求）。
   let timeCurrentIdx = STEP_DURATIONS.length - 1;
   for (let i = 0; i < STEP_DURATIONS.length; i++) {
     if (elapsed < cumStart[i + 1]) {
@@ -719,12 +716,8 @@ function ProgressLadder({
     }
   }
 
-  // 真实帧反馈覆盖时间：
-  //  - 首图就绪：至少跳到第 5 步（"polishing"），把 1-4 全标 done
-  //  - 全部就绪：5 步全 done
-  let currentIdx = timeCurrentIdx;
-  if (firstReady) currentIdx = Math.max(currentIdx, 4);
-  if (allReady) currentIdx = STEP_KEYS.length; // 越界 → 所有都 done
+  // 全部就绪 → 6 步全 done（越界即收尾）
+  const currentIdx = allReady ? STEP_KEYS.length : timeCurrentIdx;
 
   return (
     <ul className="mt-7 space-y-3">
@@ -743,14 +736,11 @@ function ProgressLadder({
           const stepStart = cumStart[i];
           const stepDur = STEP_DURATIONS[i];
           const stepElapsed = Math.max(0, elapsed - stepStart);
-          if (i === 4) {
-            // 第 5 步：30s 推到 99%，allReady → 100%
+          if (i === STEP_KEYS.length - 1) {
+            // 最后一步（polishing, 30s）：推到 99%，allReady → 100%
             pct = allReady ? 100 : Math.min(99, (stepElapsed / stepDur) * 99);
-          } else if (i === 3) {
-            // 第 4 步：30s 推满，firstReady 跳完（已被 currentIdx 处理，不会走到这里）
-            pct = Math.min(100, (stepElapsed / stepDur) * 100);
           } else {
-            // 1-3 步：20s 推满
+            // 其余步：按时长推满
             pct = Math.min(100, (stepElapsed / stepDur) * 100);
           }
         }
@@ -790,32 +780,94 @@ function ProgressLadder({
   );
 }
 
-// 整体进度条（最下面）：120s 推到 99%，全部就绪 → 100%。
-// 即使 elapsed > 120 也卡 99%，让用户知道还在跑。
-function OverallProgress({
-  elapsed,
-  readyCount,
-  totalCount,
-}: {
-  elapsed: number;
-  readyCount: number;
-  totalCount: number;
-}) {
-  const TOTAL_SEC = 120;
-  const allReady = totalCount > 0 && readyCount >= totalCount;
-  const pct = allReady ? 100 : Math.min(99, (elapsed / TOTAL_SEC) * 99);
+// 弹幕层（v7）：在 6 张占位图区域上方，6 条场景概要【依次单条】从右往左完整飘过。
+// 用户要求：
+//  - 一条条出（同一时刻基本只有一条在飞），不是一窝蜂同时滚
+//  - 进度条第 1 条结束（=10s）出第 1 条；到第 5 条进度条结束（累积 60s）6 条全部出完
+//  - 每条约 10 个词（narrative_role · summary 拼一句场景概述）
+//  - 出一遍即可，不循环；每条必须【完整】滑出左边，不能停一半留几个词
+// 实现（v7 关键修正）：
+//  - 改用原生 CSS keyframe（不再用 framer）。原因：起点要用「容器宽」单位（105cqw，从右边界外进），
+//    终点要用「元素自身宽」单位（-110%，保证再长的文字也整条滑出左边）。framer 对「跨单位插值」
+//    不可靠，而 CSS animation 会把两个关键帧各自解析成 px 再线性插值 → 完美横穿。
+//    （v6 的 bug：终点 -105cqw 只按容器宽算，长文案比容器宽得多 → 右半截还露在屏内卡住。）
+//  - w-max 让元素宽度=文字宽，使 -110% 正好等于「文字自身宽 + 余量」。
+//  - delay 从挂载（≈generating 起点）算起，iteration-count:1 + fill:both → 出一遍，前后都停在不可见处。
+//  - 容器 container-type:inline-size 提供 cqw；z-20 高于 cell 内 z-10；hide 时整体淡出。
+const DANMAKU_HUES = [
+  "text-rose-100",
+  "text-amber-100",
+  "text-orange-200",
+  "text-pink-200",
+  "text-white",
+  "text-yellow-100",
+] as const;
+const DANMAKU_TOPS = [10, 30, 50, 68, 24, 80] as const; // 父容器高度百分比（错落，不规律）
+
+// 由进度条时长推导弹幕日程：第 1 条进度条结束后开始，第 5 条进度条结束时全部出完。
+const DANMAKU_BAR1_END = STEP_DURATIONS[0]; // 10s：第 1 条进度条结束
+const DANMAKU_BAR5_END = STEP_DURATIONS.slice(0, 5).reduce((a, b) => a + b, 0); // 60s：第 5 条结束
+const DANMAKU_SLOT = (DANMAKU_BAR5_END - DANMAKU_BAR1_END) / 6; // ≈8.33s：每条独占一个时段
+
+interface DanmakuShot {
+  index: number;
+  narrative_role?: string;
+  summary?: string;
+  narrativeRole?: string | null;
+}
+
+function DanmakuOverlay({ shots, hide }: { shots: DanmakuShot[]; hide: boolean }) {
+  // 内容：narrative_role（剧情节拍）+ summary（具体场景）拼成一句≈10 词的场景概述。
+  // plan 还没回来（无 role/summary）就整体不渲染，比假数据强。
+  const items = shots
+    .slice(0, 6)
+    .map((s, i) => {
+      const role = (s.narrative_role || s.narrativeRole || "").trim();
+      const summary = (s.summary || "").trim();
+      let text = role && summary ? `${role} · ${summary}` : summary || role;
+      if (text.length > 64) text = text.slice(0, 63) + "…";
+      return { i, text };
+    })
+    .filter(x => x.text.length > 0);
+  if (items.length === 0) return null;
   return (
-    <div className="mt-6 space-y-1.5">
-      <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.18em] text-stone-500">
-        <span>{readyCount}/{totalCount}</span>
-        <span>{Math.round(pct)}%</span>
-      </div>
-      <div className="h-1.5 overflow-hidden rounded-full bg-stone-800">
+    <div
+      className="pointer-events-none absolute inset-0 z-20 overflow-hidden rounded-2xl"
+      style={{
+        containerType: "inline-size",
+        opacity: hide ? 0 : 1,
+        transition: "opacity 0.6s ease",
+      }}
+    >
+      {/* scoped keyframe：from=105cqw(容器右外) → to=-110%(元素自身宽，整条滑出左边) */}
+      <style>{`
+        @keyframes ss-danmaku-cross {
+          from { transform: translateX(105cqw); }
+          to   { transform: translateX(-110%); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          [data-danmaku] { animation: none !important; opacity: 0 !important; }
+        }
+      `}</style>
+      {items.map(({ i, text }) => (
         <div
-          className="h-full rounded-full bg-gradient-to-r from-amber-200 via-amber-300 to-orange-300 transition-all duration-700 ease-out"
-          style={{ width: `${pct}%` }}
-        />
-      </div>
+          key={i}
+          data-danmaku
+          className={`absolute left-0 w-max whitespace-nowrap text-[14px] font-bold tracking-wide sm:text-lg ${DANMAKU_HUES[i % DANMAKU_HUES.length]}`}
+          style={{
+            top: `${DANMAKU_TOPS[i % DANMAKU_TOPS.length]}%`,
+            // 多层阴影 + 暖色描边，任何背景（深棕 cell / 浅色成片）都能拉开对比度。
+            textShadow:
+              "0 2px 8px rgba(0,0,0,0.95), 0 0 3px rgba(0,0,0,0.85), 0 0 14px rgba(0,0,0,0.45)",
+            WebkitTextStroke: "0.4px rgba(0,0,0,0.55)",
+            // 一个时段走完一条；delay 依次错开；1 次不循环；both 让 delay 前/结束后都停在不可见处。
+            animation: `ss-danmaku-cross ${DANMAKU_SLOT}s linear ${DANMAKU_BAR1_END + i * DANMAKU_SLOT}s 1 both`,
+            willChange: "transform",
+          }}
+        >
+          {text}
+        </div>
+      ))}
     </div>
   );
 }
@@ -1349,14 +1401,21 @@ function Lightbox({
         <img src={f.imageUrl ?? ""} alt={f.narrativeRole ?? ""} className="max-h-[82vh] w-auto max-w-[90vw] rounded-2xl object-contain" />
         <div className="mt-3 flex items-center justify-between">
           <span className="text-xs tabular-nums text-stone-400">{index + 1} / {frames.length}</span>
-          <a
-            href={f.imageUrl ?? "#"}
-            download={`sceneself-${f.index}.jpg`}
-            onClick={e => e.stopPropagation()}
-            className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-4 py-2 text-sm text-white transition hover:bg-white/20"
+          <button
+            type="button"
+            onClick={e => {
+              e.stopPropagation();
+              if (f.imageUrl) {
+                void downloadImage(f.imageUrl, `sceneself-${f.index}.jpg`).catch(err => {
+                  console.error("[lightbox download] failed:", err);
+                });
+              }
+            }}
+            disabled={!f.imageUrl}
+            className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-4 py-2 text-sm text-white transition hover:bg-white/20 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Download className="h-4 w-4" /> {t("result.download")}
-          </a>
+          </button>
         </div>
       </div>
 

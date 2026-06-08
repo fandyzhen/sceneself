@@ -328,9 +328,10 @@
       },
       "steps": {
         "analyzing": "Analyzing your selfie",
-        "building": "Building your storyline",
+        "composing": "Composing your storyline",
         "setting": "Setting the scenes",
-        "generating": "Generating your photos",
+        "rendering": "Rendering your photos",
+        "detailing": "Locking the look across frames",
         "polishing": "Polishing the final set"
       },
       "progress": "Developed {ready}/{total}",

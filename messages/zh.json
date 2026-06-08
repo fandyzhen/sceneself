@@ -328,9 +328,10 @@
       },
       "steps": {
         "analyzing": "分析你的自拍",
-        "building": "构建你的故事线",
+        "composing": "编排你的故事线",
         "setting": "布置场景",
-        "generating": "生成你的照片",
+        "rendering": "渲染你的照片",
+        "detailing": "锁定整组质感",
         "polishing": "精修最终成片"
       },
       "progress": "已显影 {ready}/{total}",

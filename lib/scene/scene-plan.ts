@@ -87,12 +87,15 @@ export type Activity =
   | "biking"
   | "yoga"
   | "cooking"
+  | "cafe_owner"
   | "formal_event"
   | "beach"
   | "hiking";
 
 // Activity 关键词。"run" 必须在 "running" 之外单独命中（翻译后中文跑步常变 "run in the park"），
 // 但要排除 "run for office / run a business" 这类动词转义。
+// cafe / coffee shop 必须排在 cooking 之前 —— "opening cafe" 在 cooking 之前命中 cafe_owner,
+// 避免被归到 KITCHEN 走出五星酒店厨师装(toque + 双排扣 chef jacket)。
 const ACTIVITY_RULES: { test: RegExp; activity: Activity }[] = [
   // "run/running/runner/runners/jog/jogging/marathon/sprint" — 但不命中 "run a/an" / "run for"
   { test: /\b(running|runner|runners|jog|jogging|marathon|sprint)\b/i, activity: "running" },
@@ -100,6 +103,8 @@ const ACTIVITY_RULES: { test: RegExp; activity: Activity }[] = [
   { test: /\b(swimming|swim|pool|beach\s+swim)\b/i, activity: "swimming" },
   { test: /\b(biking|cycling|bike\s+ride|bicycle)\b/i, activity: "biking" },
   { test: /\b(yoga|pilates|stretching)\b/i, activity: "yoga" },
+  // 优先于 cooking:open(ing)? a cafe / coffee shop / barista / 咖啡店,走 indie cafe owner 风,不走厨师服。
+  { test: /\b(caf[eé]|coffee\s+shop|coffee\s+house|barista)\b/i, activity: "cafe_owner" },
   { test: /\b(cooking|baking|chef\s+at\s+home|in\s+the\s+kitchen)\b/i, activity: "cooking" },
   { test: /\b(black\s+tie|gala|formal\s+event|cocktail\s+party|red\s+carpet)\b/i, activity: "formal_event" },
   { test: /\b(beach|seaside|coast|sunbathing)\b/i, activity: "beach" },
@@ -158,6 +163,19 @@ const ACTIVITY_STYLING: Record<Activity, ActivityStyling> = {
     shoes: "white minimal sneakers (out of frame most of the time)",
     jewelry: "thin gold chain necklace only (no rings — hands are working)",
     accessory: "a beige linen apron tied around the waist",
+  },
+  // Indie / third-wave cafe owner(欧美独立咖啡店老板写真标杆 — Blue Bottle / Sightglass / Bluestone Lane 风)。
+  // 绝对反 toque + 双排扣 chef jacket(那是 fine dining,出戏);也反西装(那是 corporate manager)。
+  // tactile material(linen / cotton / denim)+ 自然色 + 极简金饰 + effortless 发型。
+  cafe_owner: {
+    outfit:
+      "fitted charcoal grey cotton crew-neck t-shirt with sleeves slightly rolled, dark indigo wash jeans (NO chef toque, NO chef hat of any kind, NO double-breasted chef jacket, NO white chef whites, NO checkered chef trousers — this is an indie third-wave cafe owner, not a Michelin chef)",
+    // 性别中立：随自拍本人的发型，长发收起。避免强套女性发髻导致男性用户出错。
+    hairstyle: "natural hair matching the reference selfie, neatly kept and tied back if long",
+    shoes: "white minimal low-top leather sneakers (Common Projects / Stan Smith style, lightly scuffed)",
+    jewelry: "no chef hat, no toque; at most a single thin chain necklace, nothing else",
+    accessory:
+      "natural undyed linen bistro apron with a single chest pocket, tied at the waist with a simple knot (NO chef whites, NO chef jacket)",
   },
   formal_event: {
     outfit: "elegant black cocktail dress with thin straps, knee-length",
@@ -269,6 +287,28 @@ import type { SceneAttire } from "./types";
 
 export function buildContinuityFromAttire(attire: SceneAttire, safePrompt: string): SceneContinuity {
   const anchor = detectAnchorObject(safePrompt);
+
+  // 确定性文化纠偏（cafe/coffee/barista）：LLM 对「开咖啡店」顽固给厨师装（toque + chef jacket），
+  // 实测改 system prompt / attireHint 多次仍复发。这里直接用 indie cafe owner 造型覆盖 LLM 的 outfit/
+  // accessory/shoes/jewelry（衣着才是 chef vs cafe 的分水岭），但【保留 LLM 的发型】以尊重性别。
+  // 只对 cafe_owner 生效，不波及其它职业（它们 LLM 造型一般没问题）。
+  if (detectActivity(safePrompt) === "cafe_owner") {
+    const s = ACTIVITY_STYLING.cafe_owner;
+    // LLM 发型若提到 toque/chef hat（厨师语境残留），改用中立兜底，避免「under toque」却没帽子。
+    const llmHair = attire.hairstyle?.trim();
+    const hair = llmHair && !/toque|chef\s*hat|chef\b/i.test(llmHair) ? llmHair : s.hairstyle;
+    return {
+      outfit: s.outfit,
+      hairstyle: hair,
+      accessory: s.accessory,
+      jewelry: s.jewelry,
+      shoes: s.shoes,
+      camera_style: "iPhone main camera, auto HDR, 4:5 portrait, slight JPEG compression",
+      film_look: "natural daylight, candid, visible skin texture, no studio lighting, no airbrushing",
+      ...(anchor ? { anchor_object: anchor } : {}),
+    };
+  }
+
   return {
     outfit: attire.outfit,
     hairstyle: attire.hairstyle,
@@ -437,7 +477,9 @@ export function buildFramePromptFromBeat(
     // 开头即放最强 amateur 信号(火山偏好开头指令):本帧场景 + 手机随手拍 + deep focus/no bokeh +
     // NOT a professional photographer + amateur framing cues(tilted/off-center/camera-roll)。
     `casual phone snapshot, NOT professional, NOT a fashion editorial, by a non-photographer friend or as a selfie. THIS photo is one specific moment: ${beat.setting} — ${beat.activity}. (Overall experience: ${safePrompt}.) DEEP FOCUS, NO bokeh, NO portrait mode, NO shallow depth of field. Amateur framing: tilted horizon ok, subject slightly off-center, low-effort camera-roll feel`,
-    `same person as the reference selfie`,
+    // 强 race/gender/age lock(v4):实测出现"亚洲男 selfie → 欧美女出图"硬伤,根因是 prompt 只说
+    // "same person as reference",图模型在 reference 影响弱时自由发挥族裔/性别。改为显式强约束。
+    `same person as the reference selfie — preserve the EXACT ethnicity / race, skin tone, gender presentation, apparent age, face shape, eye shape, nose shape, and overall facial features of the reference. NEVER substitute with a different ethnicity (do NOT turn an Asian person into a Caucasian, Black, or Latino person; do NOT turn a Caucasian into an Asian, etc.) and NEVER switch gender (a man stays a man, a woman stays a woman). If the reference selfie shows an Asian man, every single photo MUST depict the same Asian man, not a woman, not a person of a different race`,
     // accessory 前置(位置锁如"centered in front of the waist"必须早出现,火山偏好开头指令)
     `Accessory (same every photo): ${c.accessory}`,
     perspective,
@@ -446,7 +488,9 @@ export function buildFramePromptFromBeat(
     `Outfit (LITERAL, COMPLETE list — every single item below MUST be visibly worn in this frame, do NOT omit any, do NOT add anything not listed): ${outfit}. If the outfit string contains a hat/cap/toque/helmet/crown/beanie/mask, that headwear MUST be visibly on the subject's head in this frame.`,
     // E3:防莫名加眼镜/帽子/配饰。LLM/图模型在 prompt 长时偶尔自由发挥,显式 ban 高频项。
     `STRICT no-additions enforcement: no eyewear (no glasses, no sunglasses, no goggles, no reading glasses, no monocle) UNLESS explicitly listed in the outfit string above; no hat/headwear UNLESS listed in the outfit above; no additional accessories (no extra bag, no extra watch, no extra necklace, no extra ring, no extra earrings, no extra scarf) beyond the accessory/jewelry/shoes locked above. The locked attire is exhaustive — anything not in the list MUST NOT appear`,
-    `Hair (locked): ${c.hairstyle}; jewelry: ${c.jewelry}; shoes: ${c.shoes}`,
+    // 强 hairstyle lock(v4):实测出现"同一组 6 张里某一张突然换发型"硬伤。改为 LITERAL/IDENTICAL 语义。
+    `Hair (LITERAL, IDENTICAL across every frame in this set, NEVER change): ${c.hairstyle} — do NOT change hair length, color, parting, or how it is worn between photos. If the reference shows short black hair, every photo MUST have the same short black hair. Do NOT loosen tied hair, do NOT tie loose hair, do NOT add bangs or remove them, do NOT change shade`,
+    `Jewelry: ${c.jewelry}; Shoes: ${c.shoes}`,
     `Camera & color: ${c.camera_style}, ${c.film_look}`,
     sizeGuidance,
     `Expression for THIS frame (do not reuse): ${beat.expression_beat}`,
@@ -458,7 +502,11 @@ export function buildFramePromptFromBeat(
     "NO floating disconnected objects — every accessory/tool must be naturally held by a hand or attached to a strap/pocket the way real objects rest; no items pasted on the body surface",
   ];
   if (c.anchor_object) {
-    parts.push(`the EXACT same ${c.anchor_object.name} visible — ${c.anchor_object.appearance} — identical across every photo`);
+    // 强 anchor color lock(v4):实测兰博基尼场景"6 张里某 1 张车身颜色与其他不一致"。
+    // 加色彩绝不漂移指令 + 重复 appearance 强约束。
+    parts.push(
+      `the EXACT same ${c.anchor_object.name} visible — ${c.anchor_object.appearance} — IDENTICAL across every photo. The paint / body color stays the EXACT same shade in every frame; do NOT reinterpret the color name, do NOT lighten or darken it, do NOT switch to a different hue, do NOT swap matte/glossy finish. Repeat the appearance verbatim: ${c.anchor_object.appearance}`,
+    );
   }
   if (beat.companion) {
     // 用户产品判断:AI 生成虚构人脸不构成肖像权侵犯,该出现的角色就该出现。
