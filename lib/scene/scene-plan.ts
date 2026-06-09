@@ -9,8 +9,10 @@ import type {
   SceneContinuity,
   StoryBeat,
   StorylineConstraints,
+  SelfieAppearance,
 } from "./types";
 import { fallbackStoryline } from "./services/story-line";
+import { appearanceFrameNote } from "./appearance";
 
 export const VALID_CLUSTERS: ScenarioCluster[] = [
   "destination_travel",
@@ -103,8 +105,9 @@ const ACTIVITY_RULES: { test: RegExp; activity: Activity }[] = [
   { test: /\b(swimming|swim|pool|beach\s+swim)\b/i, activity: "swimming" },
   { test: /\b(biking|cycling|bike\s+ride|bicycle)\b/i, activity: "biking" },
   { test: /\b(yoga|pilates|stretching)\b/i, activity: "yoga" },
-  // 优先于 cooking:open(ing)? a cafe / coffee shop / barista / 咖啡店,走 indie cafe owner 风,不走厨师服。
-  { test: /\b(caf[eé]|coffee\s+shop|coffee\s+house|barista)\b/i, activity: "cafe_owner" },
+  // 优先于 cooking:仅【经营/做咖啡师/开店】语境走 indie cafe owner 风,不走厨师服。
+  // 注意:必须是"开/经营/我的 咖啡店"或"barista",不能是"在咖啡馆喝咖啡"(顾客,不该套围裙)。
+  { test: /\bbarista\b|\b(?:open|opening|opened|run|running|own|owning|owned|start|starting|launch|launching)\b[\s\S]{0,25}\b(?:caf[eé]|coffee\s*(?:shop|house|stand|bar|roaster))\b|\b(?:caf[eé]|coffee\s*shop)\b[\s\S]{0,15}\bowner\b/i, activity: "cafe_owner" },
   { test: /\b(cooking|baking|chef\s+at\s+home|in\s+the\s+kitchen)\b/i, activity: "cooking" },
   { test: /\b(black\s+tie|gala|formal\s+event|cocktail\s+party|red\s+carpet)\b/i, activity: "formal_event" },
   { test: /\b(beach|seaside|coast|sunbathing)\b/i, activity: "beach" },
@@ -281,13 +284,75 @@ export const titleCase = (s: string) =>
 export const slugForPlan = slug;
 export const titleForPlan = titleCase;
 
+// ── 发型/性别确定性纠偏 ──────────────────────────────────────────
+// 优先级链的"安全网"：即使 LLM/styling 给了长发马尾，这里也能纠回自拍真实发型。
+// 仅在【用户没在场景里显式提发型/外貌】且【自拍是短发或男性】且【发型串写了长发/马尾/发髻】时纠正。
+// 用户显式诉求（"长出长发"/"变金发"/古装等）一律放行（safePrompt 已是英文）。
+const EXPLICIT_HAIR_RE = /\b(hair|haircut|hairstyle|bald|shaved\s*head|buzz\s*cut|ponytail|braid(ed)?|bun|man\s*bun|updo|chignon|top\s*knot|hair\s*up|blonde|brunette|redhead|long\s*hair|short\s*hair|beard|moustache|mustache|wig|dyed|curly|straight\s*hair|afro|dreadlocks|bangs|fringe)\b/i;
+// 扎起来/盘起来的长发样式（直接命中即视为长发）
+const TIED_LONG_TOKENS = /\b(ponytail|bun|braid(ed)?|pigtails|updo|chignon|top\s*knot|man\s*bun|space\s*buns|twin\s*tails|twintails|side\s*ponytail|flowing|past\s+(the\s+)?shoulders|waist[-\s]?length|shoulder[-\s]?length)\b/i;
+// "long ... hair/waves/curls/locks"（中间可夹形容词，如 "long wavy hair" / "long beach waves"）
+const LONG_DESC_RE = /\blong\b/i;
+const HAIRY_NOUN_RE = /\b(hair|waves|curls|locks|mane|tresses)\b/i;
+function looksLong(hairstyle: string): boolean {
+  if (TIED_LONG_TOKENS.test(hairstyle)) return true;
+  return LONG_DESC_RE.test(hairstyle) && HAIRY_NOUN_RE.test(hairstyle);
+}
+
+// 用户在场景里【显式】要某种性别化/装扮（含发型/裙装/泳装/角色装/性别词）→ 一律放行，不纠正。
+// 这是优先级链第①层：变身/装扮是用户的明确意图。
+const EXPLICIT_LOOK_RE = /\b(dress|gown|skirt|bikini|swimsuit|lingerie|costume|cosplay|as\s+a\s+(wo)?man|as\s+a\s+(girl|boy)|female|male|drag|kimono|sari|saree|cheongsam|qipao|hanbok|bride|groom|tuxedo|suit)\b/i;
+
+function resolveHairForAppearance(hairstyle: string, safePrompt: string, appearance?: SelfieAppearance): string {
+  if (EXPLICIT_HAIR_RE.test(safePrompt)) return hairstyle; // 用户显式诉求优先，原样
+  if (!appearance) return hairstyle;
+  const shortOrMale = appearance.gender === "male" || appearance.hairLength === "short";
+  if (shortOrMale && looksLong(hairstyle)) {
+    return appearance.hairDesc
+      ? `${appearance.hairDesc} — kept natural and neat, NOT tied into a ponytail/bun/braid`
+      : "natural short hair as in the reference selfie, kept neat (no ponytail, no bun, no braid, no added length)";
+  }
+  return hairstyle;
+}
+
+// 穿搭性别确定性纠偏：自拍是男性、且用户没显式要装扮时，把女性化单品（裙/礼服/比基尼/高跟/女首饰）
+// 按逗号分段替换成男款。这是数据层修正（不是靠 prompt 软提示），覆盖生产 LLM 路径与 fallback 路径。
+// 只处理 male（LLM 默认偏女性，男性才是高发错配方向）；female 由 appearanceFrameNote 软兜。
+function resolveOutfitForAppearance(outfit: string, safePrompt: string, appearance?: SelfieAppearance): string {
+  if (!appearance || appearance.gender !== "male") return outfit;
+  if (EXPLICIT_LOOK_RE.test(safePrompt)) return outfit; // 用户明确要裙装/角色装等 → 尊重
+  let changed = false;
+  const segs = outfit.split(",").map(seg => {
+    const s = seg.toLowerCase();
+    const sub = (rep: string) => { changed = true; return ` ${rep}`; };
+    if (/\bcocktail dress\b|\bevening gown\b|\bball gown\b|\bgown\b/.test(s)) return sub("a tailored dark suit jacket and matching trousers");
+    if (/\bsundress\b/.test(s)) return sub("a light linen short-sleeve button-up shirt");
+    if (/\bdress\b/.test(s) && !/\bdress\s+(shirt|shoes|pants|trousers|code|coat)\b/.test(s)) return sub("a tailored shirt and trousers");
+    if (/\b(pleated\s+|midi\s+|mini\s+|maxi\s+)?skirt\b/.test(s)) return sub("tailored trousers");
+    if (/\bbikini\b/.test(s)) return sub("plain fitted swim trunks");
+    if (/\bone-piece swimsuit\b/.test(s)) return sub("plain fitted swim trunks");
+    if (/\b(high[-\s]?heel|pointed-toe heels|stiletto|heels)\b/.test(s)) return sub("clean leather dress shoes");
+    if (/\bpearl (stud )?earrings\b|\bbracelet\b|\bnecklace\b/.test(s)) return sub("no jewelry");
+    if (/\bblouse\b/.test(s)) return sub("a button-up shirt");
+    if (/\bhigh-waist leggings\b|\bleggings\b/.test(s)) return sub("athletic shorts or joggers");
+    return seg;
+  });
+  if (!changed) return outfit;
+  return segs.join(",").replace(/\s{2,}/g, " ").replace(/\s+,/g, ",").trim() +
+    ". The subject is MALE — render masculine clothing only; absolutely NO dress, gown, skirt, bikini or high heels.";
+}
+
 // ── buildContinuityFromAttire（LLM attire → 完整 SceneContinuity）──────────
 // 把 generateStoryline 返回的 type-appropriate attire 合成完整 SceneContinuity。
 // 补全 jewelry / shoes / camera_style / film_look 四个 LLM 不输出的字段，
 // 以及可选的 anchor_object（从 safePrompt 检测）。
 import type { SceneAttire } from "./types";
 
-export function buildContinuityFromAttire(attire: SceneAttire, safePrompt: string): SceneContinuity {
+export function buildContinuityFromAttire(
+  attire: SceneAttire,
+  safePrompt: string,
+  appearance?: SelfieAppearance,
+): SceneContinuity {
   const anchor = detectAnchorObject(safePrompt);
 
   // 确定性文化纠偏（cafe/coffee/barista）：LLM 对「开咖啡店」顽固给厨师装（toque + chef jacket），
@@ -298,10 +363,10 @@ export function buildContinuityFromAttire(attire: SceneAttire, safePrompt: strin
     const s = ACTIVITY_STYLING.cafe_owner;
     // LLM 发型若提到 toque/chef hat（厨师语境残留），改用中立兜底，避免「under toque」却没帽子。
     const llmHair = attire.hairstyle?.trim();
-    const hair = llmHair && !/toque|chef\s*hat|chef\b/i.test(llmHair) ? llmHair : s.hairstyle;
+    const rawHair = llmHair && !/toque|chef\s*hat|chef\b/i.test(llmHair) ? llmHair : s.hairstyle;
     return {
       outfit: s.outfit,
-      hairstyle: hair,
+      hairstyle: resolveHairForAppearance(rawHair, safePrompt, appearance),
       accessory: s.accessory,
       jewelry: s.jewelry,
       shoes: s.shoes,
@@ -312,9 +377,9 @@ export function buildContinuityFromAttire(attire: SceneAttire, safePrompt: strin
   }
 
   return {
-    outfit: attire.outfit,
-    hairstyle: attire.hairstyle,
-    accessory: attire.accessory,
+    outfit: resolveOutfitForAppearance(attire.outfit, safePrompt, appearance),
+    hairstyle: resolveHairForAppearance(attire.hairstyle, safePrompt, appearance),
+    accessory: resolveOutfitForAppearance(attire.accessory, safePrompt, appearance),
     // 明确禁止,不留 "implies" 这种哲学留白(图模型会自由加项链/手镯导致组内不一致)。
     jewelry: "ABSOLUTELY no extra jewelry — no necklace, no earrings, no rings, no bracelets, no watch unless the outfit string above explicitly lists one",
     // 鞋子归 outfit 字符串管(attire 已要求把鞋列进去);此字段只兜底,避免冲突。
@@ -332,6 +397,7 @@ export function buildContinuityFromAttire(attire: SceneAttire, safePrompt: strin
 export function buildFallbackContinuity(
   safePrompt: string,
   answers: Record<string, string>,
+  appearance?: SelfieAppearance,
 ): SceneContinuity {
   const activity = detectActivity(safePrompt);
   let styling = activity ? ACTIVITY_STYLING[activity] : DEFAULT_STYLING;
@@ -342,10 +408,11 @@ export function buildFallbackContinuity(
   }
   const anchor = detectAnchorObject(safePrompt);
   return {
-    outfit: styling.outfit,
-    accessory: styling.accessory,
-    hairstyle: styling.hairstyle,
-    jewelry: styling.jewelry,
+    // 穿搭/发型按优先级链纠偏（男生不被强加裙装/比基尼/马尾；用户显式诉求优先）
+    outfit: resolveOutfitForAppearance(styling.outfit, safePrompt, appearance),
+    accessory: resolveOutfitForAppearance(styling.accessory, safePrompt, appearance),
+    hairstyle: resolveHairForAppearance(styling.hairstyle, safePrompt, appearance),
+    jewelry: resolveOutfitForAppearance(styling.jewelry, safePrompt, appearance),
     shoes: styling.shoes,
     // 强 phone-snapshot 口径（避免"vintage film"被模型理解成专业相机）
     camera_style: "iPhone main camera, auto HDR, 4:5 portrait, slight JPEG compression",
@@ -361,6 +428,7 @@ export function buildFallbackScenePlan(
   classification: SceneClassification,
   shotCount: number,
   answers?: Record<string, string>,
+  appearance?: SelfieAppearance,
 ): ScenePlan {
   const a = answers ?? {};
   // 同步故事线骨架：N 个明显不同的场景 + 恰一个高潮帧。
@@ -372,7 +440,7 @@ export function buildFallbackScenePlan(
     shotCount,
     companion: a.companion?.trim() || null,
   }).beats;
-  const continuity = buildFallbackContinuity(safePrompt, a);
+  const continuity = buildFallbackContinuity(safePrompt, a, appearance);
   const shots: ShotSpec[] = beats.map(b => ({
     index: b.index,
     narrative_role: b.scene_title,
@@ -382,7 +450,7 @@ export function buildFallbackScenePlan(
     lighting: "natural soft light",
     is_candid: true,
     expression_beat: b.expression_beat,
-    image_prompt: buildFramePromptFromBeat(safePrompt, b, continuity),
+    image_prompt: buildFramePromptFromBeat(safePrompt, b, continuity, undefined, appearance),
     // 展示用 caption（fallback 路径同步、不调 LLM）：用场景标题，不拼地点（避免「动作·地点」死板感）
     caption: (b.scene_title || b.setting || "").trim(),
   }));
@@ -458,6 +526,7 @@ export function buildFramePromptFromBeat(
   beat: StoryBeat,
   c: SceneContinuity,
   constraints?: StorylineConstraints,
+  appearance?: SelfieAppearance,
 ): string {
   const outfit = beat.wardrobe.startsWith("change:")
     ? beat.wardrobe.slice("change:".length).trim()
@@ -481,19 +550,22 @@ export function buildFramePromptFromBeat(
     // 开头即放最强 amateur 信号(火山偏好开头指令):本帧场景 + 手机随手拍 + deep focus/no bokeh +
     // NOT a professional photographer + amateur framing cues(tilted/off-center/camera-roll)。
     `casual phone snapshot, NOT professional, NOT a fashion editorial, by a non-photographer friend or as a selfie. THIS photo is one specific moment: ${beat.setting} — ${beat.activity}. (Overall experience: ${safePrompt}.) DEEP FOCUS, NO bokeh, NO portrait mode, NO shallow depth of field. Amateur framing: tilted horizon ok, subject slightly off-center, low-effort camera-roll feel`,
+    // accessory 前置(位置锁如"centered in front of the waist"必须早出现,模型偏好开头指令);
+    // 放在 race/gender lock 之前,确保位置锁落在 prompt 头部(no-close-shot.test 守的就是这条)。
+    `Accessory (same every photo): ${c.accessory}`,
     // 强 race/gender/age lock(v4):实测出现"亚洲男 selfie → 欧美女出图"硬伤,根因是 prompt 只说
     // "same person as reference",图模型在 reference 影响弱时自由发挥族裔/性别。改为显式强约束。
     `same person as the reference selfie — preserve the EXACT ethnicity / race, skin tone, gender presentation, apparent age, face shape, eye shape, nose shape, and overall facial features of the reference. NEVER substitute with a different ethnicity (do NOT turn an Asian person into a Caucasian, Black, or Latino person; do NOT turn a Caucasian into an Asian, etc.) and NEVER switch gender (a man stays a man, a woman stays a woman). If the reference selfie shows an Asian man, every single photo MUST depict the same Asian man, not a woman, not a person of a different race`,
-    // accessory 前置(位置锁如"centered in front of the waist"必须早出现,火山偏好开头指令)
-    `Accessory (same every photo): ${c.accessory}`,
     perspective,
     // OUTFIT 强 enforcement:逐字渲染 + 完整列表(每件都要出现,不要加列表外的物件)。
     // 修了"第一组无帽子/第二组帽子不统一/围裙颜色每帧变"的根因(LLM 写了 outfit 字符串但图模型自由发挥)。
     `Outfit (LITERAL, COMPLETE list — every single item below MUST be visibly worn in this frame, do NOT omit any, do NOT add anything not listed): ${outfit}. If the outfit string contains a hat/cap/toque/helmet/crown/beanie/mask, that headwear MUST be visibly on the subject's head in this frame.`,
     // E3:防莫名加眼镜/帽子/配饰。LLM/图模型在 prompt 长时偶尔自由发挥,显式 ban 高频项。
     `STRICT no-additions enforcement: no eyewear (no glasses, no sunglasses, no goggles, no reading glasses, no monocle) UNLESS explicitly listed in the outfit string above; no hat/headwear UNLESS listed in the outfit above; no additional accessories (no extra bag, no extra watch, no extra necklace, no extra ring, no extra earrings, no extra scarf) beyond the accessory/jewelry/shoes locked above. The locked attire is exhaustive — anything not in the list MUST NOT appear`,
-    // 强 hairstyle lock(v4):实测出现"同一组 6 张里某一张突然换发型"硬伤。改为 LITERAL/IDENTICAL 语义。
-    `Hair (LITERAL, IDENTICAL across every frame in this set, NEVER change): ${c.hairstyle} — do NOT change hair length, color, parting, or how it is worn between photos. If the reference shows short black hair, every photo MUST have the same short black hair. Do NOT loosen tied hair, do NOT tie loose hair, do NOT add bangs or remove them, do NOT change shade`,
+    // 发型/性别优先级链（v5）：用户显式诉求 > 自拍真实 > 活动条件。短发/男生不被强加马尾/裙子。
+    appearanceFrameNote(appearance),
+    // 强 hairstyle lock：同组 6 张发型一致（锁定目标=由上面优先级决定的那个发型，不是凭空长发）。
+    `Hair (IDENTICAL across every frame in this set, NEVER change between photos): ${c.hairstyle} — keep the same length, color, parting and how it is worn in all 6 photos. Do NOT loosen tied hair, do NOT tie loose hair, do NOT add or remove bangs, do NOT change shade. (This locked hairstyle must itself obey the hair & gender priority above.)`,
     `Jewelry: ${c.jewelry}; Shoes: ${c.shoes}`,
     `Camera & color: ${c.camera_style}, ${c.film_look}`,
     sizeGuidance,

@@ -16,6 +16,7 @@ import type {
   CoherenceType,
   RiskLevel,
   StorylineType,
+  SelfieAppearance,
 } from "../types";
 
 function parseJson<T>(content: string): T | null {
@@ -140,6 +141,9 @@ export async function buildScenePlan(
   // 用户的原始输入（未翻译）。用于把展示用 caption 本地化成用户的输入语言。
   // 不传则用 safePrompt（多为英文 → caption 保持英文）。
   rawPrompt?: string,
+  // 自拍画像（性别 + 发型）。造型优先级链第②层默认值：用户没对发型外貌提诉求时，
+  // 发型与性别化穿搭以此为准（短发男不被强加马尾/裙子）。不传则下游退到"以参考自拍为准"。
+  appearance?: SelfieAppearance,
 ): Promise<ScenePlan> {
   const analysis = await analyzeInput(safePrompt);
   const def = storylineDef(analysis.storyline_type);
@@ -155,9 +159,10 @@ export async function buildScenePlan(
     focusId,
     shotCount,
     companion,
+    appearance,
   });
   const constraints = { era: def.era, allowSelfie: def.allowSelfie, allowModernProps: def.allowModernProps };
-  const continuity = buildContinuityFromAttire(attire, safePrompt);
+  const continuity = buildContinuityFromAttire(attire, safePrompt, appearance);
 
   const shots = beats.map(b => ({
     index: b.index,
@@ -168,7 +173,7 @@ export async function buildScenePlan(
     lighting: "natural light",
     is_candid: true,
     expression_beat: b.expression_beat,
-    image_prompt: buildFramePromptFromBeat(safePrompt, b, continuity, constraints),
+    image_prompt: buildFramePromptFromBeat(safePrompt, b, continuity, constraints, appearance),
     caption: "" as string,
   }));
 

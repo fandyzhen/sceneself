@@ -211,6 +211,17 @@ export interface IdentityRef {
   selfieUrls: string[];
 }
 
+// 自拍画像（upload 阶段由 face-check 视觉 LLM 顺带识别）。
+// 用作"造型优先级链"的第②层默认值：当用户没在场景里对发型/外貌提明确诉求时，
+// 发型与性别化穿搭以这份画像为准（短发就短发、男生就男生），不再写死长发女性。
+// 全部 optional：识别失败 / 无 key / dev 时为空，下游回退到"以参考自拍为准"的措辞。
+export interface SelfieAppearance {
+  gender?: 'male' | 'female' | 'unclear';
+  hairLength?: 'short' | 'medium' | 'long';
+  // 简短发型描述（颜色 + 卷直 + 怎么戴），如 "short black straight hair" / "long wavy brown hair"
+  hairDesc?: string;
+}
+
 // ---- service IO ----
 
 export interface RewriteResult {

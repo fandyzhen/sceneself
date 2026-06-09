@@ -3,10 +3,20 @@
 import { createOpenRouterVision } from "../../openrouter/chat";
 import { sceneConfig, hasVisionProviderKey } from "../config";
 import { FACE_CHECK_PROMPT } from "../prompts";
+import type { SelfieAppearance } from "../types";
 
 export interface FaceCheckResult {
   ok: boolean;
   reason?: "no_face" | "multiple_people";
+  // 通过时顺带返回自拍画像（性别 + 发型），驱动造型优先级链第②层默认值。
+  appearance?: SelfieAppearance;
+}
+
+function normGender(v: unknown): SelfieAppearance["gender"] {
+  return v === "male" || v === "female" ? v : "unclear";
+}
+function normHairLength(v: unknown): SelfieAppearance["hairLength"] | undefined {
+  return v === "short" || v === "medium" || v === "long" ? v : undefined;
 }
 
 export async function checkFace(selfieUrl: string): Promise<FaceCheckResult> {
@@ -14,7 +24,7 @@ export async function checkFace(selfieUrl: string): Promise<FaceCheckResult> {
   try {
     const text = await createOpenRouterVision(FACE_CHECK_PROMPT, [selfieUrl], {
       model: sceneConfig.visionModel,
-      max_tokens: 128,
+      max_tokens: 160,
       // minimal reasoning：简单判断式输出，无需 chain-of-thought。
       reasoningEffort: "minimal",
     });
@@ -25,12 +35,20 @@ export async function checkFace(selfieUrl: string): Promise<FaceCheckResult> {
         ? (JSON.parse(text.slice(s, e + 1)) as {
             has_clear_face?: boolean;
             single_person?: boolean;
+            gender?: unknown;
+            hair_length?: unknown;
+            hair_desc?: unknown;
           })
         : null;
     if (!j) return { ok: true }; // 解析失败保守放行（不误伤真人）
     if (!j.has_clear_face) return { ok: false, reason: "no_face" };
     if (j.single_person === false) return { ok: false, reason: "multiple_people" };
-    return { ok: true };
+    const appearance: SelfieAppearance = {
+      gender: normGender(j.gender),
+      hairLength: normHairLength(j.hair_length),
+      hairDesc: typeof j.hair_desc === "string" ? j.hair_desc.trim().slice(0, 60) : undefined,
+    };
+    return { ok: true, appearance };
   } catch {
     return { ok: true }; // 检测故障放行（不阻塞；正式可改 fail closed）
   }

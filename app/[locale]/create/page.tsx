@@ -51,6 +51,8 @@ export default function CreatePage() {
 
   const [step, setStep] = useState<Step>("upload");
   const [selfieUrl, setSelfieUrl] = useState<string | null>(null);
+  // 自拍画像（性别 + 发型），upload 阶段 face-check 识别，驱动造型优先级链第②层默认值
+  const [selfieAppearance, setSelfieAppearance] = useState<import("@/lib/scene/types").SelfieAppearance | null>(null);
   const [selfiePreview, setSelfiePreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [confirmedOwn, setConfirmedOwn] = useState(false);
@@ -99,8 +101,9 @@ export default function CreatePage() {
       }
       setUploading(true);
       try {
-        const url = await api.uploadSelfie(file);
+        const { url, appearance } = await api.uploadSelfie(file);
         setSelfieUrl(url);
+        setSelfieAppearance(appearance);
         // HEIC 本地预览可能失败，用服务端（已转码）URL 兜底
         if (/\.(heic|heif)$/i.test(file.name)) setSelfiePreview(url);
       } catch (e) {
@@ -149,11 +152,12 @@ export default function CreatePage() {
     const currentSelfieUrl = selfieUrl;
     const currentAnswers = answers;
     const currentRawPrompt = rawPrompt;
+    const currentAppearance = selfieAppearance;
 
     void (async () => {
       try {
-        // 传 rawPrompt → 后端据其语言把展示 caption 本地化（中文输入出中文等）
-        const planned = await api.planScene(safePrompt, currentAnswers, currentRawPrompt);
+        // 传 rawPrompt（caption 本地化语言）+ appearance（造型按自拍性别/发型适配）
+        const planned = await api.planScene(safePrompt, currentAnswers, currentRawPrompt, currentAppearance);
         if (!planned.scenePlan) {
           setSetupError(planned.error ?? t("errors.generic"));
           return;
@@ -178,7 +182,7 @@ export default function CreatePage() {
         setSetupError(t("errors.generic"));
       }
     })();
-  }, [clarify, answers, selfieUrl, rawPrompt, locale, router, t]);
+  }, [clarify, answers, selfieUrl, selfieAppearance, rawPrompt, locale, router, t]);
 
   const backToClarifyFromGenerating = useCallback(() => {
     setSetupError(null);
@@ -254,6 +258,7 @@ export default function CreatePage() {
   const reset = () => {
     setStep("upload");
     setRawPrompt("");
+    setSelfieAppearance(null);
     setClarify(null);
     setAnswers({});
     setOtherOpen({});

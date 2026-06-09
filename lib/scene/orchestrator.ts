@@ -39,7 +39,14 @@ export interface OrchestratorDeps {
   identityOverrideQuality?: number;
   // dropped 帧救援尝试次数(成功即停)。生产环境从 sceneConfig.rescueAttempts 注入(默认 2);
   // 测试默认 1 兼容旧断言(delivery-recovery.test.ts)。
+  // 轮次制:这是"基础救援"的轮数,无条件跑完,不受时间预算限制。
   rescueAttempts?: number;
+  // 时间预算(毫秒)。注入则在基础救援后启用"额外救援轮"——只要还有 dropped 帧
+  // 且剩余时间 ≥ 0.5×单轮耗时,就继续补救,尽量凑齐 6 张。不注入(单测)则不跑额外轮,
+  // 行为与重构前一致。计时从 runGeneration 入口起算。
+  timeBudgetMs?: number;
+  // 单轮救援估计耗时(毫秒,实测 ~20s)。额外救援阈值 = 0.5×该值。
+  rescueRoundMs?: number;
   // 开启后：先串行出第1帧作为"组内视觉锚"，再把它作为额外 reference 喂给其余帧并发出图，
   // 大幅提升 outfit 颜色 / 配饰位置 / anchor 物体内饰色的组内一致性（代价：总耗时多一个单帧）。
   referenceChaining?: boolean;
@@ -183,6 +190,8 @@ export async function runGeneration(
   refs: string[],
   deps: OrchestratorDeps,
 ): Promise<GenerationResult> {
+  // 时间预算计时起点（总墙钟从这里算）。额外救援轮据此判断剩余时间。
+  const startTs = Date.now();
   // 含遮挡 outfit(helmet/cap/toque/mask 等)的场景下,人脸识别准确率天然受压。
   // 用户产品判断:"露出部分+身体轮廓能识别就该放行"——主要针对 identity 那一关,
   // quality 仍走 qualityMin 底线(图本身糊就该 drop)。
@@ -263,8 +272,12 @@ export async function runGeneration(
   //  1. 多次尝试 rescueAttempts(默认 2): 一次救不回的(模型不稳/质检误判)再来一次,实测能再多救 20-30%。
   //     成功即停,不浪费额度;失败不阻塞别的 dropped 帧(各自 Promise.all 内独立 retry)。
   //  2. 不依赖 kept 非空: 全 dropped 时也救(用原 refs 而非 benchmark),否则极端场景一帧都没救。
-  const dropped = outcomes.filter(o => o.status === "dropped");
-  if (dropped.length > 0) {
+  // ── 救援（轮次制 + 时间预算）──────────────────────────────────────
+  // 一"轮" = 对所有仍 dropped 的帧并发各补救 1 次（多帧并发 ≈ 单帧墙钟）。
+  // ① 基础救援：跑 rescueAttempts 轮，无条件，不受时间预算限制。
+  // ② 额外救援：基础跑完仍有 dropped 时，只要 剩余时间 ≥ 0.5×单轮耗时 就继续补，
+  //    直到凑齐 / 剩余不足 / 超预算。目的：在 ~90s 内尽最大可能交付 6 张。
+  if (outcomes.some(o => o.status === "dropped")) {
     // 有 passed 帧时附加最高质量帧作 reference;无则用原 refs(全 dropped 也能救)
     let rescueRefs = refs;
     if (kept.length > 0) {
@@ -274,39 +287,65 @@ export async function runGeneration(
     const salvageMin = deps.salvageQualityMin ?? Math.max(2, (deps.qualityMin ?? 3) - 1);
     // deps 注入默认 1(旧测试兼容: delivery-recovery.test.ts 断言 frame1Reruns=1);
     // runJob 装配传 sceneConfig.rescueAttempts=2,生产环境默认 2 次。
-    const rescueAttempts = deps.rescueAttempts ?? 1;
+    const baseAttempts = deps.rescueAttempts ?? 1;
 
-    await Promise.all(
-      dropped.map(async drop => {
-        const shot = plan.shots.find(s => s.index === drop.index);
-        if (!shot) return;
-        // 多次尝试,成功即 return
-        for (let attempt = 1; attempt <= rescueAttempts; attempt++) {
-          try {
-            const fresh = await deps.generateImage(shot, rescueRefs, `${drop.index}-rerun-${attempt}`);
-            const q = await deps.checkQuality(selfieUrl, fresh.imageUrl);
-            // 救援放宽:quality >= salvageMin 即接受(不再强 same_person)。
-            // 原因:vision LLM 在 close-up / wide 边缘场景会误判 same_person=false;
-            // 但 hair / outfit / silhouette 已经组内一致,整组观感不会突兀。
-            // 已经 dropped 一次,能拿回任何"接近通过"的就当 win,6/6 交付优先。
-            if (q.quality >= salvageMin && !q.deformity) {
-              drop.status = "passed";
-              drop.imageUrl = fresh.imageUrl;
-              drop.qualityScore = q.quality;
-              drop.identityScore = 1;
-              drop.failReason = undefined;
-              drop.candidatesTried = (drop.candidatesTried ?? 0) + attempt;
-              if (deps.onFrame) await deps.onFrame(drop);
-              return; // 救成功即停,不浪费后续 attempts
-            }
-            console.log(`[runGeneration] dropped frame ${drop.index} rerun ${attempt}/${rescueAttempts} still failed (q=${q.quality}, same=${q.same_person})`);
-          } catch (error) {
-            console.warn(`[runGeneration] dropped frame ${drop.index} rerun ${attempt}/${rescueAttempts} threw:`, error);
-          }
+    // 单帧单次补救：成功就地更新 outcome（救成的帧后续轮自动跳过）。
+    const rescueOnce = async (drop: FrameOutcome, tag: string): Promise<void> => {
+      const shot = plan.shots.find(s => s.index === drop.index);
+      if (!shot) return;
+      try {
+        const fresh = await deps.generateImage(shot, rescueRefs, `${drop.index}-${tag}`);
+        const q = await deps.checkQuality(selfieUrl, fresh.imageUrl);
+        // 救援放宽:quality >= salvageMin 即接受(不再强 same_person)。vision LLM 在
+        // close-up/wide 边缘会误判 same_person=false,但 hair/outfit/silhouette 已组内一致。
+        if (q.quality >= salvageMin && !q.deformity) {
+          drop.status = "passed";
+          drop.imageUrl = fresh.imageUrl;
+          drop.qualityScore = q.quality;
+          drop.identityScore = 1;
+          drop.failReason = undefined;
+          drop.candidatesTried = (drop.candidatesTried ?? 0) + 1;
+          if (deps.onFrame) await deps.onFrame(drop);
+        } else {
+          console.log(`[runGeneration] rescue ${tag} frame ${drop.index} still failed (q=${q.quality}, same=${q.same_person})`);
         }
-        console.log(`[runGeneration] dropped frame ${drop.index} all ${rescueAttempts} rescue attempts failed`);
-      }),
-    );
+      } catch (error) {
+        console.warn(`[runGeneration] rescue ${tag} frame ${drop.index} threw:`, error);
+      }
+    };
+
+    // 一轮：并发补救所有仍 dropped 的帧。返回本轮开始时是否还有 dropped。
+    const runRound = async (tag: string): Promise<boolean> => {
+      const stillDropped = outcomes.filter(o => o.status === "dropped");
+      if (stillDropped.length === 0) return false;
+      await Promise.all(stillDropped.map(d => rescueOnce(d, tag)));
+      return true;
+    };
+
+    // ① 基础救援：rescueAttempts 轮，无条件。tag 含 "rerun" 以兼容既有 seed 语义/测试。
+    for (let r = 1; r <= baseAttempts; r++) {
+      if (!(await runRound(`rerun-${r}`))) break;
+    }
+
+    // ② 额外救援：受时间预算约束（仅当注入 timeBudgetMs，生产启用、单测不启用）。
+    if (deps.timeBudgetMs && deps.timeBudgetMs > 0) {
+      const roundMs = deps.rescueRoundMs && deps.rescueRoundMs > 0 ? deps.rescueRoundMs : 20_000;
+      const minRemainMs = roundMs * 0.5; // 剩余不足"半轮"就不再开新轮
+      let extra = 0;
+      while (outcomes.some(o => o.status === "dropped")) {
+        const remainingMs = deps.timeBudgetMs - (Date.now() - startTs);
+        if (remainingMs < minRemainMs) {
+          console.log(`[runGeneration] extra rescue stop: remaining ${Math.round(remainingMs / 1000)}s < threshold ${Math.round(minRemainMs / 1000)}s`);
+          break;
+        }
+        extra++;
+        console.log(`[runGeneration] extra rescue round ${extra}: remaining ${Math.round(remainingMs / 1000)}s, dropped=${outcomes.filter(o => o.status === "dropped").length}`);
+        await runRound(`rerun-extra-${extra}`);
+      }
+      if (extra > 0) {
+        console.log(`[runGeneration] extra rescue done after ${extra} round(s), elapsed ${Math.round((Date.now() - startTs) / 1000)}s, dropped=${outcomes.filter(o => o.status === "dropped").length}`);
+      }
+    }
   }
 
   // rerun 后重新统计：rescue 成功的 dropped → passed，应该计入 delivered
@@ -376,6 +415,9 @@ export async function runJob(jobId: string): Promise<void> {
       salvageQualityMin: sceneConfig.salvageQualityMin,
       maxCandidates: sceneConfig.maxCandidatesPerFrame,
       rescueAttempts: sceneConfig.rescueAttempts,
+      // 时间预算：基础救援后,只要 90s 内还有余量就额外补救,尽量凑齐 6 张。
+      timeBudgetMs: sceneConfig.timeBudgetSeconds * 1000,
+      rescueRoundMs: sceneConfig.rescueRoundSeconds * 1000,
       referenceChaining: sceneConfig.referenceChaining,
       // 边生成边落库：函数中途崩了也保留已完成帧（SPEC 1.5）
       onFrame: async o => {

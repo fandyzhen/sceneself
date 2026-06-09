@@ -4,7 +4,7 @@ import { createOpenRouterChat } from "../../openrouter/chat";
 import { sceneConfig, hasTextProviderKey } from "../config";
 import { STORYLINE_SYSTEM, storylineInstruction } from "../prompts";
 import { STORYLINE_TYPES, getTone } from "../../../constants/scene-storylines";
-import type { StoryBeat, StorylineType, ShotSize, ShotPerspective, SceneAttire } from "../types";
+import type { StoryBeat, StorylineType, ShotSize, ShotPerspective, SceneAttire, SelfieAppearance } from "../types";
 
 export interface StorylineInput {
   safePrompt: string;
@@ -13,6 +13,8 @@ export interface StorylineInput {
   focusId: string;
   shotCount: number;
   companion: string | null;
+  // 自拍画像（性别 + 发型）：让 LLM 写出性别正确、发长合理的 attire（造型优先级链第②层默认值）
+  appearance?: SelfieAppearance;
 }
 
 export interface StorylineResult {
@@ -146,6 +148,7 @@ export async function generateStoryline(input: StorylineInput): Promise<Storylin
           era: typeDef.era,
           allowSelfie: typeDef.allowSelfie,
           allowModernProps: typeDef.allowModernProps,
+          appearance: input.appearance,
         }) },
       ],
       { temperature: 0.8, max_tokens: 2048, model: sceneConfig.textModel, reasoningEffort: "minimal" },

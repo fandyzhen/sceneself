@@ -1,5 +1,5 @@
 // 创作流 client 端 fetch 封装与视图类型。
-import type { ScenePlan, RewriteReason, StorylineType } from "@/lib/scene/types";
+import type { ScenePlan, RewriteReason, StorylineType, SelfieAppearance } from "@/lib/scene/types";
 
 export interface ClarifyResult {
   safePrompt?: string;
@@ -49,18 +49,23 @@ export interface JobView {
   frames: FrameView[];
 }
 
-export async function uploadSelfie(file: File): Promise<string> {
+export interface UploadResult {
+  url: string;
+  appearance: SelfieAppearance | null;
+}
+
+export async function uploadSelfie(file: File): Promise<UploadResult> {
   const fd = new FormData();
   fd.append("file", file);
   const res = await fetch("/api/scene/upload", { method: "POST", body: fd });
   if (!res.ok) throw new Error("upload_failed");
-  const data = (await res.json()) as { url?: string; ok?: boolean; faceIssue?: string };
+  const data = (await res.json()) as { url?: string; ok?: boolean; faceIssue?: string; appearance?: SelfieAppearance | null };
   if (data.ok === false && data.faceIssue) {
     const err = new Error("face_check_failed") as Error & { faceIssue?: string };
     err.faceIssue = data.faceIssue;
     throw err;
   }
-  return data.url!;
+  return { url: data.url!, appearance: data.appearance ?? null };
 }
 
 export async function clarifyScene(rawPrompt: string): Promise<ClarifyResult> {
@@ -76,11 +81,12 @@ export async function planScene(
   safePrompt: string,
   answers: Record<string, string>,
   rawPrompt?: string,
+  appearance?: SelfieAppearance | null,
 ): Promise<{ scenePlan?: ScenePlan; error?: string }> {
   const res = await fetch("/api/scene/plan", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ safePrompt, answers, rawPrompt }),
+    body: JSON.stringify({ safePrompt, answers, rawPrompt, appearance }),
   });
   return (await res.json()) as { scenePlan?: ScenePlan; error?: string };
 }

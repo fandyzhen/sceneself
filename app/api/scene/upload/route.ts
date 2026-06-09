@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
       if (!faceCheck.ok) {
         return NextResponse.json({ ok: false, faceIssue: faceCheck.reason });
       }
-      return NextResponse.json({ url });
+      return NextResponse.json({ url, appearance: faceCheck.appearance ?? null });
     }
 
     // dev fallback：无 R2 时回 data URL，让前端流程可演示。
@@ -83,7 +83,7 @@ export async function POST(req: NextRequest) {
     if (!faceCheck.ok) {
       return NextResponse.json({ ok: false, faceIssue: faceCheck.reason });
     }
-    return NextResponse.json({ url: dataUrl });
+    return NextResponse.json({ url: dataUrl, appearance: faceCheck.appearance ?? null });
   } catch (error) {
     return NextResponse.json({ error: getErrorMessage(error, "Upload failed") }, { status: 500 });
   }

@@ -1,6 +1,7 @@
 // ScenePlanner 的系统指令与 instruction builders（SPEC 1.3、5.3）。
 // 写死的是"工作手册"（对所有用户通用）；每帧具体 image_prompt 由 LLM 现场生成。
-import type { SceneClassification } from "./types";
+import type { SceneClassification, SelfieAppearance } from "./types";
+import { appearanceDirective } from "./appearance";
 
 export const SCENE_PLANNER_SYSTEM = `You are SceneSelf's AI scene director. A user uploads ONE selfie and types ONE short dream-scene description. You design a COHESIVE photo set of the SAME person in that imagined scene — like one shoot / one photo dump, ready for Instagram and TikTok.
 
@@ -38,21 +39,21 @@ Composition (wide-dominant, FAR distance feel): at least 60% of the frames MUST 
 Continuity locks (CRITICAL — populate every field with CONCRETE details, do NOT leave them vague):
 - outfit: include color + material + specific cut (e.g. "black athletic tank top with thin straps, fitted black running leggings"). NOT "casual outfit".
 - accessory: ONE single accessory with color + material + worn side (e.g. "small black nylon crossbody bag worn on the right hip"). If no bag fits the scene, write "no bag".
-- hairstyle: ABSOLUTE lock — describe length, color, AND how it's worn (e.g. "long blonde hair tied in a high ponytail"). For active scenes (running, swimming, biking, yoga, hiking) hair MUST be tied back or worn under a cap — never loose flowing hair.
+- hairstyle: lock it consistently across the set, but follow the STYLING IDENTITY priority — (1) honor any explicit hair the user asked for, else (2) match the reference selfie's REAL gender and hair (length, color, texture); never invent long hair / a ponytail / a bun on a short-haired or male subject. Describe color + how it's worn (e.g. "short black hair, neatly combed" / "long brown hair in a loose wave"). For active scenes (running, swimming, biking, yoga, hiking) tie the hair back or wear a cap ONLY if it is genuinely long enough; short hair simply stays neat.
 - jewelry: either "no jewelry (no necklace, no rings, no earrings)" OR an explicit short list (e.g. "thin gold chain necklace only, no rings, no earrings"). NEVER leave it ambiguous — the generator will randomly add a necklace to one photo otherwise.
 - shoes: color + type (e.g. "white running shoes with subtle gray accents").
 - camera_style: a specific phone or casual camera, e.g. "iPhone 14 main camera, auto HDR" or "older smartphone, slight JPEG noise" or "2010s point-and-shoot pocket digital" — NEVER "vintage film, slight grain" or other photography-magazine wording.
 
-Activity-aware styling (CRITICAL for realism): read the activity in the user's request and match the styling. Examples:
+Activity-aware styling (CRITICAL for realism): read the activity in the user's request and match the styling. The hair guidance below assumes long hair — apply it ONLY when the subject actually has long hair (per the STYLING IDENTITY priority: user request > selfie's real gender/hair); a short-haired or male subject keeps their natural short hair, never a ponytail/bun/braid invented for them. Examples:
 - running / jogging / marathon → hair tied back (ponytail or braid) OR worn under a running cap; athletic tank/jersey + leggings; running shoes; NO jewelry; only a slim running belt or armband (no crossbody handbag).
 - swimming → swimsuit; wet hair slicked back; barefoot; NO jewelry.
 - biking → fitted cycling kit; HELMET always on; hair tied back under helmet; cycling shoes.
 - yoga / pilates → fitted athletic top + leggings; hair in a low bun; barefoot; no rings (hands work).
 - cooking → apron tied at the waist; hair tied back; sleeves rolled; only minimal jewelry.
-- formal event → cocktail dress or suit; styled hair; matching elegant shoes; jewelry can be present but specified.
+- formal event → match the subject's gender from the reference selfie: a man → tailored suit; a woman → cocktail dress; styled hair; matching elegant shoes; jewelry can be present but specified.
 - beach → swimsuit + cover-up; loose beach waves; sandals.
 - hiking → technical t-shirt + hiking pants; braid or low ponytail; hiking boots; daypack on both shoulders.
-NEVER put a person running in a park with loose flowing hair, a crossbody handbag, and a delicate necklace — that's unrealistic and looks AI-generated.
+For a LONG-haired subject, never put them running in a park with loose flowing hair, a crossbody handbag, and a delicate necklace — that's unrealistic. (A short-haired subject just keeps their natural short hair.)
 
 Expression beats (CRITICAL — avoid the "6 photos, 1 face" problem): every shot in plan.shots MUST have a field "expression_beat" with a DISTINCT micro-expression (eyes + mouth + head angle). Across the 6 frames, NEVER repeat the same expression. Examples for an active scene: "mid-stride exhale, focused gaze straight ahead" / "half-smile, glancing slightly off to the side" / "wiping a bead of sweat from the temple" / "settling into pace, eyes squinted in sunlight" / "looking down briefly between steps" / "head turned slightly over the shoulder, candid look".
 
@@ -94,7 +95,7 @@ Rules:
 - EXACTLY ${shotCount} shots; every shot a DISTINCT narrative_role; at least 50% of shot_size MUST be wide; at most 1 close.
 - The shots MUST form a NARRATIVE ARC across time — each shots[i].summary is a DIFFERENT concrete moment (for objects/vehicles: approach → board → seated/controls → in action → exit → celebrate). Two summaries must never be interchangeable; if they are, rewrite them.
 - continuity.hairstyle, jewelry, shoes are MANDATORY — never leave them blank.
-- For active scenes (running/swimming/biking/yoga/hiking): hair MUST be tied back or under a cap; outfit MUST match the activity (no flowing dresses while running); jewelry should be "no jewelry" unless the activity allows it.
+- For active scenes (running/swimming/biking/yoga/hiking): tie hair back or wear a cap ONLY if the subject's hair is genuinely long (else keep their natural short hair); outfit MUST match the activity AND the subject's real gender (no flowing dresses while running; no feminine items on a male subject); jewelry should be "no jewelry" unless the activity allows it.
 - Each shots[i].expression_beat MUST be distinct across the 6 frames (no repeated micro-expressions).
 - continuity.camera_style MUST be a specific phone or casual camera (e.g. "iPhone 14 main camera, auto HDR"), NEVER "vintage film" or photography-magazine wording.
 - Each image_prompt enforces: phone snapshot, deep focus, no bokeh, no studio lighting, no magazine-ad composition, natural skin (pores/shine/redness), occasional handheld imperfection; repeats the per-frame expression_beat verbatim; repeats the continuity locks (outfit/hair/jewelry/shoes/accessory) verbatim.
@@ -165,7 +166,7 @@ ABSOLUTE rules:
    - SPACEWALK / ASTRONAUT EVA: full helmet sealed, gloves on, suit fully closed for any beat outside a vehicle. Helmet may be off only inside cabin.
    - FIREFIGHTER on scene: SCBA mask + helmet on during any active-fire beat. Off only at staging/aftermath.
    - KITCHEN (working chef in fine-dining / professional kitchen): toque/cap + chef jacket + apron on during any cooking/service beat. Off only for prep/break.
-   - INDIE CAFE / COFFEE SHOP OWNER (third-wave coffee, opening a cafe, barista, owner shot — DIFFERENT FROM KITCHEN, do NOT use chef whites here): the canonical look is "Blue Bottle / Sightglass / Bluestone Lane owner" — a linen or cotton APRON (natural cream / blush / charcoal / deep navy — NEVER white double-breasted) over a fitted dark t-shirt OR an oxford button-down with sleeves rolled, dark wash jeans OR olive chinos, white minimal sneakers (Stan Smith / Common Projects / Spring Court style) OR clean work boots. FORBIDDEN for indie cafe / coffee shop owner: NO chef toque, NO double-breasted chef jacket (that is fine-dining only), NO checkered chef trousers, NO white culinary-school uniform, NO formal suit (that is corporate, not indie). Tactile materials only (linen / cotton / denim), natural colors, minimal jewelry (thin gold chain + small hoop earrings at most). Hair: effortless — messy bun / low ponytail / natural cut. The user must look like "I just opened this place, I'm one of you", not like a Michelin sous chef.
+   - INDIE CAFE / COFFEE SHOP OWNER (third-wave coffee, opening a cafe, barista, owner shot — DIFFERENT FROM KITCHEN, do NOT use chef whites here): the canonical look is "Blue Bottle / Sightglass / Bluestone Lane owner" — a linen or cotton APRON (natural cream / blush / charcoal / deep navy — NEVER white double-breasted) over a fitted dark t-shirt OR an oxford button-down with sleeves rolled, dark wash jeans OR olive chinos, white minimal sneakers (Stan Smith / Common Projects / Spring Court style) OR clean work boots. FORBIDDEN for indie cafe / coffee shop owner: NO chef toque, NO double-breasted chef jacket (that is fine-dining only), NO checkered chef trousers, NO white culinary-school uniform, NO formal suit (that is corporate, not indie). Tactile materials only (linen / cotton / denim), natural colors, minimal jewelry (a thin chain at most). Hair: effortless — match the reference selfie; if long, a messy bun or low ponytail; if short, keep it natural and neat. The user must look like "I just opened this place, I'm one of you", not like a Michelin sous chef.
    - LAB (working researcher): lab coat + safety goggles + gloves on during any bench beat.
    - GENERAL RULE: if the beat is set inside the high-risk zone the profession defines (the OR, the deep water, the burning building, the active lab bench, the working kitchen line), the protective/required gear stays on the body the way that profession actually wears it. Do not relax realism to make identity easier — identity is handled by the visible features rules in rule 5 / rule 11 / the per-frame prompt.
 14. NAMED CHARACTERS / IP must keep their CANONICAL signature look, not a generic version (CRITICAL — solves the "user said '变身超人/Become Superman' but got a generic dark-cowl superhero" problem):
@@ -206,6 +207,8 @@ export interface StorylineInstructionInput {
   era: string;
   allowSelfie: boolean;
   allowModernProps: boolean;
+  // 自拍画像（性别 + 发型）：注入造型优先级链，attire 一开始就按性别/发长设计对
+  appearance?: SelfieAppearance;
 }
 
 export function storylineInstruction(i: StorylineInstructionInput): string {
@@ -219,7 +222,8 @@ Organizing logic: ${i.organizingLogic}
 Continuity to lock: ${i.continuityLock}
 Tone: ${i.toneFragment}. Focus: ${i.focusFragment}.
 ATTIRE — design ONE set-level outfit fitting this exact scenario: ${i.attireHint}
-Per system rule 7: output attire.outfit as a SINGLE COMMA-SEPARATED LIST of every visible garment with color+material. If the role/occasion implies headwear (toque, cap, helmet, crown, beanie, sun hat), it MUST be the FIRST item — never omit it. Output attire.accessory as ONE large worn/held item (bag/watch/sunglasses/scarf), or "none" — NEVER a small tool tucked into a pocket. Lock these strings identically across all beats; the generator copies them verbatim into every per-frame prompt.
+${appearanceDirective(i.appearance)}
+Per system rule 7: output attire.outfit as a SINGLE COMMA-SEPARATED LIST of every visible garment with color+material. If the role/occasion implies headwear (toque, cap, helmet, crown, beanie, sun hat), it MUST be the FIRST item — never omit it. Output attire.accessory as ONE large worn/held item (bag/watch/sunglasses/scarf), or "none" — NEVER a small tool tucked into a pocket. attire.hairstyle MUST obey the STYLING IDENTITY priority above (match the selfie's real gender/hair unless the user explicitly asked to change it; never invent long hair on a short-haired subject). Lock these strings identically across all beats; the generator copies them verbatim into every per-frame prompt.
 ${eraRule} ${selfieRule}
 ${i.companion ? `Companion present: ${i.companion} — show this second person ONLY as back view/silhouette/held hand, never their face.` : ""}
 Produce EXACTLY ${i.shotCount} beats, each a DIFFERENT scene (different setting + activity). Exactly one beat is_highlight=true.
@@ -232,9 +236,12 @@ Rules: settings visibly different; at least half wide UNLESS your attire include
 // ── 人脸检测（upload 阶段）─────────────────────────
 // 用于 upload 时校验"清晰单人人脸自拍"，不通过提示重传。
 export const FACE_CHECK_PROMPT = `Look at this image. Reply STRICT JSON only:
-{"has_clear_face": true|false, "single_person": true|false, "issues": ["short reason", ...]}
+{"has_clear_face": true|false, "single_person": true|false, "gender": "male"|"female"|"unclear", "hair_length": "short"|"medium"|"long", "hair_desc": "short description", "issues": ["short reason", ...]}
 - has_clear_face: is there ONE clearly visible human face, reasonably front-facing, not heavily obscured/blurred/filtered? (animals, objects, landscapes, text → false)
-- single_person: is there exactly one person (not a group, not zero)?`;
+- single_person: is there exactly one person (not a group, not zero)?
+- gender: the person's apparent gender presentation in the photo — "male", "female", or "unclear" if genuinely ambiguous. Judge by overall appearance, do NOT default to female.
+- hair_length: "short" (above the ears / buzz / crop), "medium" (around chin to shoulder), or "long" (clearly past the shoulders).
+- hair_desc: a SHORT factual description of the hair as seen — color + texture + how it's worn (e.g. "short black straight hair", "medium brown wavy hair", "long dark hair tied back", "shaved head / bald"). 6 words max.`;
 
 // ── 被拒后安全替代 ──────────────────────────────
 // 按用户原始意图生成"符合意图但不违规"的安全替代场景。

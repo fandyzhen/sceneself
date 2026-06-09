@@ -139,6 +139,60 @@ describe("dropped 帧救援多次重试", () => {
   });
 });
 
+describe("时间预算额外救援(超出基础 rescueAttempts)", () => {
+  // 帧1需要 4 次救援才过;其它帧第一次救援即过。
+  // 注意:救援层接受 quality >= salvageMin(2),所以"仍不过"必须用 FAIL_HARD(quality=1)才会被拒。
+  const makeQuality = (counter: { n: number }) => async (_s: string, candidate: string) => {
+    if (candidate.includes("rerun")) {
+      if (candidate.startsWith("img-1-")) {
+        counter.n++;
+        return counter.n >= 4 ? PASS : FAIL_HARD; // 第 4 次救援才过(前 3 次 quality=1 被救援层拒)
+      }
+      return PASS; // 其它帧救援即过
+    }
+    return FAIL_IDENTITY; // 首批全 fail(quality=2<qualityMin=3 → 初始 drop)
+  };
+
+  it("注入 timeBudgetMs → 基础轮跑完仍 dropped 时,额外轮继续直到救成 6/6", async () => {
+    const c = { n: 0 };
+    const r = await runGeneration(plan, "selfie.jpg", ["selfie.jpg"], deps({
+      rescueAttempts: 1,
+      timeBudgetMs: 100_000, // 充足预算
+      rescueRoundMs: 1,      // 阈值极小,instant mock 下持续补救
+      checkQuality: makeQuality(c),
+    }));
+    expect(c.n).toBeGreaterThanOrEqual(4); // 基础 1 轮 + 额外 ≥3 轮
+    expect(r.delivered).toBe(4);
+    expect(r.status).toBe("completed");
+  });
+
+  it("不注入 timeBudgetMs → 只跑基础轮,救不回就停(行为不变)", async () => {
+    const c = { n: 0 };
+    const r = await runGeneration(plan, "selfie.jpg", ["selfie.jpg"], deps({
+      rescueAttempts: 1,
+      // 无 timeBudgetMs → 无额外轮
+      checkQuality: makeQuality(c),
+    }));
+    expect(c.n).toBe(1); // 只基础 1 轮
+    expect(r.frames.find(f => f.index === 1)!.status).toBe("dropped");
+    expect(r.delivered).toBe(3);
+    expect(r.status).toBe("partial");
+  });
+
+  it("剩余时间不足 0.5×单轮 → 不开新额外轮", async () => {
+    const c = { n: 0 };
+    // timeBudgetMs 极小(0),第一次额外轮前 remaining<阈值 → 不补,保持基础结果。
+    const r = await runGeneration(plan, "selfie.jpg", ["selfie.jpg"], deps({
+      rescueAttempts: 1,
+      timeBudgetMs: 1,        // 预算几乎为 0
+      rescueRoundMs: 20_000,  // 阈值 10s,远大于剩余 → 不开额外轮
+      checkQuality: makeQuality(c),
+    }));
+    expect(c.n).toBe(1); // 只基础 1 轮,无额外
+    expect(r.delivered).toBe(3);
+  });
+});
+
 describe("全 dropped 时也能救援(不依赖 kept 非空)", () => {
   it("所有帧首批都 fail,救援仍尝试且能救成 partial → completed", async () => {
     const rescueResults = new Set<string>();

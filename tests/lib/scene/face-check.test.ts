@@ -20,9 +20,11 @@ describe("checkFace 人脸检测闸", () => {
     expect(await checkFace("u")).toEqual({ ok: false, reason: "no_face" });
   });
 
-  it("清晰单人 → ok=true", async () => {
-    visionMock.mockResolvedValue('{"has_clear_face":true,"single_person":true}');
-    expect(await checkFace("u")).toEqual({ ok: true });
+  it("清晰单人 → ok=true（顺带返回画像）", async () => {
+    visionMock.mockResolvedValue('{"has_clear_face":true,"single_person":true,"gender":"male","hair_length":"short","hair_desc":"short black hair"}');
+    const r = await checkFace("u");
+    expect(r.ok).toBe(true);
+    expect(r.appearance).toEqual({ gender: "male", hairLength: "short", hairDesc: "short black hair" });
   });
 
   it("多人 → ok=false multiple_people", async () => {

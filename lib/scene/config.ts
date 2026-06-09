@@ -62,7 +62,22 @@ export const sceneConfig = {
   // dropped 帧的救援尝试次数(每帧):走完所有 maxCandidates 后仍 dropped 时,用 passed 帧作 reference 重跑。
   // 成功即停;每次失败也只占 ~30-50s/帧(图模型 + 质检),不并发不影响首图。
   // 实测:1 次救援能救约 50% 的 dropped 帧;2 次能救 ~70%(收益递减),3 次基本无新增。
+  // 轮次制:这 N 轮"基础救援"无条件跑完,不受时间预算限制(见 timeBudgetSeconds)。
   rescueAttempts: numEnv('SCENE_RESCUE_ATTEMPTS', 2),
+
+  // ── 时间预算补救（下面 3 个时间参数）──────────────────────────────
+  // 默认值已写死、合理可用:【部署无需配置任何环境变量,开箱即用】。
+  // 环境变量只是可选调节口——想把 90 改 100、或按线上实测微调单轮估时,
+  // 直接在 Vercel 改对应变量即可,不必改代码 / 重新部署(numEnv 不设则取第二个参数)。
+  //
+  // timeBudgetSeconds:一次生成的总墙钟目标,从 runGeneration 入口起算。
+  // 基础 rescueAttempts 跑完后若还有 dropped 帧,且剩余时间 ≥ 0.5×单轮耗时,
+  // 就【额外】继续补救(超出 rescueAttempts 的部分),直到凑齐 6 张 / 剩余不足 / 超预算。
+  // 目的:在 ~90s 内尽最大可能交付 6 张。Vercel fluid maxDuration=800,90s 远在限内。
+  timeBudgetSeconds: numEnv('SCENE_TIME_BUDGET_SECONDS', 90),
+  // rescueRoundSeconds:单轮救援估计耗时(秒,生产实测 ~20s/轮:一次出图+质检+R2,
+  // 多帧并发≈单帧墙钟)。用于"剩余时间 ≥ 0.5×单轮"的额外救援阈值判断(默认阈值 ≈10s)。
+  rescueRoundSeconds: numEnv('SCENE_RESCUE_ROUND_SECONDS', 20),
 
   // reference chaining：先串行出第1帧作为"组内视觉锚"，其余帧带它做参考并发出图。
   // 组一致性（衣服色 / 配饰位置 / anchor 内饰色）显著提升，代价是总耗时多一个单帧（~30-60s）。
