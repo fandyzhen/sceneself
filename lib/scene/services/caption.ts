@@ -33,6 +33,7 @@ HARD RULES:
 - OMIT the first-person pronoun — NO 我, NO "I", NO "my". The subject is always the user themselves, so it is understood; start each caption with the action / image, never with a pronoun.
 - Keep each caption SHORT and punchy: Chinese aim ≤ 14 characters (hard max 20); other languages one short line (~6-10 words). NO "location · time" formula, NO " · " separator, NO robotic "<action> · <place>". One natural, vivid spoken line.
 - Each caption is a CONDENSED HOOK of its OWN scene — use that scene's real setting / action / emotion, never invent anything not in the scene, and do NOT just copy the scene description verbatim. Tease, don't list.
+- NO FALSIFIABLE VISUAL CLAIMS: do NOT state a specific COLOR (red / green / neon / gold…), a specific car/product MODEL or brand, a plate/tail number, or an exact COUNT of objects. You CANNOT see the final image, and the scene text may not match what gets rendered — naming a concrete color or model risks describing something that is NOT in the photo (this is a real reported bug). Describe the action, mood, vibe and energy instead of pinning down a color/model/number. (General atmosphere words like "金色黄昏/dusk", "夜色" tied to the scene's stated lighting are fine; a specific object's paint color is NOT.)
 - ALL 6 captions share the target STYLE's voice and read as ONE coherent story in order.
 - Make it emotional and attractive (a reason to stop scrolling), not a dry summary.
 

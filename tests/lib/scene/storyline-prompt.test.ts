@@ -45,6 +45,31 @@ describe("storyline generation prompt", () => {
   });
 });
 
+describe("storyline 锚定物体锁色（修 caption 凭空说荧光绿）", () => {
+  // 根因:storyline LLM 写 beat 时给 anchor 物体(兰博基尼)自创 lime green,与锁定 orange 冲突;
+  // image_prompt 矛盾(图渲染橙),caption 读 beat 说成荧光绿。修:把 anchor 锁色传入 storyline。
+  const base = {
+    safePrompt: "luxury Lamborghini weekend", organizingLogic: "x", continuityLock: "y",
+    toneFragment: "t", focusFragment: "f", shotCount: 6, companion: null,
+    attireHint: "x", era: "modern", allowSelfie: true, allowModernProps: true,
+  } as const;
+
+  it("有 anchor 时注入锁定外观 + 禁止自创颜色/型号", () => {
+    const ins = storylineInstruction({
+      ...base,
+      anchor: { name: "Lamborghini Huracán", appearance: "matte arancio (orange) paint, black wheels" },
+    });
+    expect(ins).toContain("Lamborghini Huracán");
+    expect(ins).toContain("matte arancio (orange) paint");
+    expect(ins.toLowerCase()).toMatch(/do not invent a different color|never call it|locked/);
+  });
+
+  it("无 anchor 时不注入锁色规则", () => {
+    const ins = storylineInstruction(base);
+    expect(ins.toLowerCase()).not.toContain("core object lock");
+  });
+});
+
 describe("storyline instruction — attire & era", () => {
   it("注入 attireHint,要求 LLM 输出 attire", () => {
     const ins = storylineInstruction({

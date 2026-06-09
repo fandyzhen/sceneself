@@ -1,6 +1,6 @@
 // ScenePlanner 的系统指令与 instruction builders（SPEC 1.3、5.3）。
 // 写死的是"工作手册"（对所有用户通用）；每帧具体 image_prompt 由 LLM 现场生成。
-import type { SceneClassification, SelfieAppearance } from "./types";
+import type { SceneClassification, SelfieAppearance, AnchorObject } from "./types";
 import { appearanceDirective } from "./appearance";
 
 export const SCENE_PLANNER_SYSTEM = `You are SceneSelf's AI scene director. A user uploads ONE selfie and types ONE short dream-scene description. You design a COHESIVE photo set of the SAME person in that imagined scene — like one shoot / one photo dump, ready for Instagram and TikTok.
@@ -209,9 +209,16 @@ export interface StorylineInstructionInput {
   allowModernProps: boolean;
   // 自拍画像（性别 + 发型）：注入造型优先级链，attire 一开始就按性别/发长设计对
   appearance?: SelfieAppearance;
+  // 核心锚定物体 + 锁定外观：让 beat 描述该物体时用锁定色，不自创颜色/型号
+  anchor?: AnchorObject;
 }
 
 export function storylineInstruction(i: StorylineInstructionInput): string {
+  // 锚定物体锁定（兰博基尼/直升机等）：beat 描述该物体时必须用锁定外观，不得自创颜色/型号，
+  // 否则 beat 颜色与 anchor 锁色冲突 → image_prompt 自相矛盾 + caption 说错颜色。
+  const anchorRule = i.anchor
+    ? `\nCORE OBJECT LOCK: the user's scene centers on "${i.anchor.name}". Its appearance is LOCKED as: ${i.anchor.appearance}. Whenever a beat's setting/activity mentions this object, describe it with EXACTLY this locked appearance (same color, same model, same markings). DO NOT invent a different color, paint, model, trim or number for it in any beat — never call it "green"/"red"/"blue" or anything other than the locked appearance above.`
+    : "";
   const eraRule = (i.era === "historical" || i.era === "fantasy" || i.era === "future")
     ? `This is a ${i.era} setting: NO modern phones, NO selfies, NO modern handbags/sneakers anywhere in the set. shot_perspective must always be "friend_candid".`
     : (!i.allowModernProps ? `Formal/professional setting: no casual crossbody bag.` : ``);
@@ -219,7 +226,7 @@ export function storylineInstruction(i: StorylineInstructionInput): string {
   return `Experience: "${i.safePrompt}".
 Before listing any beat, in your head: name the CENTRAL ACTION/CLIMAX of this Experience and the WITNESSES implied (per system rule 0). Then make sure ≥2 of your beats literally depict that climax or its build-up — not just generic facets of the role/place.
 Organizing logic: ${i.organizingLogic}
-Continuity to lock: ${i.continuityLock}
+Continuity to lock: ${i.continuityLock}${anchorRule}
 Tone: ${i.toneFragment}. Focus: ${i.focusFragment}.
 ATTIRE — design ONE set-level outfit fitting this exact scenario: ${i.attireHint}
 ${appearanceDirective(i.appearance)}

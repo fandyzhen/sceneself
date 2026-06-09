@@ -70,12 +70,15 @@ export default function CreatePage() {
   const [setupError, setSetupError] = useState<string | null>(null);
   // 结果页 lightbox:存当前放大查看的帧在 resultFrames 数组里的下标(null=未打开)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  // describe 步骤的灵感 chips:每次 mount 从 CHIP_KEYS(8 个) 随机选 3 个显示,
-  // 避免 8 条文字占屏太多。SSR 输出前 3 个固定值,客户端 hydrate 后立即 reroll(避免 hydration mismatch)。
-  const [visibleChips, setVisibleChips] = useState<readonly typeof CHIP_KEYS[number][]>(() => CHIP_KEYS.slice(0, 3));
+  // describe 步骤的灵感 chips:8 个场景类别 × 每类 3 条变体(共 24)。
+  // 每次 mount 随机挑【3 个不同类别】,每个类别再随机取 1 条变体 → 展示 3 条(不重类别)。
+  // SSR 输出确定值(前 3 类各第 0 条),客户端 hydrate 后立即 reroll(避免 hydration mismatch)。
+  const [visibleChips, setVisibleChips] = useState<readonly { key: typeof CHIP_KEYS[number]; v: number }[]>(
+    () => CHIP_KEYS.slice(0, 3).map(key => ({ key, v: 0 })),
+  );
   useEffect(() => {
-    const shuffled = [...CHIP_KEYS].sort(() => Math.random() - 0.5);
-    setVisibleChips(shuffled.slice(0, 3));
+    const keys = [...CHIP_KEYS].sort(() => Math.random() - 0.5).slice(0, 3);
+    setVisibleChips(keys.map(key => ({ key, v: Math.floor(Math.random() * 3) })));
   }, []);
 
   const fileRef = useRef<HTMLInputElement>(null);
@@ -404,11 +407,19 @@ export default function CreatePage() {
                 />
 
                 <p className="mt-6 text-xs uppercase tracking-[0.18em] text-stone-500">{t("describe.examplesLabel")}</p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {visibleChips.map(k => {
-                    const label = t(`describe.chips.${k}`);
+                {/* 竖排 3 行,整行不换行(whitespace-nowrap + truncate),移动端也不折行 */}
+                <div className="mt-3 flex flex-col gap-2">
+                  {visibleChips.map(({ key, v }) => {
+                    const variants = t.raw(`describe.chipSets.${key}`) as string[];
+                    const label = variants?.[v] ?? variants?.[0] ?? "";
                     return (
-                      <button key={k} type="button" onClick={() => setRawPrompt(label)} className="rounded-full border border-white/10 bg-white/[0.02] px-3.5 py-2 text-sm text-stone-300 transition hover:border-amber-300/40 hover:text-amber-100">
+                      <button
+                        key={key}
+                        type="button"
+                        onClick={() => setRawPrompt(label)}
+                        title={label}
+                        className="w-full truncate whitespace-nowrap rounded-2xl border border-white/10 bg-white/[0.02] px-4 py-3 text-left text-sm text-stone-300 transition hover:border-amber-300/40 hover:text-amber-100"
+                      >
                         {label}
                       </button>
                     );

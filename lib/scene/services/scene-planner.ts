@@ -4,6 +4,7 @@
 import { createOpenRouterChat } from "../../openrouter/chat";
 import { sceneConfig, hasTextProviderKey } from "../config";
 import { detectAnchorObject, buildContinuityFromAttire, buildFramePromptFromBeat, slugForPlan, titleForPlan, VALID_CLUSTERS, VALID_COHERENCE } from "../scene-plan";
+import type { AnchorObject } from "../types";
 import { generateStoryline } from "./story-line";
 import { writeSceneCaptions } from "./caption";
 import { SCENE_PLANNER_SYSTEM, classifyInstruction, questionsInstruction, safeAlternativesInstruction, storylineClassifyInstruction } from "../prompts";
@@ -151,6 +152,9 @@ export async function buildScenePlan(
   const toneId = resolveToneId(answers.tone) ?? analysis.tone_suggestions[0] ?? SCENE_TONES[0].id;
   const focusId = resolveFocusId(def, answers.focus) ?? def.focusOptions[0].id;
   const companion = answers.companion?.trim() || null;
+  // 锚定物体（兰博基尼/直升机等）锁定外观——传给 storyline,让 beat 描述该物体时用锁定色,
+  // 不自创颜色（修「caption 凭空说荧光绿」: beat 与 anchor 颜色冲突的根因）。
+  const anchor: AnchorObject | undefined = detectAnchorObject(safePrompt) ?? undefined;
 
   const { attire, beats } = await generateStoryline({
     safePrompt,
@@ -160,6 +164,7 @@ export async function buildScenePlan(
     shotCount,
     companion,
     appearance,
+    anchor,
   });
   const constraints = { era: def.era, allowSelfie: def.allowSelfie, allowModernProps: def.allowModernProps };
   const continuity = buildContinuityFromAttire(attire, safePrompt, appearance);

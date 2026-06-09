@@ -4,7 +4,7 @@ import { createOpenRouterChat } from "../../openrouter/chat";
 import { sceneConfig, hasTextProviderKey } from "../config";
 import { STORYLINE_SYSTEM, storylineInstruction } from "../prompts";
 import { STORYLINE_TYPES, getTone } from "../../../constants/scene-storylines";
-import type { StoryBeat, StorylineType, ShotSize, ShotPerspective, SceneAttire, SelfieAppearance } from "../types";
+import type { StoryBeat, StorylineType, ShotSize, ShotPerspective, SceneAttire, SelfieAppearance, AnchorObject } from "../types";
 
 export interface StorylineInput {
   safePrompt: string;
@@ -15,6 +15,9 @@ export interface StorylineInput {
   companion: string | null;
   // 自拍画像（性别 + 发型）：让 LLM 写出性别正确、发长合理的 attire（造型优先级链第②层默认值）
   appearance?: SelfieAppearance;
+  // 核心锚定物体（兰博基尼/直升机等）+ 锁定外观。让 LLM 写 beat 描述该物体时用锁定色，
+  // 不自创颜色/型号（否则 beat 颜色与 anchor 锁色冲突 → image_prompt 矛盾 + caption 说错色）。
+  anchor?: AnchorObject;
 }
 
 export interface StorylineResult {
@@ -149,6 +152,7 @@ export async function generateStoryline(input: StorylineInput): Promise<Storylin
           allowSelfie: typeDef.allowSelfie,
           allowModernProps: typeDef.allowModernProps,
           appearance: input.appearance,
+          anchor: input.anchor,
         }) },
       ],
       { temperature: 0.8, max_tokens: 2048, model: sceneConfig.textModel, reasoningEffort: "minimal" },

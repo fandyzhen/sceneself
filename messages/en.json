@@ -74,11 +74,11 @@
         "types": {
           "journey": {
             "label": "Journey",
-            "prompt": "A day in Dubai"
+            "prompt": "A dreamy escape to Antarctica"
           },
           "fantasy_role": {
             "label": "Fantasy",
-            "prompt": "Travel back as an ancient general"
+            "prompt": "Become Superman for a day"
           },
           "profession": {
             "label": "Profession",
@@ -86,11 +86,11 @@
           },
           "ownership_flex": {
             "label": "Ownership",
-            "prompt": "My weekend with a Lamborghini"
+            "prompt": "A weekend on my private helicopter"
           },
           "milestone_event": {
             "label": "Milestone",
-            "prompt": "Opening my first cafe"
+            "prompt": "The day I proposed to her"
           },
           "seasonal": {
             "label": "Seasonal",
@@ -183,15 +183,47 @@
       "subtitle": "One line is all it takes — we handle the rest.",
       "placeholder": "a day in Dubai…",
       "examplesLabel": "Need a spark?",
-      "chips": {
-        "tokyo": "Tokyo night walk",
-        "fantasyHero": "Become Superman for a day",
-        "vogue": "Vogue editor's busy Tuesday",
-        "lambo": "My weekend with a Lamborghini",
-        "cafe": "Opening my first cafe",
-        "slowSunday": "Slow Sunday, coffee and books",
-        "xmas": "Christmas market evening",
-        "glowUp": "My glow-up year in Bali"
+      "chipSets": {
+        "tokyo": [
+          "A neon night out in Tokyo",
+          "Getting lost in Tokyo's backstreets",
+          "A solo weekend exploring Tokyo"
+        ],
+        "fantasyHero": [
+          "Suiting up as Superman for a day",
+          "Becoming a Marvel hero overnight",
+          "My origin story as a caped hero"
+        ],
+        "vogue": [
+          "A day as a Vogue cover editor",
+          "Backstage at my own fashion show",
+          "Running the show at fashion week"
+        ],
+        "lambo": [
+          "A coastal weekend in my Lamborghini",
+          "Picking up my brand-new supercar",
+          "Sunset drive in a matte-black Lambo"
+        ],
+        "cafe": [
+          "Opening my own little coffee shop",
+          "First morning running my dream cafe",
+          "Launch day at my cozy corner cafe"
+        ],
+        "slowSunday": [
+          "A slow Sunday with coffee and books",
+          "Lazy morning, fresh coffee, no plans",
+          "A cozy rainy day in with a book"
+        ],
+        "xmas": [
+          "A magical night at the Christmas market",
+          "First snow at the holiday market",
+          "Christmas lights and mulled wine"
+        ],
+        "glowUp": [
+          "My glow-up year, start to finish",
+          "From gym newbie to totally shredded",
+          "A fresh-start reinvention in Bali"
+        ]
       },
       "submit": "Imagine it",
       "thinking": "Reading your scene…"
