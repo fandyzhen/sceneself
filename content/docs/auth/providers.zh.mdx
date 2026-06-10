@@ -9,12 +9,12 @@ description: 配置应用的认证提供商。
 
 ### 邮箱验证
 
-默认要求邮箱验证。在 `lib/auth.ts` 中配置：
+注册时会发送验证邮件。登录不强制验证（`lib/auth.ts` 中 `requireEmailVerification: false`），但保存、导出场景集等关键操作由 `EmailVerifiedGuard` 拦截：
 
 ```typescript
 emailAndPassword: {
   enabled: true,
-  requireEmailVerification: true,
+  requireEmailVerification: false,
 }
 ```
 
@@ -29,7 +29,7 @@ emailAndPassword: {
 
 ## Google OAuth
 
-Google 登录是可选项。只有同时配置 `AUTH_GOOGLE_ID` 和 `AUTH_GOOGLE_SECRET` 时，starter 才会启用该提供商。
+Google 登录是可选项。只有同时配置 `AUTH_GOOGLE_ID` 和 `AUTH_GOOGLE_SECRET` 时，SceneSelf 才会启用该提供商。
 
 ### 设置
 

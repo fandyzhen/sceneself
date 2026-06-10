@@ -5,14 +5,14 @@ description: How email verification works and how to configure it.
 
 ## How It Works
 
-When a user registers, they receive a verification email. Until verified, access to protected routes is restricted by the `EmailVerifiedGuard` component.
+When a user registers, they receive a verification email. Login works without verification, but until verified, key actions such as saving and exporting scene sets are restricted by the `EmailVerifiedGuard` component.
 
 ### Verification Flow
 
 1. User registers → verification email sent automatically
 2. Email contains a verification link with a unique token
 3. User clicks link → token validated → email marked as verified
-4. `EmailVerifiedGuard` allows access to protected content
+4. `EmailVerifiedGuard` unlocks the gated actions
 
 ### Resend Verification
 
@@ -22,16 +22,16 @@ Users can request a new verification email from the `/verify-email` page. The AP
 POST /api/auth/resend-verification
 ```
 
-### Disabling Verification
+### Adjusting Verification Requirements
 
-To disable email verification (not recommended for production):
+By default, login does not require a verified email (`requireEmailVerification: false` in `lib/auth.ts`). To force verification before login:
 
 ```typescript
 // lib/auth.ts
 emailAndPassword: {
   enabled: true,
-  requireEmailVerification: false, // disable
+  requireEmailVerification: true, // force verification before login
 }
 ```
 
-And remove `EmailVerifiedGuard` from `app/[locale]/(protected)/layout.tsx`.
+To remove the gating on key actions entirely (not recommended for production), remove `EmailVerifiedGuard` from `app/[locale]/(protected)/layout.tsx`.

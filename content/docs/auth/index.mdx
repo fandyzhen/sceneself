@@ -18,7 +18,7 @@ SceneSelf uses [Better Auth](https://better-auth.com/) for authentication, suppo
 2. Account is created with email verification pending
 3. System grants **300 bonus credits** (`registration_bonus`)
 4. Verification email is sent via Resend
-5. User verifies email to unlock full access
+5. Login works without verification; verifying the email unlocks key actions such as saving and exporting scene sets
 
 ### Configuration
 
@@ -31,7 +31,7 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
-    requireEmailVerification: true,
+    requireEmailVerification: false,
   },
   ...(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET
     ? {
@@ -46,7 +46,7 @@ export const auth = betterAuth({
 });
 ```
 
-When the Google credentials are missing, the starter keeps email/password auth enabled and hides the Google button from the login and signup forms.
+When the Google credentials are missing, SceneSelf keeps email/password auth enabled and hides the Google button from the login and signup forms.
 
 ### Session Management
 
@@ -59,6 +59,6 @@ When the Google credentials are missing, the starter keeps email/password auth e
 | Route Group | Protection |
 |-------------|-----------|
 | `(protected)` | Requires login — `SessionGuard` component |
-| `(admin)` | Requires `role='admin'` — `AdminGuard` component |
+| `(admin)` | Requires `role='admin'` — `requireAdmin()` in the layout |
 | `(auth)` | Public — accessible without login |
 | `(marketing)` | Public |

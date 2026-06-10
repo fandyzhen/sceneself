@@ -1,20 +1,19 @@
 {
-  "name": "sistine-starter-vibe-to-production",
+  "name": "sceneself",
   "version": "0.1.0",
-  "description": "The first AI SaaS starter built for vibe coding. Ship production-ready AI SaaS using Cursor, Claude Code, or Windsurf.",
+  "description": "SceneSelf — AI photo dump generator. Turn one selfie into a cohesive 6-photo scene set.",
   "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sceneself/sceneself.git"
   },
   "keywords": [
-    "vibe-coding",
-    "ai-saas",
-    "nextjs",
-    "starter",
-    "cursor",
-    "claude-code",
-    "windsurf"
+    "ai-photo-dump",
+    "ai-photoshoot",
+    "selfie-generator",
+    "ai-photo-set",
+    "instagram-photo-generator",
+    "scene-generator"
   ],
   "author": "SceneSelf",
   "license": "MIT",

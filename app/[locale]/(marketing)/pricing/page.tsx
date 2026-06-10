@@ -13,12 +13,13 @@ export async function generateMetadata(
   props: { params: Promise<{ locale: Locale }> },
 ): Promise<Metadata> {
   const params = await props.params;
-  const t = await getTranslations({ locale: params.locale, namespace: "pricing" });
+  const t = await getTranslations({ locale: params.locale, namespace: "seo" });
   return generatePageMetadata({
     locale: params.locale,
     path: "/pricing",
-    title: t("title"),
-    description: t("subtitle"),
+    title: t("pricing.title"),
+    description: t("pricing.description"),
+    ogImage: t("pricing.ogImage"),
   });
 }
 

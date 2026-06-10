@@ -10,17 +10,17 @@ description: Overview of the codebase layout and key directories.
 │   ├── (auth)/                # Auth pages (login, signup, forgot-password)
 │   ├── (marketing)/           # Public pages (home, pricing, blog, contact)
 │   ├── (protected)/           # Authenticated pages (dashboard, profile, credits)
-│   ├── (admin)/               # Admin panel (users, subscriptions, credits)
-│   ├── demo/                  # AI demo pages (chat, image, video)
+│   ├── (admin)/               # Admin panel (users, subscriptions, credits, codes, API keys)
+│   ├── create/                # Scene generation flow (the product core UI)
 │   └── docs/                  # Documentation (Fumadocs)
 ├── app/api/                   # API routes
 │   ├── auth/                  # Better Auth + custom auth endpoints
 │   ├── payments/creem/        # Creem checkout + webhook
-│   ├── chat/                  # Chat API (streaming)
-│   ├── image/                 # Image generation API
-│   ├── video/                 # Video generation API (async)
+│   ├── scene/                 # Scene generation: plan / clarify / upload / jobs
+│   ├── redeem/                # Redemption code endpoint for users
+│   ├── partner/codes/         # Partner API for generating code batches
 │   ├── admin/                 # Admin operations API
-│   └── cron/                  # Scheduled tasks (credit grants)
+│   └── cron/                  # Scheduled tasks (credit grants, selfie cleanup)
 ├── components/                # Reusable UI components
 ├── features/                  # Feature modules (auth, admin, forms, navigation)
 ├── lib/                       # Core business logic
@@ -29,11 +29,13 @@ description: Overview of the codebase layout and key directories.
 │   ├── credits.ts             # Credit system logic
 │   ├── payments/creem.ts      # Creem payment integration
 │   ├── billing/               # Subscription and credit scheduling
-│   ├── volcano-engine/        # Volcano Engine API wrappers
+│   ├── scene/                 # Scene engine (orchestrator, plan, pricing, services)
+│   ├── openrouter/            # OpenRouter API wrappers (chat, image)
+│   ├── redemption/            # Redemption codes + partner API keys
 │   └── email.ts               # Email sending logic
 ├── constants/                 # Constants
-│   ├── billing.ts             # Pricing plans and credit packs
-│   ├── tier.ts                # User tier definitions
+│   ├── billing.ts             # Subscription plans (weekly / monthly / yearly)
+│   ├── scene-storylines.ts    # Scene storyline presets
 │   └── website.ts             # Site metadata
 ├── content/docs/              # Documentation content (MDX)
 ├── messages/                  # i18n translation files (en, zh)
@@ -48,7 +50,7 @@ description: Overview of the codebase layout and key directories.
 | `(marketing)` | `/`, `/pricing`, `/blog` | Public | Marketing and SEO pages |
 | `(protected)` | `/dashboard`, `/profile` | Auth required | User app features |
 | `(admin)` | `/admin/*` | Admin role | Management panel |
-| `demo` | `/demo/*` | Public | AI feature demos |
+| `create` | `/create` | Public | Scene generation flow |
 | `docs` | `/docs/*` | Public | Documentation |
 
 ## Key Files
@@ -58,7 +60,9 @@ description: Overview of the codebase layout and key directories.
 | `lib/auth.ts` | Better Auth configuration with registration hooks |
 | `lib/credits.ts` | Credit deduction, refund, and balance check |
 | `lib/db/schema.ts` | Complete database schema (Drizzle ORM) |
-| `constants/billing.ts` | Pricing plans, credit amounts, Creem product IDs |
+| `constants/billing.ts` | Subscription plans, credit amounts, Creem price IDs |
 | `lib/payments/creem.ts` | Creem API integration (checkout, webhooks) |
+| `lib/scene/orchestrator.ts` | Scene generation state machine (quality / identity / coherence) |
+| `lib/openrouter/` | OpenRouter client wrappers (chat, image) |
 | `proxy.ts` | Next.js proxy for i18n routing |
 | `i18n.config.ts` | Locale configuration |

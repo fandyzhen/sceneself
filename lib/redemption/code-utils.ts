@@ -1,6 +1,6 @@
 // 兑换码纯工具函数 - client safe(无 db / crypto / postgres import)。
 // 拆出来让 client component (credits/page.tsx) 可 import 而不触发 postgres → fs/os bundling。
-// 服务端用的 generateCode / generateBatch 留在 lib/redemption/codes.ts。
+// 服务端用的 generateBatch 留在 lib/redemption/codes.ts;随机码生成在 code-generator.ts。
 
 // 12 位码字符集 - 去掉 0/O/1/I/L 避免视觉混淆,共 31 字符
 export const ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";

@@ -80,7 +80,7 @@ export default function PrivacyPage() {
             <li><strong>Purpose limitation.</strong> Your selfie is used only to generate the scene set you request and to verify that the results look like you (identity and quality checks) — not for any other purpose.</li>
             <li><strong>No training, no retained face templates.</strong> We do not use your selfie to train AI models, and we do not keep reusable facial-recognition templates or biometric identifiers beyond what is needed to complete your generation.</li>
             <li><strong>Automatic deletion.</strong> Your original selfie and any derived identity reference are deleted automatically once your scene set is delivered, and within 24 hours at the latest. You can also delete them at any time from your account.</li>
-            <li><strong>Processing partners.</strong> Generation and visual quality/identity checks run via Volcano Engine (Doubao and Seedream models); generated images are stored on Cloudflare R2. Your selfie is shared with these providers solely to perform these operations.</li>
+            <li><strong>Processing partners.</strong> Generation and visual quality/identity checks run via OpenRouter (Google Gemini models); generated images are stored on Cloudflare R2. Your selfie is shared with these providers solely to perform these operations.</li>
             <li><strong>BIPA &amp; GDPR.</strong> Where applicable (e.g., Illinois BIPA, EU/UK GDPR), we obtain your consent before processing biometric or face data, limit retention as above, and honor your access and deletion rights. We never sell biometric data.</li>
           </ul>
           <p className="mt-4">
@@ -112,7 +112,7 @@ export default function PrivacyPage() {
           <h3 className="text-xl font-semibold mb-3">With Service Providers</h3>
           <p>We share information with third-party vendors who perform services on our behalf, such as:</p>
           <ul className="list-disc pl-6 space-y-2">
-            <li>AI processing: Volcano Engine (Doubao / Seedream models) for scene generation and visual quality/identity checks</li>
+            <li>AI processing: OpenRouter (Google Gemini models) for scene generation and visual quality/identity checks</li>
             <li>Image storage &amp; delivery: Cloudflare R2</li>
             <li>Payment processing: Creem</li>
             <li>Email delivery: Resend</li>

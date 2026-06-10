@@ -23,7 +23,7 @@ description: 常见问题及解决方案。
 ## 用户无法访问管理后台
 
 1. 确认数据库中 `user.role = 'admin'`
-2. 检查 `features/admin/components/admin-guard.tsx` 逻辑
+2. 检查 `lib/auth/admin.ts` 中的 `requireAdmin()` 逻辑
 3. 确保用户会话有效（尝试退出重新登录）
 
 ## 邮件发送失败
@@ -33,12 +33,22 @@ description: 常见问题及解决方案。
 3. 开发环境中可能使用 `onboarding@resend.dev` 作为发件人
 4. 生产环境需在 Resend 中验证发件域名
 
-## AI API 返回错误
+## 场景生成返回错误
 
-1. 检查 `VOLCANO_ENGINE_API_KEY` 是否有效
-2. 验证 `VOLCANO_ENGINE_API_URL` 端点
-3. 检查火山引擎配额/余额
-4. 查看服务器日志获取具体错误信息
+1. 检查 `OPENROUTER_API_KEY` 是否有效
+2. 验证 `OPENROUTER_API_URL` 端点（`https://openrouter.ai/api/v1`）
+3. 检查 OpenRouter 余额与限流情况
+4. 确认模型 ID 是 OpenRouter 兼容格式（`google/...`）
+5. 查看服务器日志获取具体错误信息
+
+## 场景生成质量问题
+
+**症状**：照片风格不一致或频繁丢帧。
+
+1. 确认 `SCENE_REFERENCE_CHAINING=true`（关闭会大幅降低组一致性）
+2. 查看 `generation_frame.failReason` — `identity` 占多数说明 `IDENTITY_THRESHOLD` 太严
+3. 确认不是 `SCENE_DEV_FALLBACK` 返回了占位图
+4. 如果稳定丢帧，检查 `SCENE_RESCUE_ATTEMPTS` 是否为 0
 
 ## 数据库连接问题
 

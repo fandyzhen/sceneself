@@ -46,7 +46,7 @@ describe("docs content", () => {
       "---Getting Started---",
       "auth",
       "payments",
-      "ai",
+      "scene",
       "email",
       "admin",
       "---Guides---",

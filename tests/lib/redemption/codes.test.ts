@@ -4,9 +4,9 @@ import {
   CODE_LENGTH,
   formatCode,
   formatVisualCode,
-  generateCode,
   normalizeCode,
-} from "@/lib/redemption/codes";
+} from "@/lib/redemption/code-utils";
+import { generateCode } from "@/lib/redemption/code-generator";
 
 describe("redemption codes - generateCode", () => {
   it("returns a 12-char uppercase string from the safe alphabet", () => {

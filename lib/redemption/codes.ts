@@ -2,23 +2,11 @@ import "server-only"; // 防止此文件被 client component 引入(会拉 postg
 import crypto from "crypto";
 import { db } from "@/lib/db";
 import { redemptionCode } from "@/lib/db/schema";
-import { ALPHABET, CODE_LENGTH } from "./code-utils";
+import { generateCode } from "./code-generator";
 
 // 重导出 client-safe utils,保持 codes.ts 现有 server 端调用方零改动
 export { ALPHABET, CODE_LENGTH, normalizeCode, formatCode, formatVisualCode } from "./code-utils";
-
-/**
- * 生成一个 12 位随机兑换码(大写)。使用 crypto.randomBytes 保证不可预测。
- * 仅服务端可用(用 node crypto)。
- */
-export function generateCode(): string {
-  const bytes = crypto.randomBytes(CODE_LENGTH);
-  let s = "";
-  for (let i = 0; i < CODE_LENGTH; i++) {
-    s += ALPHABET[bytes[i] % ALPHABET.length];
-  }
-  return s;
-}
+export { generateCode } from "./code-generator";
 
 export interface GenerateBatchOptions {
   count: number;

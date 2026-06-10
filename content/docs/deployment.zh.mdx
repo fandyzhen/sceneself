@@ -8,7 +8,7 @@ description: 将 SceneSelf 应用部署到生产环境。
 部署前确保你有：
 
 - PostgreSQL 数据库（Supabase、Neon 或 Vercel Postgres）
-- 火山引擎 API Key
+- OpenRouter API Key（场景生成必需）
 - Creem 账号和 API Key
 - Resend API Key
 - （可选）Google OAuth 凭据
@@ -47,21 +47,23 @@ https://your-domain.com/api/payments/creem/webhook
 
 ### 5. 设置定时任务
 
-用于年付订阅积分发放，配置每小时调用：
+用于订阅积分续发和自拍清理，配置每小时调用：
 
 ```bash
 curl -H "Authorization: Bearer YOUR_CRON_SECRET" \
   https://your-domain.com/api/cron/subscription-grants
+curl -H "Authorization: Bearer YOUR_CRON_SECRET" \
+  https://your-domain.com/api/cron/cleanup-selfies
 ```
 
 在 Vercel 上添加到 `vercel.json`：
 
 ```json
 {
-  "crons": [{
-    "path": "/api/cron/subscription-grants",
-    "schedule": "0 * * * *"
-  }]
+  "crons": [
+    { "path": "/api/cron/subscription-grants", "schedule": "0 * * * *" },
+    { "path": "/api/cron/cleanup-selfies", "schedule": "0 * * * *" }
+  ]
 }
 ```
 
@@ -78,12 +80,13 @@ ADMIN_EMAIL=admin@example.com pnpm admin:setup
 - `BETTER_AUTH_URL` — 实际域名
 - `NEXT_PUBLIC_APP_URL` — 实际域名
 - `RESEND_FROM_EMAIL` — 已验证的域名发件人
+- `SCENE_DEV_FALLBACK="false"` — 生产环境禁用占位图
 
 ## 部署后检查清单
 
 - [ ] 数据库已迁移
 - [ ] Creem 中已配置 Webhook URL
-- [ ] 积分发放定时任务已设置
+- [ ] 积分发放与自拍清理定时任务已设置
 - [ ] 管理员账户已创建
 - [ ] Resend 中已验证发件域名
 - [ ] OAuth 重定向 URI 已更新为生产域名

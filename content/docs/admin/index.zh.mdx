@@ -43,13 +43,24 @@ ADMIN_EMAIL=your@email.com pnpm admin:setup
 - 查看所有用户的积分交易记录
 - 按原因、日期范围筛选
 
+### 兑换码批次（`/admin/codes`）
+
+- 通过 `POST /api/admin/codes` 创建批次（积分、渠道、数量）
+- 查看批次列表和单批次详情（`/admin/codes/[batchId]`），支持导出
+
+### 合作伙伴 API Key（`/admin/api-keys`）
+
+- 为合作伙伴签发 API key，对方通过 `POST /api/partner/codes` 自助生成兑换码批次
+- 明文 key 仅在创建时返回一次，数据库只存 sha256 哈希
+- 每个 key 有每日生成配额
+
 ## 权限控制
 
-管理路由由 `features/admin/components/admin-guard.tsx` 中的 `AdminGuard` 保护：
+管理路由由 `lib/auth/admin.ts` 中的 `requireAdmin()` 保护，在 `(admin)` 路由组布局中调用：
 
 ```typescript
 // 检查 user.role === 'admin'
-// 非管理员重定向到仪表板
+// 非管理员会被重定向离开管理后台
 ```
 
-API 路由通过 `lib/auth/admin.ts` 检查管理员状态。
+API 路由通过同一份 `lib/auth/admin.ts` 工具函数检查管理员状态。

@@ -19,24 +19,26 @@ monthly: {
 
 The recommended plan is highlighted on the pricing page via `RECOMMENDED_PLAN`.
 
-## Modify Credit Costs
+## Modify Scene Pricing
 
-Edit the cost constants:
+Edit the constants in `lib/scene/pricing.ts`:
 
-| Feature | File | Variable |
-|---------|------|----------|
-| Chat | `lib/credits.ts` | `CHAT_CREDIT_COST` |
-| Image | `app/api/image/generate/route.ts` | Inline constant |
-| Video | `app/api/video/generate/route.ts` | Inline constant |
+| Setting | Variable | Default |
+|---------|----------|---------|
+| Photos per set | `SHOTS_PER_SET` | 6 |
+| Credits per photo | `CREDITS_PER_PHOTO` | 50 |
+
+One set costs `SHOTS_PER_SET × CREDITS_PER_PHOTO` = 300 credits; undelivered photos are refunded automatically.
 
 ## Replace AI Provider
 
-To switch from Volcano Engine to OpenAI:
+The Scene flow is built on OpenRouter (Nano Banana 2 for images + Gemini Flash Lite for text/vision). To switch providers:
 
-1. Install the OpenAI SDK: `pnpm add openai`
-2. Replace files in `lib/volcano-engine/` with OpenAI equivalents
-3. Update environment variables
-4. Keep the same credit deduction pattern in API routes
+1. Replace or extend the client wrappers in `lib/openrouter/` (or add a new `lib/<provider>/`)
+2. Update the call sites in `lib/scene/services/` (`image-gen.ts`, `quality-check.ts`, `identity-check.ts`, `scene-planner.ts`, `story-line.ts`)
+3. Update `imageModel` / `textModel` / `visionModel` in `lib/scene/config.ts`
+4. Update the `OPENROUTER_*` environment variables accordingly
+5. Keep the same credit deduction and refund pattern
 
 ## Add a New Language
 

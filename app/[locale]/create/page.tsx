@@ -351,7 +351,14 @@ export default function CreatePage() {
 
                 <button
                   type="button"
-                  onClick={() => fileRef.current?.click()}
+                  onClick={() => {
+                    if (!confirmedOwn) {
+                      setError(t("upload.confirmFirst"));
+                      return;
+                    }
+                    setError(null);
+                    fileRef.current?.click();
+                  }}
                   className="group relative mt-7 aspect-[4/5] w-full overflow-hidden rounded-3xl border border-dashed border-white/15 bg-white/[0.02] transition-colors hover:border-amber-300/40"
                 >
                   {selfiePreview ? (
@@ -376,12 +383,19 @@ export default function CreatePage() {
                 {error && <ErrorLine text={error} />}
 
                 <div className="mt-auto pt-7">
-                  {selfieUrl && (
-                    <label className="mt-4 flex items-start gap-2 text-xs text-stone-400">
-                      <input type="checkbox" checked={confirmedOwn} onChange={e => setConfirmedOwn(e.target.checked)} className="mt-0.5 accent-amber-300" />
-                      <span>{t("upload.confirmOwn")}</span>
-                    </label>
-                  )}
+                  {/* 合规勾选:上传前必须确认本人照片且年满 18 岁(单行小字,移动端不换行) */}
+                  <label className="mt-4 flex items-center gap-2 text-xs text-stone-400">
+                    <input
+                      type="checkbox"
+                      checked={confirmedOwn}
+                      onChange={e => {
+                        setConfirmedOwn(e.target.checked);
+                        if (e.target.checked) setError(null);
+                      }}
+                      className="shrink-0 accent-amber-300"
+                    />
+                    <span className="whitespace-nowrap">{t("upload.confirmOwn")}</span>
+                  </label>
                   <div className="mt-4">
                     <PrimaryButton disabled={!selfieUrl || uploading || !confirmedOwn} onClick={() => setStep("describe")}>
                       {t("upload.continue")} <ArrowRight className="h-4 w-4" />

@@ -21,30 +21,30 @@ description: 基于积分的计费系统工作原理。
 const credits = await getUserCredits(userId);
 
 // 检查用户是否负担得起
-const canAfford = await canUserAfford(userId, 10);
+const canAfford = await canUserAfford(userId, 300);
 
 // 扣除积分（事务性）
-await deductCredits(userId, 10, 'chat_usage');
+await deductCredits(userId, 300, 'scene_set');
 
-// 退还积分（如 API 失败时）
-await refundCredits(userId, 10, 'chat_refund');
+// 退还积分（如有照片未交付）
+await refundCredits(userId, 50, 'scene_refund');
 ```
 
 ## 积分消耗
 
 | 操作 | 消耗 | 配置位置 |
 |------|------|---------|
-| 对话消息 | 10 积分 | `lib/credits.ts`（`CHAT_CREDIT_COST`） |
-| 图像生成 | 20 积分 | `app/api/image/generate/route.ts` |
-| 视频生成 | 50 积分 | `app/api/video/generate/route.ts` |
+| 场景写真一组（6 张） | 6 × 50 = 300 积分 | `lib/scene/pricing.ts`（`SHOTS_PER_SET`、`CREDITS_PER_PHOTO`） |
+
+任务启动时预扣全组积分；任务结束时未交付的张数按张返还。
 
 ## 积分来源
 
 | 来源 | 触发条件 | 数量 |
 |------|---------|------|
 | 注册奖励 | 新用户注册 | 300 积分 |
-| 订阅（按月） | Webhook / 定时任务 | 按计划配置 |
-| 一次性积分包 | Webhook | 按积分包配置 |
+| 订阅 | Webhook / 定时任务 | 按计划配置 |
+| 兑换码 | 用户在 `/redeem` 核销 | 按兑换码配置 |
 | 管理员调整 | 通过管理后台手动操作 | 自定义 |
 
 ## 账本原因
@@ -52,29 +52,25 @@ await refundCredits(userId, 10, 'chat_refund');
 每条 `creditLedger` 记录都有 `reason` 字段：
 
 - `registration_bonus` — 注册赠送
-- `chat_usage` — 对话扣除
-- `image_usage` — 图像生成扣除
-- `video_usage` — 视频生成扣除
-- `subscription_cycle` — 订阅月度发放
-- `one_time_pack` — 积分包购买
+- `scene_set` — 场景写真组扣除（300 积分）
+- `scene_refund` — 未交付照片返还
+- `subscription_cycle` — 订阅周期发放
+- `redemption` — 兑换码积分
 - `admin_adjustment` — 管理员手动调整
 
 ## 积分补偿
 
-AI API 调用使用**先扣除、失败后退还**模式：
+场景生成使用**先扣除、失败后退还**模式：
 
 ```typescript
-// 1. 扣除积分
-await deductCredits(userId, cost, 'chat_usage');
+// 1. 任务启动时预扣全组积分
+await deductCredits(userId, 300, 'scene_set');
 
-try {
-  // 2. 调用 AI API
-  const result = await callAI(...);
-} catch (error) {
-  // 3. 失败时退还
-  await refundCredits(userId, cost, 'chat_refund');
-  throw error;
-}
+// 2. 执行生成任务
+// ...
+
+// 3. 任务结束时返还未交付的张数
+await refundCredits(userId, refundForUndelivered(delivered), 'scene_refund');
 ```
 
-确保 AI 服务商故障时用户不会损失积分。
+确保照片未交付时用户不会损失积分。

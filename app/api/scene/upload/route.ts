@@ -10,9 +10,9 @@ import { checkFace } from "@/lib/scene/services";
 // 自拍上传：允许匿名（前置体验，到生成才强制登录）。
 const MAX_BYTES = 12 * 1024 * 1024; // 12MB，容纳手机高清自拍 / HEIC
 
-// 火山 Seedream 仅认 JPEG/PNG/WebP 作为参考图（实测 AVIF 返回 UnsupportedImageFormat）。
+// 出图 API 仅认 JPEG/PNG/WebP 作为参考图（火山时代实测 AVIF 返回 UnsupportedImageFormat，OpenRouter 沿用同一安全集）。
 // HEIC 走 heic-convert 转 JPEG；其余非 JPEG/PNG 用 sharp 一律转 JPEG，确保下游可用。
-const VOLCANO_NATIVE_CONTENT_TYPES = new Set(["image/jpeg", "image/jpg", "image/png", "image/webp"]);
+const IMAGE_API_NATIVE_CONTENT_TYPES = new Set(["image/jpeg", "image/jpg", "image/png", "image/webp"]);
 
 // HEIC 转码 + R2 上传 + face check(vision LLM)。
 export const maxDuration = 60;
@@ -23,6 +23,14 @@ export async function POST(req: NextRequest) {
     const file = form.get("file");
     if (!(file instanceof File)) {
       return NextResponse.json({ error: "No file provided." }, { status: 400 });
+    }
+
+    // 合规闸:前端在上传前强制勾选"本人照片且年满 18 岁",缺标记直接拒绝。
+    if (form.get("consent") !== "self_18plus") {
+      return NextResponse.json(
+        { error: "Please confirm this is your own photo and you are 18 or older." },
+        { status: 400 },
+      );
     }
 
     // 放宽类型门：iOS/安卓上传 HEIC 时 file.type 可能为空或 octet-stream，按扩展名/魔数兜底。
@@ -49,7 +57,7 @@ export async function POST(req: NextRequest) {
     if (isHeic(buffer)) {
       buffer = await heicToJpeg(buffer);
       contentType = "image/jpeg";
-    } else if (!VOLCANO_NATIVE_CONTENT_TYPES.has(contentType.toLowerCase())) {
+    } else if (!IMAGE_API_NATIVE_CONTENT_TYPES.has(contentType.toLowerCase())) {
       // AVIF / GIF / 其他非 JPEG/PNG/WebP → sharp 转 JPEG（火山只认这几种）。
       // 实测 AVIF 提交给火山会返回 InvalidParameter.UnsupportedImageFormat。
       try {

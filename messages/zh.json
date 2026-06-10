@@ -6,15 +6,15 @@
       "nav": {
         "examples": "案例",
         "how": "怎么用",
-        "cta": "免费试用"
+        "cta": "免费生成一组"
       },
       "hero": {
         "h1a": "一张自拍。",
         "h1b": "一整组场景照片。",
         "sub": "输入一个向往的场景 —— “在迪拜的一天”“东京夜晚散步”“开了自己的咖啡店”。得到一组同一个你身处其中的连贯照片,直接发 Instagram 和 TikTok。",
-        "cta": "生成免费预览",
-        "diff": "走进任何你想象的人生 —— 带回一组成片证明你真的活过那个版本。",
-        "trust": "免费 4 张预览,无需注册即可开始。"
+        "cta": "免费生成 6 张成片",
+        "diff": "走进任何你想象的人生 —— 带回一组像那天随手拍下的照片。",
+        "trust": "免费注册即可创建你的第一组 6 张照片。"
       },
       "beforeAfter": {
         "kicker": "同一次拍摄,而非换图",
@@ -49,8 +49,8 @@
         "title": "看见身处梦想场景的自己",
         "titleA": "轮到你了。",
         "titleB": "一段故事的距离。",
-        "sub": "免费预览。无需信用卡。一整组成片像同一次拍摄。",
-        "button": "生成我的免费预览",
+        "sub": "首组 6 张免费。无需信用卡。一整组成片像同一次拍摄。",
+        "button": "免费生成我的一组",
         "trust": "自拍 24h 自动删 · 不训练 · 随时取消"
       },
       "cinema": {
@@ -59,7 +59,7 @@
         "h1b": "一整段故事。",
         "sub": "输入一个想象的场景 —— 我们生成你身处其中的一整组不同时刻。一组连贯成片,不是单张换背景。",
         "cta": "免费试用",
-        "trust": "免费预览,无需信用卡。",
+        "trust": "首组 6 张免费,无需信用卡。",
         "hint": "悬停任意一张,高亮它所属的整组",
         "scrollHint": "向下"
       },
@@ -176,7 +176,8 @@
       "continue": "继续",
       "faceNoFace": "没检测到清晰的正脸，换一张自拍试试～",
       "faceMultiple": "照片里好像不止一个人，用单人正脸自拍效果最好。",
-      "confirmOwn": "我确认这是本人照片，且我有权使用它。"
+      "confirmOwn": "这是我本人的照片,我已年满 18 岁。",
+      "confirmFirst": "请先勾选确认:本人照片且已满 18 岁。"
     },
     "describe": {
       "title": "描述你向往的场景",
@@ -334,8 +335,8 @@
     "review": {
       "title": "你的拍摄方案",
       "subtitle": "一组连贯的 {count} 张照片 — 像一次真实的随手拍。",
-      "start": "生成免费预览",
-      "free": "免费 {count} 张预览",
+      "start": "免费生成一组",
+      "free": "免费 {count} 张成组",
       "shot": "第 {index} 张"
     },
     "generating": {
@@ -378,7 +379,7 @@
       "download": "下载",
       "downloadAll": "全部下载",
       "sharing": "打包中…",
-      "unlockFull": "解锁完整 9 张成组",
+      "unlockFull": "解锁完整 6 张成组",
       "again": "换个场景",
       "cover": "封面",
       "close": "关闭",
@@ -391,7 +392,7 @@
       "invalidType": "请上传一张照片(JPG/PNG/HEIC)。",
       "generic": "出了点问题,请重试。",
       "noCredits": "完整成组的积分不足了。",
-      "insufficientCredits": "积分不足,购买积分包或订阅后再试。"
+      "insufficientCredits": "积分不足,订阅后即可继续。"
     }
   },
   "common": {
@@ -458,46 +459,6 @@
         "twitter": "Twitter",
         "linkedin": "领英",
         "github": "GitHub"
-      }
-    }
-  },
-  "hero": {
-    "badge": "⚡ 专为 Vibe Coding 打造的首款入门套件",
-    "title": "通过 Vibe Coding 将您的 AI SaaS 产品投入生产",
-    "description": "把日常照片变成电影感的故事场景。SceneSelf 只需一张自拍，就能生成统一调性、杂志级别的成套场景影集——不用棚拍、不用预约、不用等待。",
-    "cta": {
-      "primary": "查看文档",
-      "secondary": "获取代码"
-    },
-    "modal": {
-      "eyebrow": "源码获取",
-      "title": "请在课程社区获取源码",
-      "description": "SceneSelf 的完整上线工具包、生成预设和配套资料都放在创作者社区里统一发放。",
-      "instruction": "如果你已经加入课程，点击下方链接即可在新窗口打开课程社区，获取代码与相关资料。",
-      "linkLabel": "前往课程社区",
-      "linkHint": "课程社区：https://scys.com/deepsea/2001/course",
-      "close": "关闭"
-    }
-  },
-  "features": {
-    "title": "Vibe Coding 成功所需的一切功能",
-    "subtitle": "告别约拍排期。选一个场景、上传一张自拍，SceneSelf 在几分钟内交付一整套画面。",
-    "items": {
-      "aiOptimized": {
-        "title": "为 AI 辅助开发而生",
-        "description": "为 Cursor、Windsurf 和 Claude Code 等工具完美结构化。每个文件、每个组件都经过优化，便于 AI 理解和修改。"
-      },
-      "zeroPipeline": {
-        "title": "从零到生产的完整流程",
-        "description": "身份验证、支付、数据库、部署——一切均已配置完毕。只需向您的 AI 助手发出指令，即可见证您的 SaaS 产品诞生。"
-      },
-      "nonTechnical": {
-        "title": "对非技术背景的创始人友好",
-        "description": "分不清 React 和 Rails？没关系。只要您能清晰地描述您的想法，就能成功交付一款 SaaS 产品。"
-      },
-      "productionGrade": {
-        "title": "从第一天起即达生产级别",
-        "description": "支持真实用户、真实支付、真实规模。基于 Next.js、PostgreSQL 和 Creem 构建——与价值数十亿美元公司使用的技术栈一致。"
       }
     }
   },
@@ -575,130 +536,6 @@
         ]
       }
     }
-  },
-  "testimonials": {
-    "title": "来自 Vibe Coders 的成功故事",
-    "subtitle": "创作者、品牌方与日常拍摄者分享他们如何用 SceneSelf 交付电影感场景影集。",
-    "items": [
-      {
-        "name": "Alex Chen",
-        "quote": "我用 SceneSelf 一个下午就拍完了整季的 lookbook，不用棚、不用模特费、不用补拍。",
-        "designation": "营销经理转型创始人"
-      },
-      {
-        "name": "Jordan Lee",
-        "quote": "我花了多年学习编码。现在我的非技术联合创始人使用 Vibe Coding 发布功能比我还快。这就是未来。",
-        "designation": "技术联合创始人"
-      },
-      {
-        "name": "Alice Johnson",
-        "quote": "原本要五位数预算的品牌大片，SceneSelf 用一杯咖啡的钱就交付了一样的电影感。",
-        "designation": "连续创业者"
-      },
-      {
-        "name": "Bob Smith",
-        "quote": "光这个月我就生成了 30 套场景变体。SceneSelf 是我日更内容的秘密武器。",
-        "designation": "独立黑客"
-      },
-      {
-        "name": "Cathy Lee",
-        "quote": "选场景、传自拍、影集就好了。出片从未如此快速。",
-        "designation": "产品经理"
-      },
-      {
-        "name": "David Wright",
-        "quote": "身份验证、支付和部署都可以直接使用。我专注于独特的功能。我的 SaaS 第一周就盈利了。",
-        "designation": "独立创始人"
-      },
-      {
-        "name": "Eva Green",
-        "quote": "它带来的效率是无与伦比的。这是一个重要的工具，帮助我们削减成本并显著改善了最终产品。",
-        "designation": "运营总监"
-      },
-      {
-        "name": "Frank Moore",
-        "quote": "一个完美融入我们工作流程的强大解决方案。它增强了我们团队的能力，让我们能够处理更复杂的项目。",
-        "designation": "项目经理"
-      },
-      {
-        "name": "Grace Hall",
-        "quote": "它非常直观且易于使用。即使没有技术专业知识的人也可以利用它的强大功能来改善工作流程。",
-        "designation": "市场营销专家"
-      },
-      {
-        "name": "Henry Ford",
-        "quote": "它为我们节省了无数小时。强烈推荐给任何想要提高效率和生产力的人。",
-        "designation": "运营分析师"
-      },
-      {
-        "name": "Ivy Wilson",
-        "quote": "任何专业人士的必备工具。它彻底改变了我们解决问题和决策的方式。",
-        "designation": "商业顾问"
-      },
-      {
-        "name": "Jack Brown",
-        "quote": "结果总是令人印象深刻。这个 AI 不仅帮助我们达到了性能目标，还超越了预期。",
-        "designation": "绩效经理"
-      },
-      {
-        "name": "Kathy Adams",
-        "quote": "它帮助我们实现了曾经被认为不可能的事情。AI 的能力是突破性的，为我们开辟了新的道路。",
-        "designation": "创新负责人"
-      },
-      {
-        "name": "Leo Carter",
-        "quote": "具有真正影响力的变革性技术。它简化了我们的运营，为我们的流程带来了前所未有的效率。",
-        "designation": "技术策略师"
-      },
-      {
-        "name": "Mia Turner",
-        "quote": "简直是革命性的！它与我们现有系统的集成和增强方式简直是奇迹。",
-        "designation": "系统集成师"
-      }
-    ]
-  },
-  "companies": {
-    "title": "使用行业领先技术构建",
-    "subtitle": "基于现代技术栈构建，被全球顶尖团队信赖"
-  },
-  "gridFeatures": {
-    "aiReady": {
-      "title": "AI 就绪架构",
-      "description": "预配置聊天、图像和视频生成工作流，默认接入 Volcano Engine。填好密钥即可开始构建。"
-    },
-    "creem": {
-      "title": "Creem 支付",
-      "description": "内置完整的计费系统，包括订阅、使用量跟踪和客户门户。"
-    },
-    "auth": {
-      "title": "身份认证系统",
-      "description": "Better Auth 支持邮箱密码和 OAuth。会话管理和受保护路由已就绪。"
-    },
-    "deploy": {
-      "title": "一键部署",
-      "description": "即刻部署到 Vercel、Railway 或任何平台。从第一天起即可投入生产。"
-    },
-    "typescript": {
-      "title": "TypeScript + Tailwind",
-      "description": "现代技术栈包括 Next.js 14、TypeScript、Tailwind CSS 和 shadcn/ui 组件。"
-    },
-    "database": {
-      "title": "数据库 + ORM",
-      "description": "PostgreSQL 配合 Drizzle ORM。类型安全的查询和迁移已配置。"
-    },
-    "seo": {
-      "title": "SEO 和营销",
-      "description": "元标签、Open Graph、站点地图和分析。为有机增长准备的一切。"
-    },
-    "vibeCoding": {
-      "title": "Vibe Coding 就绪",
-      "description": "针对 Cursor、Windsurf 和 Claude Code 进行了优化。AI 能理解每个组件。"
-    }
-  },
-  "cta": {
-    "title": "准备好交付您的 AI SaaS 产品了吗？",
-    "description": "加入数千名创作者的行列，他们已经用 SceneSelf 交付了电影感的场景影集。",
-    "button": "获取代码"
   },
   "auth": {
     "login": {
@@ -929,8 +766,8 @@
       "date": "时间",
       "subscriptionCycle": "订阅周期",
       "subscriptionSchedule": "订阅分期",
-      "oneTimePack": "积分包",
-      "chatUsage": "对话消耗",
+      "oneTimePack": "历史积分包",
+      "chatUsage": "历史对话消耗",
       "adjustment": "手动调整",
       "unknownUser": "未知用户",
       "noTransactions": "暂无交易记录",
@@ -1087,8 +924,8 @@
       },
       "reasons": {
         "subscription_cycle": "订阅赠送积分",
-        "one_time_pack": "购买积分包",
-        "chat_usage": "AI 对话消耗",
+        "one_time_pack": "历史积分包",
+        "chat_usage": "历史 AI 对话消耗",
         "refund": "退款返还",
         "adjustment": "系统调整",
         "registration_bonus": "新人注册礼包"
@@ -1136,8 +973,8 @@
       },
       "reasons": {
         "subscription_cycle": "订阅赠送积分",
-        "one_time_pack": "购买积分包",
-        "chat_usage": "AI 对话消耗",
+        "one_time_pack": "历史积分包",
+        "chat_usage": "历史 AI 对话消耗",
         "image_generation": "图像生成",
         "video_generation": "视频生成",
         "refund": "退款返还",
@@ -1301,38 +1138,5 @@
         "designation": "探索者"
       }
     ]
-  },
-  "footer": {
-    "tagline": "利用 AI 的力量，将您的 SaaS 创意转化为现实。",
-    "product": {
-      "title": "产品",
-      "features": "功能",
-      "pricing": "定价",
-      "documentation": "文档"
-    },
-    "company": {
-      "title": "公司",
-      "about": "关于我们",
-      "blog": "博客",
-      "careers": "招聘"
-    },
-    "legal": {
-      "title": "法律",
-      "privacy": "隐私政策",
-      "terms": "服务条款",
-      "cookies": "Cookie 政策"
-    },
-    "social": {
-      "title": "社交",
-      "twitter": "Twitter",
-      "linkedin": "领英",
-      "github": "GitHub"
-    },
-    "newsletter": {
-      "title": "订阅邮件",
-      "description": "获取最新动态和资讯，直接发送到您的邮箱。",
-      "placeholder": "输入您的邮箱",
-      "subscribe": "订阅"
-    }
   }
 }

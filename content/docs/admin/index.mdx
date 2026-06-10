@@ -43,13 +43,24 @@ Or manually set `role = 'admin'` in the database for an existing user.
 - View all credit transactions across users
 - Filter by reason, date range
 
+### Redemption Code Batches (`/admin/codes`)
+
+- Create code batches via `POST /api/admin/codes` (credits, channel, quantity)
+- View batch list and per-batch detail (`/admin/codes/[batchId]`) with export
+
+### Partner API Keys (`/admin/api-keys`)
+
+- Issue API keys for partners to generate code batches via `POST /api/partner/codes`
+- The plaintext key is shown only once at creation; the DB stores a sha256 hash
+- Each key has a daily generation limit
+
 ## Authorization
 
-Admin routes are protected by `AdminGuard` in `features/admin/components/admin-guard.tsx`:
+Admin routes are protected by `requireAdmin()` from `lib/auth/admin.ts`, called in the `(admin)` route group layout:
 
 ```typescript
 // Checks user.role === 'admin'
-// Redirects non-admins to dashboard
+// Redirects non-admins away from the admin panel
 ```
 
-API routes check admin status via `lib/auth/admin.ts`.
+API routes check admin status via the same `lib/auth/admin.ts` helpers.

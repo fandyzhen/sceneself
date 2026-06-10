@@ -12,13 +12,14 @@ export async function generateMetadata(
   }
 ): Promise<Metadata> {
   const params = await props.params;
-  const t = await getTranslations({ locale: params.locale, namespace: 'contact' });
+  const t = await getTranslations({ locale: params.locale, namespace: 'seo' });
 
   return generatePageMetadata({
     locale: params.locale,
     path: '/contact',
-    title: t('title'),
-    description: t('subtitle'),
+    title: t('contact.title'),
+    description: t('contact.description'),
+    ogImage: t('contact.ogImage'),
   });
 }
 

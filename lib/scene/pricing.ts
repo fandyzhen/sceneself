@@ -4,7 +4,7 @@ export const SHOTS_PER_SET = 6;
 export const CREDITS_PER_PHOTO = 50;
 
 // "Double" 承诺(品牌契约):一组里未交付的每帧按 2× 退还,即 50 × 2 = 100 积分/未交付帧。
-// 见 marketing 博客 "how-companies-are-working-without-ai" 与前端 result.compensation 文案
+// 见 marketing 博客 "sceneself-credits-and-plans" 与前端 result.compensation 文案
 // ("双倍奖励,我们承担" / "the Double boost is on us")。
 // 改这个常量 = 改产品承诺,改前同步更新所有文案与 i18n 翻译。
 export const UNDELIVERED_REFUND_MULTIPLIER = 2;

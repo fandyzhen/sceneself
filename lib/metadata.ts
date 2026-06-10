@@ -1,6 +1,8 @@
 import { Metadata } from 'next'
+import { defaultLocale } from '@/i18n.config'
+import { getPublicAppUrl } from '@/lib/public-url'
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+const baseUrl = getPublicAppUrl()
 
 interface GenerateMetadataProps {
   locale: string
@@ -15,17 +17,19 @@ export function generatePageMetadata({
   path,
   title,
   description,
-  ogImage = `${baseUrl}/og-image.png`,
+  ogImage = `${baseUrl}/banner.png`,
 }: GenerateMetadataProps): Metadata {
-  const canonicalUrl = `${baseUrl}/${locale}${path}`
+  // localePrefix 是 as-needed:默认语言(en)不带 /en 前缀
+  const englishUrl = `${baseUrl}${path || '/'}`
+  const canonicalUrl = locale === defaultLocale ? englishUrl : `${baseUrl}/${locale}${path}`
 
   // Generate alternate language URLs
   const alternates = {
     canonical: canonicalUrl,
     languages: {
       'zh-CN': `${baseUrl}/zh${path}`,
-      'en-US': `${baseUrl}/en${path}`,
-      'x-default': `${baseUrl}/zh${path}`, // Default to Chinese
+      'en-US': englishUrl,
+      'x-default': englishUrl,
     },
   }
 

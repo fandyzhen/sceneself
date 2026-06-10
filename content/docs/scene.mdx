@@ -1,0 +1,88 @@
+---
+title: Scene Generation
+description: One selfie + one sentence in, a cohesive 6-photo scene set out — powered by OpenRouter (Gemini).
+---
+
+## Overview
+
+Scene generation is the core of SceneSelf: the user uploads **one selfie** and types **one sentence** describing a scene, and the engine produces **6 cohesive, portrait (4:5), phone-shot style photos** — a travel grid, a holiday photo dump, a fantasy character set, and more.
+
+All AI calls go through [OpenRouter](https://openrouter.ai):
+
+| Role | Model |
+|------|-------|
+| Image generation | `google/gemini-3.1-flash-image-preview` (Nano Banana 2) |
+| Text (scene planning, translation, clarification) | `google/gemini-3.1-flash-lite-preview` |
+| Vision (quality check, set coherence, identity check) | `google/gemini-3.1-flash-lite-preview` |
+
+## Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/scene/clarify` | POST | Intent rewriting + content moderation + clarification questions |
+| `/api/scene/plan` | POST | Generate the `ScenePlan` (continuity locks + 6 shot specs) |
+| `/api/scene/upload` | POST | Selfie upload (HEIC auto-converted, stored on R2) |
+| `/api/scene/jobs` | POST | Start a generation job (deducts credits) |
+| `/api/scene/jobs/[id]` | GET | Poll job status and frame URLs |
+
+The user-facing flow lives at `/create` (`app/[locale]/create/page.tsx`). Job state machine: `draft → planning → awaiting_choices → generating → completed | partial | failed`.
+
+## How It Works
+
+1. **Intent rewrite + moderation** — `IntentRewriter` reframes unsafe phrasings into safe editorial versions; `PromptModeration` (provider set by `PROMPT_MODERATION_PROVIDER`, default `llm`) screens the prompt.
+2. **Scene planning** — the text model produces a `ScenePlan`: scenario, coherence type, continuity locks (outfit, accessories, hair, camera, film look, anchor objects) and 6 `ShotSpec`s, each with its own narrative role, shot size, and image prompt.
+3. **Selfie upload** — HEIC is converted to JPEG, the file goes to R2, and `selfieUrl` + `identityRef` are cleaned up after `SELFIE_RETENTION_HOURS` (default 24h).
+4. **Orchestration** (`lib/scene/orchestrator.ts`) — every frame must pass three checks:
+   - **Quality** — no deformities or plastic skin, overall quality ≥ `QUALITY_MIN`
+   - **Identity** — the generated person matches the selfie (`IdentityCheck`)
+   - **Set coherence** — outfit, lighting, and composition stay consistent across the set
+   Failed frames get re-drawn (`SCENE_MAX_CANDIDATES`), then rescued using passed frames as references (`SCENE_RESCUE_ATTEMPTS`), with a salvage floor (`SALVAGE_QUALITY_MIN`) to deliver 6/6. Reference chaining (`SCENE_REFERENCE_CHAINING`, default on) renders frame 1 first as the visual anchor for the rest.
+5. **Polling** — the client polls `/api/scene/jobs/[id]` for status and frame URLs; the cover frame streams back first.
+
+## Data Model
+
+- `generation_job` — one row per set: status, prompts, moderation result, `scenePlan` (jsonb), selfie refs, credit cost
+- `generation_frame` — one row per photo: shot spec, status, image URL, identity/quality scores, fail reason
+
+## Credits
+
+Defined in `lib/scene/pricing.ts`:
+
+- One set = **6 photos × 50 credits = 300 credits**
+- Credits are deducted up front (`scene_set`); undelivered photos are refunded automatically (`scene_refund`)
+- Registration grants 300 free credits — exactly one set, with watermark; active subscribers get watermark-free output
+
+## Configuration
+
+All thresholds live in `lib/scene/config.ts` and can be overridden via environment variables:
+
+```ini
+OPENROUTER_API_KEY="sk-or-v1-..."
+OPENROUTER_IMAGE_MODEL="google/gemini-3.1-flash-image-preview"
+OPENROUTER_TEXT_MODEL="google/gemini-3.1-flash-lite-preview"
+OPENROUTER_VISION_MODEL="google/gemini-3.1-flash-lite-preview"
+OPENROUTER_IMAGE_SIZE="1024px portrait 4:5"
+
+QUALITY_MIN="3"
+IDENTITY_THRESHOLD="0.6"
+SCENE_MAX_CANDIDATES="1"
+SCENE_RESCUE_ATTEMPTS="2"
+SCENE_REFERENCE_CHAINING="true"
+SELFIE_RETENTION_HOURS="24"
+```
+
+## Architecture
+
+```
+lib/scene/
+├── types.ts          # Domain types (JobStatus, ScenePlan, ShotSpec, ...)
+├── orchestrator.ts   # Three-check state machine + candidates / rescue / cover
+├── scene-plan.ts     # ScenePlan validation + prompt assembly
+├── prompts.ts        # LLM prompt templates
+├── pricing.ts        # 6 photos × 50 credits, refund for undelivered
+├── repository.ts     # DAL for generation_job / generation_frame
+├── config.ts         # Models and thresholds (env-overridable)
+└── services/         # planner, moderation, image-gen, quality/identity/coherence checks, ...
+```
+
+The OpenRouter client wrapper lives in `lib/openrouter/` (chat, image, config, types).

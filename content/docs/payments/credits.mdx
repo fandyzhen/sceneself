@@ -21,30 +21,30 @@ All functions are in `lib/credits.ts`:
 const credits = await getUserCredits(userId);
 
 // Check if user can afford an operation
-const canAfford = await canUserAfford(userId, 10);
+const canAfford = await canUserAfford(userId, 300);
 
 // Deduct credits (transactional)
-await deductCredits(userId, 10, 'chat_usage');
+await deductCredits(userId, 300, 'scene_set');
 
-// Refund credits (e.g., on API failure)
-await refundCredits(userId, 10, 'chat_refund');
+// Refund credits (e.g., for undelivered photos)
+await refundCredits(userId, 50, 'scene_refund');
 ```
 
 ## Credit Costs
 
 | Operation | Cost | Configured In |
 |-----------|------|---------------|
-| Chat message | 10 credits | `lib/credits.ts` (`CHAT_CREDIT_COST`) |
-| Image generation | 20 credits | `app/api/image/generate/route.ts` |
-| Video generation | 50 credits | `app/api/video/generate/route.ts` |
+| Scene set (6 photos) | 6 × 50 = 300 credits | `lib/scene/pricing.ts` (`SHOTS_PER_SET`, `CREDITS_PER_PHOTO`) |
+
+The full set price is deducted up front when the job starts; undelivered photos are refunded per photo when the job finishes.
 
 ## Credit Sources
 
 | Source | Trigger | Amount |
 |--------|---------|--------|
 | Registration bonus | New user signup | 300 credits |
-| Subscription (monthly) | Webhook / cron | Per plan config |
-| One-time pack | Webhook | Per pack config |
+| Subscription | Webhook / cron | Per plan config |
+| Redemption code | User redeems at `/redeem` | Per code config |
 | Admin adjustment | Manual via admin panel | Custom |
 
 ## Ledger Reasons
@@ -52,29 +52,25 @@ await refundCredits(userId, 10, 'chat_refund');
 Each `creditLedger` entry has a `reason` field:
 
 - `registration_bonus` — Free credits on signup
-- `chat_usage` — Chat message deduction
-- `image_usage` — Image generation deduction
-- `video_usage` — Video generation deduction
-- `subscription_cycle` — Monthly subscription grant
-- `one_time_pack` — Credit pack purchase
+- `scene_set` — Scene set deduction (300 credits)
+- `scene_refund` — Refund for undelivered photos
+- `subscription_cycle` — Subscription cycle grant
+- `redemption` — Redemption code credits
 - `admin_adjustment` — Manual admin change
 
 ## Credit Compensation
 
-AI API calls use a **deduct-first, refund-on-failure** pattern:
+Scene generation uses a **deduct-first, refund-on-failure** pattern:
 
 ```typescript
-// 1. Deduct credits
-await deductCredits(userId, cost, 'chat_usage');
+// 1. Deduct the full set price when the job starts
+await deductCredits(userId, 300, 'scene_set');
 
-try {
-  // 2. Call AI API
-  const result = await callAI(...);
-} catch (error) {
-  // 3. Refund on failure
-  await refundCredits(userId, cost, 'chat_refund');
-  throw error;
-}
+// 2. Run the generation job
+// ...
+
+// 3. Refund any undelivered photos when the job finishes
+await refundCredits(userId, refundForUndelivered(delivered), 'scene_refund');
 ```
 
-This ensures users never lose credits when the AI provider fails.
+This ensures users never lose credits for photos that were not delivered.

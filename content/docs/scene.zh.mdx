@@ -1,0 +1,88 @@
+---
+title: 场景生成
+description: 一张自拍 + 一句话，产出风格统一的 6 张成组写真 — 由 OpenRouter（Gemini）驱动。
+---
+
+## 概述
+
+场景生成是 SceneSelf 的核心：用户上传**一张自拍**，输入**一句话**场景描述，引擎产出 **6 张连贯、竖版（4:5）、手机随手拍风格的场景照片**——旅行 photo dump、节日照片、幻想角色集锦等。
+
+所有 AI 调用都走 [OpenRouter](https://openrouter.ai)：
+
+| 角色 | 模型 |
+|------|------|
+| 出图 | `google/gemini-3.1-flash-image-preview`（Nano Banana 2） |
+| 文本（场景规划 / 翻译 / 消歧问答） | `google/gemini-3.1-flash-lite-preview` |
+| 视觉（质检 / 组一致性 / 身份判定） | `google/gemini-3.1-flash-lite-preview` |
+
+## API 端点
+
+| 端点 | 方法 | 说明 |
+|------|------|------|
+| `/api/scene/clarify` | POST | 意图改写 + 内容审核 + 消歧问题 |
+| `/api/scene/plan` | POST | 生成 `ScenePlan`（连续性锁定 + 6 个分镜） |
+| `/api/scene/upload` | POST | 自拍上传（HEIC 自动转换，存储到 R2） |
+| `/api/scene/jobs` | POST | 启动生成任务（预扣积分） |
+| `/api/scene/jobs/[id]` | GET | 轮询任务状态和帧 URL |
+
+用户侧流程在 `/create` 页（`app/[locale]/create/page.tsx`）。任务状态机：`draft → planning → awaiting_choices → generating → completed | partial | failed`。
+
+## 工作流程
+
+1. **意图改写 + 审核** — `IntentRewriter` 把不安全口径改写成安全的 editorial 版本；`PromptModeration`（由 `PROMPT_MODERATION_PROVIDER` 控制，默认 `llm`）对 prompt 做内容审核。
+2. **场景规划** — 文本模型产出 `ScenePlan`：场景、一致性类型、连续性锁定（衣服、配饰、发型、相机、film look、锚定物体）+ 6 个 `ShotSpec`，每帧有独立的叙事角色、景别和出图 prompt。
+3. **自拍上传** — HEIC 自动转 JPEG，文件上传 R2；`selfieUrl` + `identityRef` 在 `SELFIE_RETENTION_HOURS`（默认 24 小时）后自动清理。
+4. **编排出图**（`lib/scene/orchestrator.ts`）— 每帧必须过三道及格线：
+   - **像** — 无畸形、无塑料感皮肤，整体质量 ≥ `QUALITY_MIN`
+   - **真** — 出图人物与自拍是同一人（`IdentityCheck`）
+   - **组一致** — 衣服、光感、构图在整组内保持一致
+   不合格帧先重抽（`SCENE_MAX_CANDIDATES`），再用已通过的帧作 reference 救援（`SCENE_RESCUE_ATTEMPTS`），最后由 salvage 门槛（`SALVAGE_QUALITY_MIN`）兜底保证 6/6 交付。Reference chaining（`SCENE_REFERENCE_CHAINING`，默认开）先串行出第 1 帧作"组内视觉锚"。
+5. **轮询** — 前端轮询 `/api/scene/jobs/[id]` 获取状态和帧 URL，封面帧优先回流。
+
+## 数据模型
+
+- `generation_job` — 每组一条：状态、prompt、审核结果、`scenePlan`（jsonb）、自拍引用、积分消耗
+- `generation_frame` — 每张照片一条：分镜规格、状态、图片 URL、身份/质量评分、失败原因
+
+## 积分计费
+
+定义在 `lib/scene/pricing.ts`：
+
+- 一组 = **6 张 × 50 积分 = 300 积分**
+- 预扣全额（`scene_set`），未交付的张数自动返还（`scene_refund`）
+- 注册赠送 300 积分——刚好免费一组（带水印）；有效订阅用户出图无水印
+
+## 配置
+
+所有阈值在 `lib/scene/config.ts`，均可通过环境变量覆盖：
+
+```ini
+OPENROUTER_API_KEY="sk-or-v1-..."
+OPENROUTER_IMAGE_MODEL="google/gemini-3.1-flash-image-preview"
+OPENROUTER_TEXT_MODEL="google/gemini-3.1-flash-lite-preview"
+OPENROUTER_VISION_MODEL="google/gemini-3.1-flash-lite-preview"
+OPENROUTER_IMAGE_SIZE="1024px portrait 4:5"
+
+QUALITY_MIN="3"
+IDENTITY_THRESHOLD="0.6"
+SCENE_MAX_CANDIDATES="1"
+SCENE_RESCUE_ATTEMPTS="2"
+SCENE_REFERENCE_CHAINING="true"
+SELFIE_RETENTION_HOURS="24"
+```
+
+## 架构
+
+```
+lib/scene/
+├── types.ts          # 领域类型（JobStatus、ScenePlan、ShotSpec...）
+├── orchestrator.ts   # 三道及格线状态机 + 候选 / 救援 / 封面
+├── scene-plan.ts     # ScenePlan 校验 + prompt 装配
+├── prompts.ts        # LLM 提示词模板
+├── pricing.ts        # 6 张 × 50 积分，未交付返还
+├── repository.ts     # generation_job / generation_frame 的 DAL
+├── config.ts         # 模型与阈值（env 可覆盖）
+└── services/         # 规划、审核、出图、质检 / 身份 / 组一致性检查等
+```
+
+OpenRouter 客户端封装在 `lib/openrouter/`（chat、image、config、types）。

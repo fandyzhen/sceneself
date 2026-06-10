@@ -19,7 +19,7 @@ describe("pricing", () => {
   });
 
   // "Double" 承诺:未交付帧按 2× 退还(50/张 × 2 = 100/未交付帧)。
-  // 见 blog/how-companies-are-working-without-ai 与 i18n result.compensation 文案。
+  // 见 blog/sceneself-credits-and-plans 与 i18n result.compensation 文案。
   it("未交付补偿倍数常量 = 2 (兑现 Double 承诺)", () => {
     expect(UNDELIVERED_REFUND_MULTIPLIER).toBe(2);
   });

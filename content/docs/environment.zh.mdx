@@ -26,22 +26,43 @@ NEXT_PUBLIC_APP_URL="http://localhost:3000"
 
 ## 服务集成
 
-### 火山引擎（AI 功能）
+### OpenRouter（场景生成）
 
-对话、图像生成和视频生成必需：
+场景生成主流程必需（出图、场景规划、视觉质检）：
 
 ```ini
-VOLCANO_ENGINE_API_KEY="your-volcano-engine-api-key"
-VOLCANO_ENGINE_API_URL="https://ark.cn-beijing.volces.com/api/v3"
+OPENROUTER_API_KEY="sk-or-v1-..."
+OPENROUTER_API_URL="https://openrouter.ai/api/v1"
+OPENROUTER_IMAGE_MODEL="google/gemini-3.1-flash-image-preview"
+OPENROUTER_TEXT_MODEL="google/gemini-3.1-flash-lite-preview"
+OPENROUTER_VISION_MODEL="google/gemini-3.1-flash-lite-preview"
+OPENROUTER_IMAGE_SIZE="1024px portrait 4:5"
+```
+
+场景调优参数（均可选，下面是默认值）：
+
+```ini
+PROMPT_MODERATION_PROVIDER="llm"
+QUALITY_MIN="3"
+SET_QUALITY_MIN="3"
+IDENTITY_THRESHOLD="0.6"
+SCENE_MAX_CANDIDATES="1"
+SCENE_RESCUE_ATTEMPTS="2"
+SCENE_REFERENCE_CHAINING="true"
+SELFIE_RETENTION_HOURS="24"
+SCENE_DEV_FALLBACK="true"
 ```
 
 ### Creem（支付）
 
-订阅和一次性购买必需：
+订阅必需：
 
 ```ini
 CREEM_API_KEY="your-creem-api-key"
 CREEM_WEBHOOK_SECRET="whsec_..."
+CREEM_WEEKLY_PRICE_ID="..."
+CREEM_MONTHLY_PRICE_ID="..."
+CREEM_YEARLY_PRICE_ID="..."
 ```
 
 测试模式（跳过真实支付）：
@@ -68,8 +89,12 @@ AUTH_GOOGLE_SECRET="your-google-client-secret"
 
 ### 定时任务
 
+Bearer token 或 Basic Auth（二选一）：
+
 ```ini
 CRON_SECRET="your-cron-secret"
+CRON_JOBS_USERNAME="your_username"
+CRON_JOBS_PASSWORD="your_password"
 ```
 
 ## 可选分析工具
@@ -82,9 +107,11 @@ NEXT_PUBLIC_CLARITY_PROJECT_ID="..."
 
 ## 可选存储（S3 兼容）
 
+用于自拍上传和生成图镜像（推荐 Cloudflare R2）：
+
 ```ini
 STORAGE_ENDPOINT="https://..."
-STORAGE_BUCKET="your-bucket"
+STORAGE_BUCKET_NAME="your-bucket"
 STORAGE_REGION="auto"
 STORAGE_ACCESS_KEY_ID="..."
 STORAGE_SECRET_ACCESS_KEY="..."

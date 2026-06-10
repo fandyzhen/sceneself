@@ -1,18 +1,19 @@
 ---
 title: Introduction
-description: A production-ready AI SaaS starter built for vibe coding.
+description: SceneSelf turns one selfie and one sentence into a cohesive 6-photo phone-shot style scene set.
 ---
 
 ## What is SceneSelf?
 
-SceneSelf is a **production-grade AI SaaS template** designed for rapid launch of commercial AI products. It includes everything you need: authentication, subscription billing, credit system, AI integrations (chat, image, video), admin dashboard, and i18n support.
+SceneSelf is an **AI scene photo set generator**. Upload one selfie, describe a scene in one sentence, and get **6 cohesive, portrait (4:5), phone-shot style photos** — a travel grid, a holiday photo dump, a fantasy character set, and more. It is a creative, imagination-first product built on a full production stack: authentication, subscription billing, credits, redemption codes, admin dashboard, and i18n.
 
 ### Key Features
 
+- **Scene Generation** — 6-photo cohesive scene sets powered by OpenRouter (Gemini), with quality, identity, and set-coherence checks
 - **Authentication** — Email/password + Google OAuth via Better Auth
 - **Credit-Based Billing** — Per-use credit system with auditable ledger + subscription plans via Creem
-- **AI Integration** — Chat, image generation, and video generation powered by Volcano Engine (Doubao)
-- **Admin Dashboard** — User management, credit adjustment, subscription control
+- **Redemption Codes** — Admin-generated code batches + partner API + user redemption at `/redeem`
+- **Admin Dashboard** — User management, credit adjustment, subscription control, code batches, API keys
 - **Internationalization** — Full English and Chinese support via next-intl
 - **Email System** — Transactional emails via Resend (verification, password reset, purchase confirmation)
 - **Marketing Pages** — Landing page, pricing, blog (MDX), legal pages
@@ -26,7 +27,7 @@ SceneSelf is a **production-grade AI SaaS template** designed for rapid launch o
 | Database | PostgreSQL + Drizzle ORM |
 | Auth | Better Auth |
 | Payments | Creem |
-| AI | Volcano Engine (Doubao API) |
+| AI | OpenRouter (Gemini) |
 | Email | Resend |
 | i18n | next-intl |
 

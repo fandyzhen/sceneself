@@ -38,9 +38,7 @@ PostgreSQL 数据库（推荐 Supabase、Neon 或 Vercel Postgres）
 
 ### 1. 获取项目代码
 
-如果你已经从课程社区拿到源码压缩包，先解压并进入项目目录即可。
-
-如果你打算通过 Git 获取源码，可以运行：
+通过 Git 获取源码：
 
 ```bash
 git clone https://github.com/Idea-To-Business/sceneself.git
@@ -70,6 +68,7 @@ DATABASE_URL="postgresql://user:password@host/db?sslmode=require"
 BETTER_AUTH_SECRET="至少32字符的随机密钥"
 BETTER_AUTH_URL="http://localhost:3000"
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
+OPENROUTER_API_KEY="sk-or-v1-..."
 ```
 
 完整列表请查看[环境变量](./environment)。
@@ -108,4 +107,4 @@ ADMIN_EMAIL=admin@example.com pnpm admin:setup
 - [项目结构](./project-structure) — 了解代码布局
 - [认证系统](./auth) — 配置登录方式
 - [支付系统](./payments) — 设置计费和订阅
-- [AI 功能](./ai) — 配置 AI 集成
+- [场景生成](./scene) — 配置场景引擎和 OpenRouter

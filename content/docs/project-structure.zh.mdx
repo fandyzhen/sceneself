@@ -10,17 +10,17 @@ description: 代码库布局和关键目录概览。
 │   ├── (auth)/                # 认证页面（登录、注册、忘记密码）
 │   ├── (marketing)/           # 营销页面（首页、定价、博客、联系）
 │   ├── (protected)/           # 需要认证的页面（仪表板、个人资料、积分）
-│   ├── (admin)/               # 管理后台（用户、订阅、积分管理）
-│   ├── demo/                  # AI 演示页面（对话、图像、视频）
+│   ├── (admin)/               # 管理后台（用户、订阅、积分、兑换码、API key）
+│   ├── create/                # 场景生成主流程（产品核心 UI）
 │   └── docs/                  # 文档（Fumadocs）
 ├── app/api/                   # API 路由
 │   ├── auth/                  # Better Auth + 自定义认证端点
 │   ├── payments/creem/        # Creem 支付（checkout + webhook）
-│   ├── chat/                  # 对话 API（流式响应）
-│   ├── image/                 # 图像生成 API
-│   ├── video/                 # 视频生成 API（异步任务）
+│   ├── scene/                 # 场景生成：plan / clarify / upload / jobs
+│   ├── redeem/                # 用户兑换码核销端点
+│   ├── partner/codes/         # 合作伙伴 API（批量生成兑换码）
 │   ├── admin/                 # 管理员操作 API
-│   └── cron/                  # 定时任务（积分发放）
+│   └── cron/                  # 定时任务（积分发放、自拍清理）
 ├── components/                # 可复用 UI 组件
 ├── features/                  # 功能模块（auth、admin、forms、navigation）
 ├── lib/                       # 核心业务逻辑
@@ -29,11 +29,13 @@ description: 代码库布局和关键目录概览。
 │   ├── credits.ts             # 积分系统逻辑
 │   ├── payments/creem.ts      # Creem 支付集成
 │   ├── billing/               # 订阅和积分发放调度
-│   ├── volcano-engine/        # 火山引擎 API 封装
+│   ├── scene/                 # 场景引擎（编排、规划、计费、服务）
+│   ├── openrouter/            # OpenRouter API 封装（chat、image）
+│   ├── redemption/            # 兑换码 + 合作伙伴 API key
 │   └── email.ts               # 邮件发送逻辑
 ├── constants/                 # 常量
-│   ├── billing.ts             # 定价计划和积分包配置
-│   ├── tier.ts                # 用户等级定义
+│   ├── billing.ts             # 订阅计划（weekly / monthly / yearly）
+│   ├── scene-storylines.ts    # 场景故事线预设
 │   └── website.ts             # 网站信息
 ├── content/docs/              # 文档内容（MDX）
 ├── messages/                  # 国际化翻译文件（en、zh）
@@ -48,7 +50,7 @@ description: 代码库布局和关键目录概览。
 | `(marketing)` | `/`、`/pricing`、`/blog` | 公开 | 营销和 SEO 页面 |
 | `(protected)` | `/dashboard`、`/profile` | 需要登录 | 用户功能 |
 | `(admin)` | `/admin/*` | 管理员 | 管理面板 |
-| `demo` | `/demo/*` | 公开 | AI 功能演示 |
+| `create` | `/create` | 公开 | 场景生成主流程 |
 | `docs` | `/docs/*` | 公开 | 文档 |
 
 ## 关键文件
@@ -58,7 +60,9 @@ description: 代码库布局和关键目录概览。
 | `lib/auth.ts` | Better Auth 配置及注册钩子 |
 | `lib/credits.ts` | 积分扣除、退还和余额检查 |
 | `lib/db/schema.ts` | 完整数据库 Schema（Drizzle ORM） |
-| `constants/billing.ts` | 定价计划、积分数量、Creem 产品 ID |
+| `constants/billing.ts` | 订阅计划、积分数量、Creem price ID |
 | `lib/payments/creem.ts` | Creem API 集成（checkout、webhooks） |
+| `lib/scene/orchestrator.ts` | 场景生成状态机（质量 / 身份 / 组一致性） |
+| `lib/openrouter/` | OpenRouter 客户端封装（chat、image） |
 | `proxy.ts` | Next.js 代理（i18n 路由） |
 | `i18n.config.ts` | 语言区域配置 |

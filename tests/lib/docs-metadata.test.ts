@@ -26,15 +26,15 @@ describe("docs metadata helpers", () => {
 
     expect(metadata.title).toBe("快速开始 | SceneSelf Docs");
     expect(metadata.description).toBe("快速开始 的使用文档，来自 SceneSelf Docs。");
-    expect(metadata.alternates?.canonical).toBe("http://localhost:3000/zh/docs/quickstart");
+    expect(metadata.alternates?.canonical).toBe("https://sceneself.com/zh/docs/quickstart");
     expect(metadata.alternates?.languages).toEqual({
-      en: "http://localhost:3000/docs/quickstart",
-      zh: "http://localhost:3000/zh/docs/quickstart",
+      en: "https://sceneself.com/docs/quickstart",
+      zh: "https://sceneself.com/zh/docs/quickstart",
     });
     expect(metadata.openGraph).toMatchObject({
       title: "快速开始 | SceneSelf Docs",
       locale: "zh_CN",
-      url: "http://localhost:3000/zh/docs/quickstart",
+      url: "https://sceneself.com/zh/docs/quickstart",
     });
   });
 });

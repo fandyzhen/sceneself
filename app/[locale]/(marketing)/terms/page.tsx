@@ -50,7 +50,7 @@ export default function TermsPage() {
           <ul className="list-disc pl-6 space-y-2">
             <li>Generate a cohesive AI photo set from one selfie</li>
             <li>Choose creative scene types (travel, lifestyle, milestones, fantasy, seasonal)</li>
-            <li>Preview free, unlock the full set, and export for social media</li>
+            <li>Start with a free 6-photo set and export for social media</li>
             <li>Credits, subscriptions, and account management</li>
           </ul>
         </section>

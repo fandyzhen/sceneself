@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
     const affordable = await canUserAfford(userId, creditsCost);
     if (!affordable) {
       return NextResponse.json(
-        { error: "积分不足，请购买积分包或订阅后再试。", creditsNeeded: creditsCost, code: "insufficient_credits" },
+        { error: "积分不足，请订阅后再试。", creditsNeeded: creditsCost, code: "insufficient_credits" },
         { status: 402 },
       );
     }

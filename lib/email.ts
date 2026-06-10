@@ -147,8 +147,7 @@ export async function sendWelcomeEmail(email: string, name?: string) {
         <p>Here's what you can do next:</p>
         <ul style="line-height: 1.8;">
           <li>Complete your profile</li>
-          <li>Explore our features</li>
-          <li>Try the demo</li>
+          <li>Create your first 6-photo scene set</li>
           <li>Check out our documentation</li>
         </ul>
         <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard" style="display: inline-block; padding: 12px 24px; background-color: #000; color: #fff; text-decoration: none; border-radius: 6px; margin: 20px 0;">

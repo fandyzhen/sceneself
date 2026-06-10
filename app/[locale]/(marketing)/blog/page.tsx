@@ -15,13 +15,14 @@ export async function generateMetadata(
   }
 ): Promise<Metadata> {
   const params = await props.params;
-  const t = await getTranslations({ locale: params.locale, namespace: 'blog' });
+  const t = await getTranslations({ locale: params.locale, namespace: 'seo' });
 
   return generatePageMetadata({
     locale: params.locale,
     path: '/blog',
-    title: t('title'),
-    description: t('subtitle'),
+    title: t('blog.title'),
+    description: t('blog.description'),
+    ogImage: t('blog.ogImage'),
   });
 }
 

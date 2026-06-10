@@ -19,24 +19,26 @@ monthly: {
 
 定价页"最受欢迎"高亮由 `RECOMMENDED_PLAN` 控制。
 
-## 修改积分消耗
+## 修改场景计费
 
-编辑消耗常量：
+编辑 `lib/scene/pricing.ts` 中的常量：
 
-| 功能 | 文件 | 变量 |
-|------|------|------|
-| 对话 | `lib/credits.ts` | `CHAT_CREDIT_COST` |
-| 图像 | `app/api/image/generate/route.ts` | 内联常量 |
-| 视频 | `app/api/video/generate/route.ts` | 内联常量 |
+| 配置 | 变量 | 默认值 |
+|------|------|--------|
+| 每组照片数 | `SHOTS_PER_SET` | 6 |
+| 每张积分 | `CREDITS_PER_PHOTO` | 50 |
+
+一组消耗 `SHOTS_PER_SET × CREDITS_PER_PHOTO` = 300 积分；未交付的张数自动返还。
 
 ## 替换 AI 提供商
 
-从火山引擎切换到 OpenAI：
+场景流程默认基于 OpenRouter（出图 Nano Banana 2 + 文本/视觉 Gemini Flash Lite）。如需更换提供商：
 
-1. 安装 OpenAI SDK：`pnpm add openai`
-2. 替换 `lib/volcano-engine/` 中的文件
-3. 更新环境变量
-4. 保持 API 路由中相同的积分扣除模式
+1. 替换或扩展 `lib/openrouter/` 中的客户端封装（或新建 `lib/<provider>/`）
+2. 更新 `lib/scene/services/` 中的调用点（`image-gen.ts`、`quality-check.ts`、`identity-check.ts`、`scene-planner.ts`、`story-line.ts`）
+3. 更新 `lib/scene/config.ts` 中的 `imageModel` / `textModel` / `visionModel`
+4. 相应更新 `OPENROUTER_*` 环境变量
+5. 保持相同的积分扣除与返还模式
 
 ## 添加新语言
 

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { getAllBlogs, getBlogModule } from "@/lib/blog";
 import { locales, type Locale } from "@/i18n.config";
+import { generatePageMetadata } from "@/lib/metadata";
 
 interface PageProps {
   params: Promise<{
@@ -33,18 +34,14 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
   }
 
   const { blog } = blogModule;
-  const metadata: Metadata = {
-    title: blog.title,
+
+  return generatePageMetadata({
+    locale,
+    path: `/blog/${slug}`,
+    title: `${blog.title} | SceneSelf Blog`,
     description: blog.description,
-  };
-
-  if (blog.image) {
-    metadata.openGraph = {
-      images: [blog.image],
-    };
-  }
-
-  return metadata;
+    ogImage: typeof blog.image === "string" ? blog.image : undefined,
+  });
 }
 
 export default async function BlogPostPage(props: PageProps) {

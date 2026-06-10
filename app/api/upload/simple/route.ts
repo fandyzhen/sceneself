@@ -4,6 +4,10 @@ import { getErrorMessage } from "@/lib/error-utils";
 
 export async function POST(req: NextRequest) {
   try {
+    if (process.env.NODE_ENV === "production") {
+      return NextResponse.json({ error: "This demo upload endpoint is disabled in production." }, { status: 404 });
+    }
+
     // Authenticate user
     const access = await getActiveSessionUser(req.headers);
     if (!access.ok) {
@@ -27,16 +31,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "File size must be less than 5MB" }, { status: 400 });
     }
 
-    // In production, you would upload to a proper storage service
-    // For now, we'll use a public image service or return the data URL
-    
-    // Option 1: Use a free image hosting service (like imgur)
-    // Option 2: Return data URL (works for small images)
-    // Option 3: Use an existing public image for testing
-    
-    // For testing, let's use a sample public image URL
-    // You can replace this with actual upload logic later
-    const testImageUrl = "https://ark-project.tos-cn-beijing.volces.com/doc_image/seepro_i2v.png";
+    const testImageUrl = "/starter/sample.png";
     
     console.log('Image uploaded (using test URL for now)');
 
@@ -45,7 +40,7 @@ export async function POST(req: NextRequest) {
       originalName: file.name,
       size: file.size,
       type: file.type,
-      message: "Using test image URL for demo. In production, this would upload to real storage."
+      message: "Using a local starter image for non-production demo upload."
     });
 
   } catch (error: unknown) {

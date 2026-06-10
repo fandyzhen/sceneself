@@ -57,6 +57,8 @@ export interface UploadResult {
 export async function uploadSelfie(file: File): Promise<UploadResult> {
   const fd = new FormData();
   fd.append("file", file);
+  // 用户在上传前必须勾选"本人照片且年满 18 岁",服务端会校验该标记
+  fd.append("consent", "self_18plus");
   const res = await fetch("/api/scene/upload", { method: "POST", body: fd });
   if (!res.ok) throw new Error("upload_failed");
   const data = (await res.json()) as { url?: string; ok?: boolean; faceIssue?: string; appearance?: SelfieAppearance | null };

@@ -2,24 +2,24 @@
 // Do not edit manually.
 
 export const blogModuleLoaders = {
-  "changelog-for-2025": {
-    "en": () => import("../app/[locale]/(marketing)/blog/changelog-for-2025/en.mdx"),
-    "zh": () => import("../app/[locale]/(marketing)/blog/changelog-for-2025/zh.mdx"),
+  "ai-photo-dump-ideas": {
+    "en": () => import("../app/[locale]/(marketing)/blog/ai-photo-dump-ideas/en.mdx"),
+    "zh": () => import("../app/[locale]/(marketing)/blog/ai-photo-dump-ideas/zh.mdx"),
   },
-  "cool-things-to-do-with-ai": {
-    "en": () => import("../app/[locale]/(marketing)/blog/cool-things-to-do-with-ai/en.mdx"),
-    "zh": () => import("../app/[locale]/(marketing)/blog/cool-things-to-do-with-ai/zh.mdx"),
+  "how-ai-photo-sets-work": {
+    "en": () => import("../app/[locale]/(marketing)/blog/how-ai-photo-sets-work/en.mdx"),
+    "zh": () => import("../app/[locale]/(marketing)/blog/how-ai-photo-sets-work/zh.mdx"),
   },
-  "how-companies-are-working-without-ai": {
-    "en": () => import("../app/[locale]/(marketing)/blog/how-companies-are-working-without-ai/en.mdx"),
-    "zh": () => import("../app/[locale]/(marketing)/blog/how-companies-are-working-without-ai/zh.mdx"),
+  "how-we-handle-your-selfie": {
+    "en": () => import("../app/[locale]/(marketing)/blog/how-we-handle-your-selfie/en.mdx"),
+    "zh": () => import("../app/[locale]/(marketing)/blog/how-we-handle-your-selfie/zh.mdx"),
   },
-  "top-5-llm-of-all-time": {
-    "en": () => import("../app/[locale]/(marketing)/blog/top-5-llm-of-all-time/en.mdx"),
-    "zh": () => import("../app/[locale]/(marketing)/blog/top-5-llm-of-all-time/zh.mdx"),
+  "sceneself-credits-and-plans": {
+    "en": () => import("../app/[locale]/(marketing)/blog/sceneself-credits-and-plans/en.mdx"),
+    "zh": () => import("../app/[locale]/(marketing)/blog/sceneself-credits-and-plans/zh.mdx"),
   },
-  "what-is-ai-anyway": {
-    "en": () => import("../app/[locale]/(marketing)/blog/what-is-ai-anyway/en.mdx"),
-    "zh": () => import("../app/[locale]/(marketing)/blog/what-is-ai-anyway/zh.mdx"),
+  "sceneself-launch-notes": {
+    "en": () => import("../app/[locale]/(marketing)/blog/sceneself-launch-notes/en.mdx"),
+    "zh": () => import("../app/[locale]/(marketing)/blog/sceneself-launch-notes/zh.mdx"),
   },
 } as const;

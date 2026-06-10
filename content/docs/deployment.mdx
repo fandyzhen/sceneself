@@ -8,7 +8,7 @@ description: Deploy your SceneSelf app to production.
 Before deploying, ensure you have:
 
 - PostgreSQL database (Supabase, Neon, or Vercel Postgres)
-- Volcano Engine API key
+- OpenRouter API key (required for Scene generation)
 - Creem account and API key
 - Resend API key
 - (Optional) Google OAuth credentials
@@ -45,23 +45,25 @@ In Creem Dashboard, set webhook URL:
 https://your-domain.com/api/payments/creem/webhook
 ```
 
-### 5. Set Up Cron Job
+### 5. Set Up Cron Jobs
 
-For annual subscription credit grants, configure a cron job to call hourly:
+For subscription credit grants and selfie cleanup, configure cron jobs to call hourly:
 
 ```bash
 curl -H "Authorization: Bearer YOUR_CRON_SECRET" \
   https://your-domain.com/api/cron/subscription-grants
+curl -H "Authorization: Bearer YOUR_CRON_SECRET" \
+  https://your-domain.com/api/cron/cleanup-selfies
 ```
 
 On Vercel, add to `vercel.json`:
 
 ```json
 {
-  "crons": [{
-    "path": "/api/cron/subscription-grants",
-    "schedule": "0 * * * *"
-  }]
+  "crons": [
+    { "path": "/api/cron/subscription-grants", "schedule": "0 * * * *" },
+    { "path": "/api/cron/cleanup-selfies", "schedule": "0 * * * *" }
+  ]
 }
 ```
 
@@ -78,12 +80,13 @@ Make sure production `.env` has correct values for:
 - `BETTER_AUTH_URL` — Your actual domain
 - `NEXT_PUBLIC_APP_URL` — Your actual domain
 - `RESEND_FROM_EMAIL` — Verified domain sender
+- `SCENE_DEV_FALLBACK="false"` — Disable placeholder images in production
 
 ## Post-Deploy Checklist
 
 - [ ] Database migrated
 - [ ] Webhook URL configured in Creem
-- [ ] Cron job set up for credit grants
+- [ ] Cron jobs set up for credit grants and selfie cleanup
 - [ ] Admin account created
 - [ ] Email sender domain verified in Resend
 - [ ] OAuth redirect URIs updated for production domain

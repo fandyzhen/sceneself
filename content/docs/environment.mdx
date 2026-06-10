@@ -28,22 +28,43 @@ NEXT_PUBLIC_APP_URL="http://localhost:3000"
 
 ## Service Integrations
 
-### Volcano Engine (AI Features)
+### OpenRouter (Scene Generation)
 
-Required for chat, image generation, and video generation:
+Required for the Scene generation flow (image generation, scene planning, vision checks):
 
 ```ini
-VOLCANO_ENGINE_API_KEY="your-volcano-engine-api-key"
-VOLCANO_ENGINE_API_URL="https://ark.cn-beijing.volces.com/api/v3"
+OPENROUTER_API_KEY="sk-or-v1-..."
+OPENROUTER_API_URL="https://openrouter.ai/api/v1"
+OPENROUTER_IMAGE_MODEL="google/gemini-3.1-flash-image-preview"
+OPENROUTER_TEXT_MODEL="google/gemini-3.1-flash-lite-preview"
+OPENROUTER_VISION_MODEL="google/gemini-3.1-flash-lite-preview"
+OPENROUTER_IMAGE_SIZE="1024px portrait 4:5"
+```
+
+Scene tuning parameters (all optional, defaults shown):
+
+```ini
+PROMPT_MODERATION_PROVIDER="llm"
+QUALITY_MIN="3"
+SET_QUALITY_MIN="3"
+IDENTITY_THRESHOLD="0.6"
+SCENE_MAX_CANDIDATES="1"
+SCENE_RESCUE_ATTEMPTS="2"
+SCENE_REFERENCE_CHAINING="true"
+SELFIE_RETENTION_HOURS="24"
+SCENE_DEV_FALLBACK="true"
 ```
 
 ### Creem (Payments)
 
-Required for subscriptions and one-time purchases:
+Required for subscriptions:
 
 ```ini
 CREEM_API_KEY="your-creem-api-key"
 CREEM_WEBHOOK_SECRET="whsec_..."
+CREEM_WEEKLY_PRICE_ID="..."
+CREEM_MONTHLY_PRICE_ID="..."
+CREEM_YEARLY_PRICE_ID="..."
 ```
 
 For testing without real payments:
@@ -70,8 +91,12 @@ AUTH_GOOGLE_SECRET="your-google-client-secret"
 
 ### Cron Jobs
 
+Bearer token or Basic Auth (either works):
+
 ```ini
 CRON_SECRET="your-cron-secret"
+CRON_JOBS_USERNAME="your_username"
+CRON_JOBS_PASSWORD="your_password"
 ```
 
 ## Optional Analytics
@@ -84,9 +109,11 @@ NEXT_PUBLIC_CLARITY_PROJECT_ID="..."
 
 ## Optional Storage (S3-Compatible)
 
+Used for selfie uploads and mirroring generated images (Cloudflare R2 recommended):
+
 ```ini
 STORAGE_ENDPOINT="https://..."
-STORAGE_BUCKET="your-bucket"
+STORAGE_BUCKET_NAME="your-bucket"
 STORAGE_REGION="auto"
 STORAGE_ACCESS_KEY_ID="..."
 STORAGE_SECRET_ACCESS_KEY="..."
